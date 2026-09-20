@@ -43,10 +43,17 @@ Koden på webbplatsen visar principen i koncentrerad form. Projektets `main.gd` 
 | --- | --- |
 | WASD eller piltangenter | Gå framåt, bakåt och åt sidorna |
 | Mus | Titta uppåt, nedåt och åt sidorna |
+| Högerklick | Plocka upp eller släpp ett greppbart föremål |
 | Esc | Släpp muspekaren |
-| Musklick | Fånga muspekaren igen |
+| Vänsterklick efter Esc | Fånga muspekaren igen |
 
 Spelaren använder gravitation och `move_and_slide()`. Kollisionskapseln har samma collision layer och mask som XR-spelarens kropp, så båda spelarna möter samma golv och hinder.
+
+## Plocka upp utan XR-kontroller {#desktop-pickup}
+
+En `RayCast3D` går från kameran genom siktet. När spelaren högerklickar kontrollerar desktopspelaren om strålen träffar ett greppbart XR Tools-föremål. Föremålet flyttas då till en `HoldPoint` framför kameran. Nästa högerklick släpper tillbaka det i spelvärlden och aktiverar fysiken igen.
+
+Funktionen ligger i desktopspelaren, inte i pistolen. Därför fungerar samma kod för den primitiva pistolen, testkuberna och framtida greppbara föremål.
 
 ## Blir det mycket dubbelkodning? {#dubbelkodning}
 
@@ -76,6 +83,7 @@ Detta mönster gör att desktopläget ger lite extra kod nu men kan spara mycket
 Desktopläget passar för att testa:
 
 - nivåns geometri och kollisioner,
+- greppbara föremål med höger musknapp,
 - slumpgenererade rum,
 - monster, navigation och AI,
 - projektiler, träffar och skada,
@@ -96,10 +104,11 @@ Ett riktigt headset behövs fortfarande för att bedöma:
 3. Starta huvudscenen med <kbd>F6</kbd> eller hela projektet med <kbd>F5</kbd>.
 4. Kontrollera att Output visar `Inget aktivt OpenXR-headset: startar desktop-spelaren.`
 5. Gå runt med WASD och musen och kontrollera att spelaren stannar mot hindret.
+6. Rikta siktet mot ett greppbart föremål och högerklicka för att plocka upp och släppa det.
 
 Om OpenXR är aktivt väljer spelet i stället XR-spelaren automatiskt. Du behöver inte ändra huvudscenen mellan testen.
 
-<div class="checkpoint" data-checklist="desktoplage"><h3>Kontrollera desktopläget</h3><label><input type="checkbox"> Spelet startar utan ett anslutet headset.</label><label><input type="checkbox"> WASD eller piltangenter flyttar spelaren.</label><label><input type="checkbox"> Musen styr kameran.</label><label><input type="checkbox"> Golvet och hindret stoppar spelaren.</label><label><input type="checkbox"> XR-spelaren startar fortfarande när OpenXR är aktivt.</label></div>
+<div class="checkpoint" data-checklist="desktoplage"><h3>Kontrollera desktopläget</h3><label><input type="checkbox"> Spelet startar utan ett anslutet headset.</label><label><input type="checkbox"> WASD eller piltangenter flyttar spelaren.</label><label><input type="checkbox"> Musen styr kameran.</label><label><input type="checkbox"> Golvet och hindret stoppar spelaren.</label><label><input type="checkbox"> Ett greppbart föremål kan plockas upp och släppas med högerklick.</label><label><input type="checkbox"> XR-spelaren startar fortfarande när OpenXR är aktivt.</label></div>
 
 ## Regeln för fortsatt utveckling {#regel-framat}
 

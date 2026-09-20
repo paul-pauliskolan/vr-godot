@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Skapa en svart pistol av primitiva former och förbered den för XR-grepp och projektiler."><meta name="theme-color" content="#f5f7fc"><title>Bygg en enkel pistol · VR med Godot</title><script src="js/theme.js"></script><link rel="stylesheet" href="css/style.css"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="js/search-index.js" defer></script><script src="js/app.js" defer></script></head>
+<body data-page="10-pistol"><a class="skip-link" href="#main">Hoppa till innehållet</a>
+<header class="navbar"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> VR med Godot</a><form class="site-search" role="search"><label class="sr-only" for="site-query">Sök i hela guiden</label><input id="site-query" type="search" placeholder="Sök i guiden …" autocomplete="off"><button aria-label="Sök" type="submit">⌕</button></form><button class="icon-button" id="menu-toggle" aria-label="Öppna kapitelmenyn" aria-controls="chapter-dialog" aria-expanded="false">☰</button><button class="icon-button" id="theme-toggle" aria-label="Byt färgtema" aria-pressed="false">◐</button></header>
+<dialog id="chapter-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-heading"><h2 id="menu-heading">Alla kapitel</h2><button class="icon-button" data-close aria-label="Stäng kapitelmenyn">✕</button></div><a class="home-link" href="index.html">← Till startsidan</a><nav aria-label="Kapitel"><a class="chapter-link" href="01-start.html"><span class="chapter-number">01</span><span><strong>Börja här</strong><small>Installera Godot och förstå arbetsflödet innan du börjar bygga.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="02-forsta-scenen.html"><span class="chapter-number">02</span><span><strong>Din första VR-scen</strong><small>Bygg golv, ljus och en XR-kamera. Lägg till svenskkommenterad startkod.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="03-macos-quest.html"><span class="chapter-number">03</span><span><strong>Från Mac till Quest 3</strong><small>Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="04-spelaren.html"><span class="chapter-number">04</span><span><strong>Händer och rörelse</strong><small>Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="05-objekt.html"><span class="chapter-number">05</span><span><strong>Bord och greppbara objekt</strong><small>Skapa kuber du kan plocka upp och ett bord att ställa dem på.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="06-felsokning.html"><span class="chapter-number">06</span><span><strong>Felsök steg för steg</strong><small>Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="07-kallor.html"><span class="chapter-number">07</span><span><strong>Källor och versionskontroll</strong><small>Läs dokumentationen, jämförelserna och vad som ändrats från videon.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="08-spelprojekt.html"><span class="chapter-number">08</span><span><strong>Från XR-prototyp till spel</strong><small>Planera ett enkelt skjutspel och utveckla en liten, testbar funktion i taget.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="09-desktoplage.html"><span class="chapter-number">09</span><span><strong>Testa utan headset</strong><small>Använd ett valfritt desktopläge för snabba tester utan att ersätta XR-spelaren.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="10-pistol.html" aria-current="page"><span class="chapter-number">10</span><span><strong>Bygg en enkel pistol</strong><small>Skapa en svart pistol av primitiva former och förbered den för XR-grepp och projektiler.</small></span><span class="arrow" aria-hidden="true">↗</span></a></nav></dialog>
+<dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-heading"><h2 id="search-heading">Sök i guiden</h2><button class="icon-button" data-close aria-label="Stäng sökresultaten">✕</button></div><label for="dialog-query">Sökord</label><input id="dialog-query" type="search" placeholder="Till exempel USB eller grepp"><p id="search-count" class="muted" aria-live="polite"></p><div id="search-results"></div></dialog>
+<main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 10</span></div><header class="chapter-header"><p class="eyebrow">Fortsätt bygga · Kapitel 10</p><h1>Bygg en enkel pistol</h1><p class="subtitle">Skapa en svart pistol av primitiva former och förbered den för XR-grepp och projektiler.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-20</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
+<ul>
+<li><a href="#malet">Målet med kapitlet</a></li>
+<li><a href="#skapa-scen">Skapa en ärvd Pickable-scen</a></li>
+<li><a href="#nodstruktur">Planera nodstrukturen</a></li>
+<li><a href="#material">Skapa materialen</a></li>
+<li><a href="#huvudform">Bygg pistolens huvudform</a></li>
+<li><a href="#detaljer">Lägg till avtryckarskydd och detaljer</a></li>
+<li><a href="#kollisioner">Använd enkla kollisionsformer</a></li>
+<li><a href="#muzzle-point">Förbered mynningen</a></li>
+<li><a href="#greppunkter">Lägg till greppunkterna</a></li>
+<li><a href="#placera-pistolen">Placera pistolen i huvudscenen</a></li>
+<li><a href="#testa">Testa innan du fortsätter</a></li>
+<li><a href="#nasta-steg">Vad kommer härnäst?</a></li>
+</ul>
+</div>
+</details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><div class="callout"><strong>Ett litet steg i taget.</strong><p>I det här kapitlet bygger vi bara pistolens form, kollisioner och greppunkter. Pistolen skjuter inte ännu. Projektiler, träffar och skada blir egna kapitel.</p></div>
+
+<h2 id="malet">Målet med kapitlet</h2>
+<p>Vi ska bygga en enkel svart pistol av Godots primitiva former. Modellen ska vara ungefär lika stor som en verklig mindre handpistol, kunna ligga i fysikvärlden och vara förberedd för att plockas upp med båda XR-händerna.</p>
+<p>Efter kapitlet har pistolen:</p>
+<ul>
+<li>en separat, återanvändbar scen,</li>
+<li>synliga delar av <code>BoxMesh</code> och <code>CylinderMesh</code>,</li>
+<li>enkla och stabila kollisionsformer,</li>
+<li>en greppunkt för varje hand,</li>
+<li>en <code>MuzzlePoint</code> där framtida projektiler kan skapas.</li>
+</ul>
+<h2 id="skapa-scen">Skapa en ärvd Pickable-scen</h2>
+<p>XR Tools innehåller redan logiken för greppbara objekt. Vi återanvänder den i stället för att skriva egen pickupkod i pistolen.</p>
+<ol>
+<li>Leta upp <code>addons/godot-xr-tools/objects/pickable.tscn</code> i FileSystem-panelen.</li>
+<li>Öppna scenen.</li>
+<li>Välj <strong>Scene → New Inherited Scene</strong>.</li>
+<li>Spara den nya scenen som <code>Blueprints/pistol.tscn</code>.</li>
+<li>Döp rotnoden till <code>Pistol</code>.</li>
+<li>Sätt <code>Mass</code> till <code>0.8</code> och aktivera <code>Sleeping</code>.</li>
+</ol>
+<p>Roten är en <code>RigidBody3D</code> med XR Tools-skriptet <code>XRToolsPickable</code>. Det gör att pistolen kan reagera på gravitation och kollisioner samt plockas upp av XR-spelarens pickupfunktion.</p>
+<h2 id="nodstruktur">Planera nodstrukturen</h2>
+<p>Lägg till följande barnnoder:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>Pistol (XRToolsPickable/RigidBody3D)
+├── CollisionShape3D
+├── GripCollision
+├── Frame
+├── Slide
+├── Grip
+├── Trigger
+├── TriggerGuardFront
+├── TriggerGuardBottom
+├── Muzzle
+├── EjectionPort
+├── FrontSight
+├── RearSight
+├── MuzzlePoint
+├── GrabPointHandLeft
+└── GrabPointHandRight
+</code></pre></div>
+<p>Namnen beskriver delarnas uppgift. Det blir enklare att justera modellen och senare hitta mynningen eller greppunkterna från GDScript.</p>
+<h2 id="material">Skapa materialen</h2>
+<p>Skapa tre <code>StandardMaterial3D</code>-resurser. De kan sparas lokalt i pistolscenen.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Material</th>
+<th>Albedo</th>
+<th style="text-align: right;">Metallic</th>
+<th style="text-align: right;">Roughness</th>
+<th>Används till</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Svart metall</td>
+<td>Nästan svart</td>
+<td style="text-align: right;">0.55</td>
+<td style="text-align: right;">0.48</td>
+<td>Ram, slide och avtryckarskydd</td>
+</tr>
+<tr>
+<td>Svart grepp</td>
+<td>Mörkt gråsvart</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0.90</td>
+<td>Handtag och mynning</td>
+</tr>
+<tr>
+<td>Mörk detalj</td>
+<td>Mörkgrå</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">0.70</td>
+<td>Avtryckare, sikten och utkastarport</td>
+</tr>
+</tbody>
+</table></div>
+<p>Materialen är avsiktligt enkla. Formen och proportionerna är viktigare än realistiska texturer i detta steg.</p>
+<h2 id="huvudform">Bygg pistolens huvudform</h2>
+<p>Skapa en <code>MeshInstance3D</code> för varje rad. Välj <code>BoxMesh</code> som mesh och ange värdena i meter.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Nod</th>
+<th>Position X, Y, Z</th>
+<th style="text-align: right;">Rotation X</th>
+<th>Mesh-storlek X, Y, Z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Frame</code></td>
+<td><code>0, 0.050, -0.035</code></td>
+<td style="text-align: right;"><code>0°</code></td>
+<td><code>0.036, 0.052, 0.145</code></td>
+</tr>
+<tr>
+<td><code>Slide</code></td>
+<td><code>0, 0.083, -0.045</code></td>
+<td style="text-align: right;"><code>0°</code></td>
+<td><code>0.032, 0.038, 0.175</code></td>
+</tr>
+<tr>
+<td><code>Grip</code></td>
+<td><code>0, -0.025, 0.025</code></td>
+<td style="text-align: right;"><code>-12°</code></td>
+<td><code>0.038, 0.105, 0.045</code></td>
+</tr>
+<tr>
+<td><code>Trigger</code></td>
+<td><code>0, 0.012, -0.025</code></td>
+<td style="text-align: right;"><code>-20°</code></td>
+<td><code>0.012, 0.030, 0.006</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Det vinklade greppet gör siluetten lättare att känna igen. Slide är längre och smalare än ramen och ligger ovanpå den.</p>
+<h2 id="detaljer">Lägg till avtryckarskydd och detaljer</h2>
+<p>Avtryckarskyddet byggs av två små <code>BoxMesh</code>-noder:</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Nod</th>
+<th>Position X, Y, Z</th>
+<th>Mesh-storlek X, Y, Z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TriggerGuardFront</code></td>
+<td><code>0, 0.002, -0.052</code></td>
+<td><code>0.032, 0.043, 0.006</code></td>
+</tr>
+<tr>
+<td><code>TriggerGuardBottom</code></td>
+<td><code>0, -0.018, -0.028</code></td>
+<td><code>0.032, 0.006, 0.052</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Lägg sedan till dessa detaljer:</p>
+<ul>
+<li><code>Muzzle</code>: en <code>CylinderMesh</code> med radie <code>0.012</code>, höjd <code>0.014</code>, position <code>0, 0.083, -0.139</code> och X-rotation <code>90°</code>.</li>
+<li><code>EjectionPort</code>: en <code>BoxMesh</code> med storlek <code>0.034, 0.014, 0.045</code> och position <code>0, 0.098, -0.035</code>.</li>
+<li><code>FrontSight</code>: en liten <code>BoxMesh</code> vid <code>0, 0.108, -0.112</code>.</li>
+<li><code>RearSight</code>: samma lilla mesh vid <code>0, 0.108, 0.027</code>.</li>
+</ul>
+<p>Siktenas BoxMesh har storleken <code>0.010, 0.012, 0.014</code>. Använd det mörkgrå detaljmaterialet till avtryckaren, utkastarporten och siktena.</p>
+<h2 id="kollisioner">Använd enkla kollisionsformer</h2>
+<p>Den synliga modellen har många små delar, men den behöver inte lika många kollisionsformer. Två <code>BoxShape3D</code> räcker:</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Kollisionsnod</th>
+<th>Position X, Y, Z</th>
+<th style="text-align: right;">Rotation X</th>
+<th>Shape-storlek X, Y, Z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CollisionShape3D</code></td>
+<td><code>0, 0.055, -0.045</code></td>
+<td style="text-align: right;"><code>0°</code></td>
+<td><code>0.040, 0.090, 0.190</code></td>
+</tr>
+<tr>
+<td><code>GripCollision</code></td>
+<td><code>0, -0.025, 0.025</code></td>
+<td style="text-align: right;"><code>-12°</code></td>
+<td><code>0.045, 0.120, 0.055</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Enklare kollisioner är billigare och stabilare än att försöka följa varje liten visuell detalj.</p>
+<h2 id="muzzle-point">Förbered mynningen</h2>
+<p>Lägg till en <code>Marker3D</code> med namnet <code>MuzzlePoint</code> och positionen:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>X:  0
+Y:  0.083
+Z: -0.150
+</code></pre></div>
+<p>Godots framåtriktning i 3D är normalt negativ Z. Markören sitter därför strax framför pipan. I ett senare kapitel kan vapnet skapa en projektil vid <code>MuzzlePoint.global_transform</code>.</p>
+<h2 id="greppunkter">Lägg till greppunkterna</h2>
+<p>Instansiera dessa två XR Tools-scener som barn till <code>Pistol</code>:</p>
+<ul>
+<li><code>addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn</code></li>
+<li><code>addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn</code></li>
+</ul>
+<p>Använd följande transform för båda:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>Position: 0, -0.022, 0.028
+Rotation X: -12°
+</code></pre></div>
+<p>Greppunkten talar om var handen ska hamna i förhållande till pistolen. För att finjustera greppläget markerar du <code>GrabPointHandLeft</code> eller <code>GrabPointHandRight</code> och ändrar nodens <code>Transform</code> i Inspector.</p>
+<div class="callout"><strong>Flytta greppunkten, inte modellen.</strong><p>Om pistolen ligger fel i handen ska du justera den aktuella greppunktens position och rotation. Då kan vänster och höger hand korrigeras oberoende utan att mynningen, kollisionerna eller övriga delar flyttas.</p></div>
+
+<p>Aktivera <code>Editor Preview Mode</code> på greppunkten om du vill se en förhandsvisning av handen. Gör små justeringar, exempelvis <code>0.005</code> meter eller <code>2–5°</code> i taget. Den slutliga vinkeln måste alltid provas i headsetet.</p>
+<h2 id="placera-pistolen">Placera pistolen i huvudscenen</h2>
+<ol>
+<li>Öppna <code>Main.tscn</code>.</li>
+<li>Dra <code>Blueprints/pistol.tscn</code> från FileSystem-panelen till scenen.</li>
+<li>Döp instansen till <code>Pistol</code>.</li>
+<li>Placera den på testbordet vid ungefär <code>0.45, 1.17, -1.08</code>.</li>
+</ol>
+<p>Pistolen kan nu ses i både XR- och desktopläget. I desktopläget riktar du siktet mot pistolen och högerklickar för att plocka upp eller släppa den. <a href="09-desktoplage.html#desktop-pickup">Desktopläget beskrivs i kapitel 09</a>.</p>
+<h2 id="testa">Testa innan du fortsätter</h2>
+<p>Testa först på datorn:</p>
+<ol>
+<li>Starta projektet utan ett aktivt OpenXR-headset.</li>
+<li>Kontrollera att pistolen ligger på bordet och har rimlig storlek.</li>
+<li>Rikta siktet mot pistolen och högerklicka.</li>
+<li>Kontrollera att pistolen följer kameran.</li>
+<li>Högerklicka igen och kontrollera att pistolen faller och kolliderar med världen.</li>
+</ol>
+<p>Testa sedan i Quest:</p>
+<ol>
+<li>Plocka upp pistolen med höger hand och kontrollera vinkeln.</li>
+<li>Upprepa med vänster hand.</li>
+<li>Justera respektive greppunkt om handen hamnar fel.</li>
+<li>Kontrollera att pistolen kan släppas utan att fastna i handen eller spelaren.</li>
+</ol>
+<div class="checkpoint" data-checklist="primitiv-pistol"><h3>Kontrollera pistolscenen</h3><label><input type="checkbox"> Pistolen har en tydlig slide, ram, mynning och ett vinklat grepp.</label><label><input type="checkbox"> Pistolen ligger stabilt på bordet.</label><label><input type="checkbox"> Desktopspelaren kan plocka upp och släppa pistolen med högerklick.</label><label><input type="checkbox"> Pistolen kan plockas upp med höger XR-hand.</label><label><input type="checkbox"> Pistolen kan plockas upp med vänster XR-hand.</label><label><input type="checkbox"> MuzzlePoint sitter strax framför mynningen.</label></div>
+
+<h2 id="nasta-steg">Vad kommer härnäst?</h2>
+<p>Pistolen har ännu ingen skjutkod. Nästa minsta steg är ett kort GDScript med metoden <code>fire()</code>. Först ska metoden ge en tydlig debug-reaktion exakt en gång per avtryckning. När det fungerar kopplar vi in en separat projektilscen.</p><nav class="page-nav" aria-label="Mellan kapitel"><a href="09-desktoplage.html"><small>← Föregående</small>Testa utan headset</a><a href="index.html"><small>Tillbaka →</small>Alla kapitel</a></nav></article></div></main>
+<footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Granskat 20 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>
