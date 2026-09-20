@@ -122,6 +122,8 @@ Att Quest laddas bevisar inte att datakabeln fungerar. Godot kan inte hitta en e
 
 ## 7. Skapa Android-exporten {#export}
 
+**Om du använder [xr-game-01-no-android.zip](downloads/xr-game-01-no-android.zip):** hela Godot-projektet följer med, men **android/** är utelämnad för att minska filstorleken. Installera Android-byggmallen enligt steget nedan innan du exporterar. Om en Android-exportprofil redan finns öppnar och kontrollerar du den i stället för att skapa en till.
+
 Öppna ditt Godot-projekt. Kontrollera **OpenXR Enabled**, **XR Shaders Enabled** och att `main.tscn` är huvudscen. Spara allt.
 
 Välj **Project → Install Android Build Template** och installera för din editorversion. Öppna därefter **Project → Export → Add → Android**. Döp exportprofilen till **Meta Quest**.

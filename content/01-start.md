@@ -28,6 +28,17 @@ Den här kursen gäller 4.7-serien. [Godot 4.7.2](https://godotengine.org/downlo
 
 <div class="checkpoint" data-checklist="installation"><h3>Redo att börja bygga</h3><label><input type="checkbox"> Godot 4.7 Standard är installerat på min Mac.</label><label><input type="checkbox"> Jag har öppnat Project Manager och noterat hela versionsnumret.</label></div>
 
+## Ladda ner hela Godot-projektet {#projektfiler}
+
+Hela Godot-projektet finns i **[xr-game-01-no-android.zip](downloads/xr-game-01-no-android.zip)**. Mappen **android/** är utelämnad för att hålla nere filstorleken.
+
+1. Ladda ner och packa upp ZIP-filen.
+2. Öppna Godots **Project Manager**, välj **Import** och välj projektets **project.godot**.
+3. Öppna projektet och vänta tills Godot har importerat resurserna.
+4. Inför Android-export: installera exportmallarna för din Godot-version och välj **Project → Install Android Build Template** för att återskapa Android-byggmallen. Följ sedan [Mac- och Quest-guiden i kapitel 3](03-macos-quest.html).
+
+Du kan använda projektet som referens medan du bygger själv, eller öppna det färdiga projektet och börja med installationen för Quest.
+
 ## Följ kapitlen i nummerordning {#lasordning}
 
 | Kapitel | Vad du gör | När du går vidare |
