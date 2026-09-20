@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Använd ett valfritt desktopläge för snabba tester utan att ersätta XR-spelaren."><meta name="theme-color" content="#f5f7fc"><title>Testa utan headset · VR med Godot</title><script src="js/theme.js"></script><link rel="stylesheet" href="css/style.css"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="js/search-index.js" defer></script><script src="js/app.js" defer></script></head>
+<body data-page="09-desktoplage"><a class="skip-link" href="#main">Hoppa till innehållet</a>
+<header class="navbar"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> VR med Godot</a><form class="site-search" role="search"><label class="sr-only" for="site-query">Sök i hela guiden</label><input id="site-query" type="search" placeholder="Sök i guiden …" autocomplete="off"><button aria-label="Sök" type="submit">⌕</button></form><button class="icon-button" id="menu-toggle" aria-label="Öppna kapitelmenyn" aria-controls="chapter-dialog" aria-expanded="false">☰</button><button class="icon-button" id="theme-toggle" aria-label="Byt färgtema" aria-pressed="false">◐</button></header>
+<dialog id="chapter-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-heading"><h2 id="menu-heading">Alla kapitel</h2><button class="icon-button" data-close aria-label="Stäng kapitelmenyn">✕</button></div><a class="home-link" href="index.html">← Till startsidan</a><nav aria-label="Kapitel"><a class="chapter-link" href="01-start.html"><span class="chapter-number">01</span><span><strong>Börja här</strong><small>Installera Godot och förstå arbetsflödet innan du börjar bygga.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="02-forsta-scenen.html"><span class="chapter-number">02</span><span><strong>Din första VR-scen</strong><small>Bygg golv, ljus och en XR-kamera. Lägg till svenskkommenterad startkod.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="03-macos-quest.html"><span class="chapter-number">03</span><span><strong>Från Mac till Quest 3</strong><small>Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="04-spelaren.html"><span class="chapter-number">04</span><span><strong>Händer och rörelse</strong><small>Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="05-objekt.html"><span class="chapter-number">05</span><span><strong>Bord och greppbara objekt</strong><small>Skapa kuber du kan plocka upp och ett bord att ställa dem på.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="06-felsokning.html"><span class="chapter-number">06</span><span><strong>Felsök steg för steg</strong><small>Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="07-kallor.html"><span class="chapter-number">07</span><span><strong>Källor och versionskontroll</strong><small>Läs dokumentationen, jämförelserna och vad som ändrats från videon.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="08-spelprojekt.html"><span class="chapter-number">08</span><span><strong>Från XR-prototyp till spel</strong><small>Planera ett enkelt skjutspel och utveckla en liten, testbar funktion i taget.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="09-desktoplage.html" aria-current="page"><span class="chapter-number">09</span><span><strong>Testa utan headset</strong><small>Använd ett valfritt desktopläge för snabba tester utan att ersätta XR-spelaren.</small></span><span class="arrow" aria-hidden="true">↗</span></a></nav></dialog>
+<dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-heading"><h2 id="search-heading">Sök i guiden</h2><button class="icon-button" data-close aria-label="Stäng sökresultaten">✕</button></div><label for="dialog-query">Sökord</label><input id="dialog-query" type="search" placeholder="Till exempel USB eller grepp"><p id="search-count" class="muted" aria-live="polite"></p><div id="search-results"></div></dialog>
+<main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 09</span></div><header class="chapter-header"><p class="eyebrow">Valfritt testläge · Kapitel 09</p><h1>Testa utan headset</h1><p class="subtitle">Använd ett valfritt desktopläge för snabba tester utan att ersätta XR-spelaren.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-20</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
+<ul>
+<li><a href="#varfor-desktoplage">Varför ett separat testläge?</a></li>
+<li><a href="#tva-spelare">Två spelare, samma spelvärld</a></li>
+<li><a href="#desktop-kontroller">Kontroller i desktopläget</a></li>
+<li><a href="#dubbelkodning">Blir det mycket dubbelkodning?</a></li>
+<li><a href="#kan-testas">Vad kan testas utan headset?</a></li>
+<li><a href="#prova-desktoplage">Så provar du läget</a></li>
+<li><a href="#regel-framat">Regeln för fortsatt utveckling</a></li>
+</ul>
+</div>
+</details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><div class="callout"><strong>Detta kapitel är valfritt.</strong><p>Du kan fortsätta bygga och testa spelet enbart med Meta Quest. Desktopläget finns för den som vill prova grundläggande spelmekanik snabbare eller saknar tillgång till ett headset.</p></div>
+
+<h2 id="varfor-desktoplage">Varför ett separat testläge?</h2>
+<p>Ett XR-spel behöver normalt ett aktivt OpenXR-headset för kamera- och kontrollspårning. Det gör små tester onödigt långsamma. Med en separat skrivbordsspelare kan vi starta samma huvudscen direkt på datorn och testa exempelvis rum, kollisioner, monster och projektiler.</p>
+<p>Desktopläget ersätter inte ett riktigt XR-test. Det är ett extra verktyg under utvecklingen.</p>
+<h2 id="tva-spelare">Två spelare, samma spelvärld</h2>
+<p>Projektet har nu två fristående spelarscener:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>Blueprints/
+├── xr_player.tscn
+└── desktop_player.tscn
+</code></pre></div>
+<p><code>xr_player.tscn</code> innehåller XR-kamera, spårade kontroller, händer och XR Tools-funktioner. <code>desktop_player.tscn</code> innehåller i stället en <code>CharacterBody3D</code>, en vanlig <code>Camera3D</code> och en kollisionskapsel.</p>
+<p>Huvudscenen innehåller inte längre en permanent spelare. <code>main.gd</code> väljer och skapar rätt spelarscen vid start:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>const XR_PLAYER_SCENE := preload(&quot;res://Blueprints/xr_player.tscn&quot;)
+const DESKTOP_PLAYER_SCENE := preload(&quot;res://Blueprints/desktop_player.tscn&quot;)
+
+func _ready() -&gt; void:
+    var xr_interface := XRServer.find_interface(&quot;OpenXR&quot;)
+
+    if xr_interface and xr_interface.is_initialized():
+        get_viewport().use_xr = true
+        add_child(XR_PLAYER_SCENE.instantiate())
+    else:
+        get_viewport().use_xr = false
+        add_child(DESKTOP_PLAYER_SCENE.instantiate())
+</code></pre></div>
+<p>Koden på webbplatsen visar principen i koncentrerad form. Projektets <code>main.gd</code> innehåller dessutom namngivning och tydliga meddelanden i Godots Output-panel.</p>
+<h2 id="desktop-kontroller">Kontroller i desktopläget</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Kontroll</th>
+<th>Funktion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WASD eller piltangenter</td>
+<td>Gå framåt, bakåt och åt sidorna</td>
+</tr>
+<tr>
+<td>Mus</td>
+<td>Titta uppåt, nedåt och åt sidorna</td>
+</tr>
+<tr>
+<td>Esc</td>
+<td>Släpp muspekaren</td>
+</tr>
+<tr>
+<td>Musklick</td>
+<td>Fånga muspekaren igen</td>
+</tr>
+</tbody>
+</table></div>
+<p>Spelaren använder gravitation och <code>move_and_slide()</code>. Kollisionskapseln har samma collision layer och mask som XR-spelarens kropp, så båda spelarna möter samma golv och hinder.</p>
+<h2 id="dubbelkodning">Blir det mycket dubbelkodning?</h2>
+<p>Nej, inte om vi håller gränsen tydlig. Det som beror på hur personen styr spelet behöver vara separat. Själva spelets regler ska vara gemensamma.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Separat för XR och desktop</th>
+<th>Gemensamt för båda lägena</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kamera och huvudrörelse</td>
+<td>Monster och AI</td>
+</tr>
+<tr>
+<td>Handkontroller eller mus</td>
+<td>Hälsa och skada</td>
+</tr>
+<tr>
+<td>Grepp med hand eller tangent</td>
+<td>Vapenegenskaper</td>
+</tr>
+<tr>
+<td>XR-rörelse eller WASD</td>
+<td>Projektiler och träffar</td>
+</tr>
+<tr>
+<td>Haptik</td>
+<td>Slumpgenererade rum</td>
+</tr>
+<tr>
+<td>XR-specifika menyer</td>
+<td>Poäng, vinst och förlust</td>
+</tr>
+</tbody>
+</table></div>
+<p>När vi senare bygger ett vapen ska vapnets skada, ammunition och projektil inte skrivas två gånger. XR-spelaren och desktopspelaren ska bara skicka samma kommando, till exempel <code>fire()</code>, till samma vapenskript.</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>XR-avtryckare ─┐
+               ├──&gt; Weapon.fire() ──&gt; gemensam projektil och skada
+Musklick ─────┘
+</code></pre></div>
+<p>Detta mönster gör att desktopläget ger lite extra kod nu men kan spara mycket testtid senare.</p>
+<h2 id="kan-testas">Vad kan testas utan headset?</h2>
+<p>Desktopläget passar för att testa:</p>
+<ul>
+<li>nivåns geometri och kollisioner,</li>
+<li>slumpgenererade rum,</li>
+<li>monster, navigation och AI,</li>
+<li>projektiler, träffar och skada,</li>
+<li>spelregler, poäng och omstart.</li>
+</ul>
+<p>Ett riktigt headset behövs fortfarande för att bedöma:</p>
+<ul>
+<li>stereoskopisk bild och upplevd skala,</li>
+<li>händernas position och greppkänsla,</li>
+<li>komfort och risk för rörelsesjuka,</li>
+<li>haptik och kontrollernas knappar,</li>
+<li>prestanda i den exporterade Quest-versionen.</li>
+</ul>
+<h2 id="prova-desktoplage">Så provar du läget</h2>
+<ol>
+<li>Koppla bort eller stäng av headsetets OpenXR-anslutning.</li>
+<li>Öppna projektet i Godot.</li>
+<li>Starta huvudscenen med <kbd>F6</kbd> eller hela projektet med <kbd>F5</kbd>.</li>
+<li>Kontrollera att Output visar <code>Inget aktivt OpenXR-headset: startar desktop-spelaren.</code></li>
+<li>Gå runt med WASD och musen och kontrollera att spelaren stannar mot hindret.</li>
+</ol>
+<p>Om OpenXR är aktivt väljer spelet i stället XR-spelaren automatiskt. Du behöver inte ändra huvudscenen mellan testen.</p>
+<div class="checkpoint" data-checklist="desktoplage"><h3>Kontrollera desktopläget</h3><label><input type="checkbox"> Spelet startar utan ett anslutet headset.</label><label><input type="checkbox"> WASD eller piltangenter flyttar spelaren.</label><label><input type="checkbox"> Musen styr kameran.</label><label><input type="checkbox"> Golvet och hindret stoppar spelaren.</label><label><input type="checkbox"> XR-spelaren startar fortfarande när OpenXR är aktivt.</label></div>
+
+<h2 id="regel-framat">Regeln för fortsatt utveckling</h2>
+<p>Nya spelmekaniker byggs som fristående scener och skript när det är möjligt. Spelarna ansvarar bara för inmatning och för att uttrycka spelarens avsikt. På så sätt kan samma monster, vapen och bana användas i både XR- och desktopläget utan kopierad spelkod.</p><nav class="page-nav" aria-label="Mellan kapitel"><a href="08-spelprojekt.html"><small>← Föregående</small>Från XR-prototyp till spel</a><a href="index.html"><small>Tillbaka →</small>Alla kapitel</a></nav></article></div></main>
+<footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Granskat 20 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>

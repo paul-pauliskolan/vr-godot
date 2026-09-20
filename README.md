@@ -1,6 +1,6 @@
 # VR med Godot 4.7 och Meta Quest 3
 
-Svenskt läromedel med åtta kapitel och startsida. Designen följer Pauliskolans
+Svenskt läromedel med nio kapitel och startsida. Designen följer Pauliskolans
 prog1-python. Innehållet är bearbetat från de två ursprungliga Markdown-filerna
 i denna mapp och kontrollerat mot källorna på `07-kallor.html`.
 
