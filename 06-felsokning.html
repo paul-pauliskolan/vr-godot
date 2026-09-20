@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling."><meta name="theme-color" content="#f5f7fc"><title>Felsök steg för steg · VR med Godot</title><script src="js/theme.js"></script><link rel="stylesheet" href="css/style.css"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="js/search-index.js" defer></script><script src="js/app.js" defer></script></head>
+<body data-page="06-felsokning"><a class="skip-link" href="#main">Hoppa till innehållet</a>
+<header class="navbar"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> VR med Godot</a><form class="site-search" role="search"><label class="sr-only" for="site-query">Sök i hela guiden</label><input id="site-query" type="search" placeholder="Sök i guiden …" autocomplete="off"><button aria-label="Sök" type="submit">⌕</button></form><button class="icon-button" id="menu-toggle" aria-label="Öppna kapitelmenyn" aria-controls="chapter-dialog" aria-expanded="false">☰</button><button class="icon-button" id="theme-toggle" aria-label="Byt färgtema" aria-pressed="false">◐</button></header>
+<dialog id="chapter-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-heading"><h2 id="menu-heading">Alla kapitel</h2><button class="icon-button" data-close aria-label="Stäng kapitelmenyn">✕</button></div><a class="home-link" href="index.html">← Till startsidan</a><nav aria-label="Kapitel"><a class="chapter-link" href="01-start.html"><span class="chapter-number">01</span><span><strong>Börja här</strong><small>Installera Godot och förstå arbetsflödet innan du börjar bygga.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="02-forsta-scenen.html"><span class="chapter-number">02</span><span><strong>Din första VR-scen</strong><small>Bygg golv, ljus och en XR-kamera. Lägg till svenskkommenterad startkod.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="03-macos-quest.html"><span class="chapter-number">03</span><span><strong>Från Mac till Quest 3</strong><small>Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="04-spelaren.html"><span class="chapter-number">04</span><span><strong>Händer och rörelse</strong><small>Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="05-objekt.html"><span class="chapter-number">05</span><span><strong>Bord och greppbara objekt</strong><small>Skapa kuber du kan plocka upp och ett bord att ställa dem på.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="06-felsokning.html" aria-current="page"><span class="chapter-number">06</span><span><strong>Felsök steg för steg</strong><small>Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="07-kallor.html"><span class="chapter-number">07</span><span><strong>Källor och versionskontroll</strong><small>Läs dokumentationen, jämförelserna och vad som ändrats från videon.</small></span><span class="arrow" aria-hidden="true">↗</span></a></nav></dialog>
+<dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-heading"><h2 id="search-heading">Sök i guiden</h2><button class="icon-button" data-close aria-label="Stäng sökresultaten">✕</button></div><label for="dialog-query">Sökord</label><input id="dialog-query" type="search" placeholder="Till exempel USB eller grepp"><p id="search-count" class="muted" aria-live="polite"></p><div id="search-results"></div></dialog>
+<main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 06</span></div><header class="chapter-header"><p class="eyebrow">När något krånglar · Kapitel 06</p><h1>Felsök steg för steg</h1><p class="subtitle">Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-20</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
+<ul>
+<li><a href="#snabbdiagnos">Börja där kedjan bryts</a></li>
+<li><a href="#bygge">1. Exportmallar, Java och Gradle</a></li>
+<li><a href="#usb">2. Quest syns inte eller är unauthorized</a></li>
+<li><a href="#adb-konflikt">3. Två ADB-versioner konkurrerar</a></li>
+<li><a href="#finder">4. Appen fungerar från Terminal men inte Finder</a></li>
+<li><a href="#installation">5. Byggd, installerad och startad är olika saker</a></li>
+<li><a href="#logcat">6. Läs logcat vid krasch</a></li>
+<li><a href="#plugin">7. XR Tools och GDScript-fel</a></li>
+<li><a href="#resurser">8. Saknade resurser och ETC2/ASTC</a></li>
+<li><a href="#openxr">9. OpenXR och svart bild i headsetet</a></li>
+<li><a href="#interaktion">10. Kontroller, rörelse och fysik</a></li>
+<li><a href="#spegling">11. scrcpy saknas eller visar svart</a></li>
+<li><a href="#debugger">12. Remote debugging är ett eget steg</a></li>
+<li><a href="#varningar">13. Varningar som behöver värderas</a></li>
+<li><a href="#minimalprojekt">14. Isolera med ett minimalt projekt</a></li>
+</ul>
+</div>
+</details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><h2 id="snabbdiagnos">Börja där kedjan bryts</h2>
+<p>Den här guiden bygger på <strong>Godot_4.7.2_Meta_Quest_3_felsokningsguide.md</strong> och är omarbetad till ett allmänt arbetssätt för macOS med Apple Silicon. Det dokumenterade fallet gällde bland annat två ADB-versioner. Det är ett exempel på en orsak, inte en diagnos som gäller varje dator.</p>
+<p>Följ kedjan <strong>bygga → hitta enhet → installera → starta → ladda scen → rendera → interagera</strong>. Skärmspegling är ett separat spår. Ett sent fel betyder inte att alla tidigare steg misslyckades.</p>
+<p><label class="filter-label" for="symptom-filter">Filtrera symtom eller felmeddelande</label>
+<input id="symptom-filter" type="search" placeholder="Till exempel unauthorized, svart eller Java"></p>
+<p id="symptom-count" class="muted" aria-live="polite"></p>
+
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table id="symptom-table">
+<thead>
+<tr>
+<th>Symtom eller meddelande</th>
+<th>Börja här</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Android eller exportmallar saknas</td>
+<td><a href="#bygge">Mallar och bygge</a></td>
+</tr>
+<tr>
+<td>Android build template is missing</td>
+<td><a href="#bygge">Mallar och bygge</a></td>
+</tr>
+<tr>
+<td>Java / SDK / Gradle / license error</td>
+<td><a href="#bygge">Byggverktyg</a></td>
+</tr>
+<tr>
+<td>Quest saknas / tom adb devices / offline</td>
+<td><a href="#usb">USB och behörighet</a></td>
+</tr>
+<tr>
+<td>unauthorized</td>
+<td><a href="#usb">Godkänn datorn i Quest</a></td>
+</tr>
+<tr>
+<td>adb server version … doesn't match</td>
+<td><a href="#adb-konflikt">Samma ADB överallt</a></td>
+</tr>
+<tr>
+<td>APK installeras men appen startar inte</td>
+<td><a href="#installation">Installation och start</a></td>
+</tr>
+<tr>
+<td>Appen stängs / återgår till Quest Home</td>
+<td><a href="#logcat">Läs logcat</a></td>
+</tr>
+<tr>
+<td>Parse Error / function_teleport.gd / Node3D</td>
+<td><a href="#plugin">XR Tools och script</a></td>
+</tr>
+<tr>
+<td>ETC2 / ASTC / Failed loading / saknade resurser</td>
+<td><a href="#resurser">Import och resurser</a></td>
+</tr>
+<tr>
+<td>HMD was not detected / F5 på Mac</td>
+<td><a href="#openxr">OpenXR och svart bild</a></td>
+</tr>
+<tr>
+<td>Bilden är svart i headsetet</td>
+<td><a href="#openxr">OpenXR och rendering</a></td>
+</tr>
+<tr>
+<td>Händer / rörelse / grepp fungerar inte</td>
+<td><a href="#interaktion">Interaktion och fysik</a></td>
+</tr>
+<tr>
+<td>Could not create child process: scrcpy</td>
+<td><a href="#spegling">Skärmspegling</a></td>
+</tr>
+<tr>
+<td>Svart scrcpy-fönster</td>
+<td><a href="#spegling">Skärmspegling</a></td>
+</tr>
+<tr>
+<td>Fungerar i Terminal men inte från Finder</td>
+<td><a href="#finder">Macens programmiljö</a></td>
+</tr>
+<tr>
+<td>Debugger ansluter inte</td>
+<td><a href="#debugger">Remote debugging</a></td>
+</tr>
+<tr>
+<td>graph_offset / Jolt / ViewportTexture</td>
+<td><a href="#varningar">Varningar och scenfel</a></td>
+</tr>
+</tbody>
+</table></div>
+<p class="no-results" id="symptom-empty" hidden>Inget symtom matchar. Prova ett kortare ord, eller börja med logcat längre ner.</p>
+
+<h2 id="bygge">1. Exportmallar, Java och Gradle</h2>
+<p><strong>Mallar saknas:</strong> jämför hela Godot-versionen med <strong>Manage Export Templates</strong>. Installera exakt rätt mallar. Saknas Android Build Template: välj <strong>Project → Install Android Build Template</strong>. Efter byte av Godot-version kan även projektets build template behöva uppdateras; spara egna Android-anpassningar först.</p>
+<p><strong>Java saknas eller är fel:</strong> kör <code>/usr/libexec/java_home -v 17</code> och ange den returnerade mappen i Godots <strong>Java SDK Path</strong>. Mappen ska sluta med <code>Contents/Home</code> för en vanlig JDK-installation på Mac.</p>
+<p><strong>SDK-fel:</strong> jämför SDK Location i Android Studio med Godots <strong>Android SDK Path</strong>. Kontrollera paketversionerna i <a href="03-macos-quest.html#sdk">Mac-guidens SDK-tabell</a>. Om licenser saknas öppnar du SDK Manager och slutför installationen. Läs den första konkreta orsaken i Gradle-loggen, inte bara slutraden <code>BUILD FAILED</code>.</p>
+<p><strong>Nedladdning misslyckas:</strong> kontrollera internet och eventuell skolproxy. Första Gradle-bygget hämtar beroenden. Ett nätverksfel löses inte genom att ändra OpenXR-kameran.</p>
+<p><strong>Ingen Android-knapp:</strong> kontrollera att en Android-exportprofil finns och är <strong>Runnable</strong>, att exportvarningarna är åtgärdade och att ADB ser Quest. <a href="https://docs.godotengine.org/en/4.7/tutorials/export/exporting_for_android.html">Godot Android-export</a> · <a href="https://docs.godotengine.org/en/4.7/tutorials/export/one-click_deploy.html">One-click deploy</a></p>
+<h2 id="usb">2. Quest syns inte eller är unauthorized</h2>
+<p>Använd ADB från <strong>samma SDK som Godot</strong>. Kommandona antar standardplatsen; ändra sökvägen om din SDK ligger någon annanstans.</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; devices -l
+</code></pre></div>
+<p>Vid <code>unauthorized</code>: ta på headsetet och godkänn USB-debuggning. Vid tom lista: prova en känd datakabel, en annan port, ett vaket headset och rätt utvecklarkonto. En USB-hubb kan uteslutas genom att ansluta direkt till datorn.</p>
+<p>Om enheten visas som <code>offline</code>, koppla ur och anslut igen. Du kan starta om ADB-servern nedan; det bryter även andra pågående Android-debuganslutningar på datorn.</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; kill-server
+&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; start-server
+&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; devices -l
+</code></pre></div>
+<p><strong>Gå vidare först när status är <code>device</code>.</strong> Metas USB-godkännande och ADB:s tillståndslista beskriver två sidor av samma anslutning. <a href="https://developers.meta.com/horizon/documentation/native/android/mobile-device-setup/">Meta Device Setup</a> · <a href="https://developer.android.com/tools/adb">Android ADB</a></p>
+<h2 id="adb-konflikt">3. Två ADB-versioner konkurrerar</h2>
+<p>Ett meddelande som <code>adb server version (41) doesn't match this client (40)</code> betyder att klienten och servern inte använder kompatibla ADB-versioner. Det är inte headsetets OS-version som siffrorna anger.</p>
+<p>Undersök sökvägarna:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>which -a adb
+adb version
+&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; version
+</code></pre></div>
+<p>Om det första <code>adb</code>-kommandot saknas men kommandot med full sökväg fungerar är SDK-verktyget installerat; det ligger bara inte i Terminalens PATH. Det är inte samma sak som en versionskonflikt.</p>
+<p>I underlagsfallet hittades en äldre ADB i <code>/usr/local/bin/adb</code>, medan Godot använde SDK:ns <code>platform-tools/adb</code>. På andra datorer kan platserna vara annorlunda. Stäng program som återstartar en gammal ADB-server. Välj samma aktuella ADB i alla verktyg.</p>
+<p>För scrcpy kan du ange den direkt:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>ADB=&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; scrcpy --no-audio
+</code></pre></div>
+<p>Variabeln väljer ADB för scrcpy. <strong>Godots egen ADB-sökväg styrs fortfarande av Android SDK Path.</strong> Radera inte andra programinstallationer på måfå. scrcpy dokumenterar uttryckligen den här konfliktorsaken och stödet för variabeln <code>ADB</code>. <a href="https://github.com/Genymobile/scrcpy/blob/master/FAQ.md">scrcpy FAQ</a></p>
+<h2 id="finder">4. Appen fungerar från Terminal men inte Finder</h2>
+<p>Finder/Dock och ett Terminal-fönster kan starta program med olika miljövariabler. En ändring i <code>~/.zshrc</code> gäller inte automatiskt appar som öppnas från Dock.</p>
+<p>I underlagsfallet fungerade <code>export ADB=…</code> följt av <code>open -a Godot</code>. För en tydligare kontroll använder vi här <strong>appens körbara fil direkt</strong> så att den blir barnprocess till samma shell. Spara projektet och avsluta först Godot helt. Anpassa appens namn/plats om den inte heter <code>Godot.app</code> i Applications.</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>export ADB=&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot;
+export PATH=&quot;$HOME/Library/Android/sdk/platform-tools:$PATH&quot;
+&quot;/Applications/Godot.app/Contents/MacOS/Godot&quot; --editor
+</code></pre></div>
+<p>Om detta löser problemet, kontrollera absoluta sökvägar för SDK och scrcpy i editorn. Du kan lägga PATH-raden i din <code>~/.zshrc</code> för <strong>nya Terminal-sessioner</strong>, men räkna inte med att det ensamt förändrar Finder-startade appar. Använd samma direkta start när du behöver den miljön. <a href="https://docs.godotengine.org/en/4.7/tutorials/editor/command_line_tutorial.html">Godots kommandorad</a></p>
+<h2 id="installation">5. Byggd, installerad och startad är olika saker</h2>
+<p>Kontrollera om appen faktiskt finns innan du försöker bygga om allt:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; shell pm list packages com.example.vrstart
+</code></pre></div>
+<p>Byt paketnamnet till <strong>Package → Unique Name</strong> i din exportprofil. Om du inte vet namnet kan du lista tredjepartsappar:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; shell pm list packages -3
+</code></pre></div>
+<p>En träff betyder att paketet är installerat, men det kan vara en tidigare version om senaste uppdateringen misslyckades. Kontrollera installationsresultatet och öka <strong>Version Code</strong> när Android kräver det.</p>
+<p>Starta kursens exempelapp:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; shell monkey -p com.example.vrstart -c android.intent.category.LAUNCHER 1
+</code></pre></div>
+<p>Ett skickat launch-event garanterar inte att appen är frisk. Om den stängs direkt går du till logcat. <a href="https://developer.android.com/studio/test/other-testing-tools/monkey">Android Monkey</a></p>
+<p>Vid <code>INSTALL_FAILED_UPDATE_INCOMPATIBLE</code> kan samma paket vara signerat med en annan nyckel. Använd samma signering, eller välj ett nytt paketnamn för ett separat test. Att avinstallera den gamla appen tar normalt bort dess lokala data; gör det bara om du vill ersätta installationen och har sparat det du behöver. Vid versionsnedgradering: höj Version Code eller återgå till rätt bygge. <a href="https://docs.godotengine.org/en/4.7/tutorials/export/exporting_for_android.html">Godots installationsfelsökning</a></p>
+<h2 id="logcat">6. Läs logcat vid krasch</h2>
+<p>Spara först eventuell gammal logg du behöver. <code>logcat -c</code> rensar enhetens aktuella loggbuffert. Kör sedan:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; logcat -c
+</code></pre></div>
+<p>Starta appen, återskapa felet och spara hela loggen:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; logcat -d &gt; &quot;$HOME/Desktop/quest-log.txt&quot;
+</code></pre></div>
+<p>Öppna filen i en texteditor. En filtrerad överblick kan hjälpa, men behåll hela loggen eftersom närliggande rader ofta förklarar orsaken:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; logcat -d | grep -Ei 'godot|openxr|vrstart|fatal|exception|failed|parse error'
+</code></pre></div>
+<p>Läs kronologiskt runt senaste appstarten. Leta efter <strong>första relevanta felet</strong>, inte bara sista <code>Unable to start engine</code>. En saknad textur kan hindra ett material, som hindrar en handscen, som hindrar spelarens scen. Loggar kan innehålla enhets- och appuppgifter; ta bort sådant som inte behövs innan du delar dem. <a href="https://developer.android.com/tools/logcat">Android: Logcat</a></p>
+<h2 id="plugin">7. XR Tools och GDScript-fel</h2>
+<p>Underlaget innehåller <code>Not all code paths return a value</code> i <code>function_teleport.gd</code> och ett fel där ett Node3D-script hamnat på en Node. Dessa är projekt-/pluginfel. En ny USB-kabel rättar inte GDScript.</p>
+<ol>
+<li>Öppna projektet i rätt Godot-version och läs första parse error i editorns Debugger/Output.</li>
+<li>Notera installerad XR Tools-version. Jämför dess Godot-krav och release notes.</li>
+<li>Säkerhetskopiera egna ändringar. Uppdatera till en <strong>kompatibel</strong> release eller återställ ett känt fungerande par av Godot och XR Tools.</li>
+<li>Kontrollera att rätt script sitter på rätt nodtyp. Ändra inte basklass på måfå.</li>
+<li>Vänta på import och lös scriptfelen innan ny Android-export.</li>
+</ol>
+<p>Det exakta radnumret från underlaget gäller bara den pluginversionen. Det är ingen universell instruktion att ändra rad 382. <a href="https://github.com/GodotVR/godot-xr-tools/releases">XR Tools-utgåvor</a></p>
+<h2 id="resurser">8. Saknade resurser och ETC2/ASTC</h2>
+<p>Om loggen säger <code>Failed loading</code> ska du läsa <strong>vilken sökväg</strong> som saknas. Kontrollera att filen finns i projektet, att stora/små bokstäver matchar och att den refereras rätt från scenen. Android kan avslöja skiftlägesfel som inte märktes på en vanlig Mac-disk.</p>
+<p>Vid en exportvarning om <strong>ETC2/ASTC</strong>: sök efter <code>ETC2</code> i <strong>Project Settings</strong> med <strong>Advanced Settings</strong> aktiverat och slå på den import som exporten efterfrågar. Vänta på texturimporten, eller välj <strong>Project → Reload Current Project</strong>. Bygg först när importen är färdig.</p>
+<p>Kontrollera att pluginets resurser finns under <code>res://addons/godot-xr-tools/</code> och inte har uteslutits i exportprofilen. Kedjan kan vara <strong>textur → material → handscen → xr_player.tscn → main.tscn</strong>.</p>
+<p>Om en full reimport behövs: stäng Godot, ta en kopia av projektet och <strong>byt namn på den genererade <code>.godot</code>-mappen</strong> i projektkopian. Öppna kopian och låt Godot bygga cachen igen. Radera aldrig <code>addons</code>, originaltexturer eller scener för att ”rensa cache”. <a href="https://docs.godotengine.org/en/4.7/tutorials/assets_pipeline/import_process.html">Godots importsystem</a></p>
+<h2 id="openxr">9. OpenXR och svart bild i headsetet</h2>
+<p><strong>HMD saknas när du trycker F5 på Mac:</strong> kör Android-exporten på Quest. Datorns lokala körning är en annan miljö. Följ <a href="03-macos-quest.html#kor">Mac-guiden</a>.</p>
+<p><strong>Appen startar i ett platt fönster:</strong> kontrollera exportprofilens <strong>XR Mode = OpenXR</strong>, projektets <strong>OpenXR Enabled</strong> och att rätt APK verkligen har installerats.</p>
+<p><strong>Immersiv app men svart värld:</strong> kontrollera huvudscenen, att <code>XRCamera3D</code> ligger under <code>XROrigin3D</code>, att <code>use_xr</code> aktiveras, att ljuset sparats i scenen och att modellen är framför kameran. En kamera inne i golvet kan ge en missvisande bild. Kontrollera även near/far clipping om föremål försvinner på vissa avstånd.</p>
+<p>Börja med <a href="02-forsta-scenen.html#main-gd">main.gd från grundscenen</a>. Godot 4.7 startar OpenXR tidigt och exemplet kontrollerar <code>is_initialized()</code>. Återkommande manuella <code>initialize()</code> är ingen generell lösning. <a href="https://docs.godotengine.org/en/4.7/tutorials/xr/setting_up_xr.html">Godots XR-start</a></p>
+<p>Om loggen redan visar lyckad OpenXR-session men därefter ett resursfel: lös resursfelet. Om ett minimalt projekt har grafikfel utan script-/resursfel kan du prova <strong>Compatibility</strong> på en kopia och jämföra med Mobile. De officiella renderer-råden skiljer sig; se <a href="07-kallor.html#skillnader">källgranskningen</a>.</p>
+<h2 id="interaktion">10. Kontroller, rörelse och fysik</h2>
+<ul>
+<li><strong>Händerna står stilla:</strong> rätt left_hand/right_hand-tracker, grip-pose och rätt föräldranod? Är kontrollerna vakna?</li>
+<li><strong>Spårning fungerar men knappar inte:</strong> matchar action-namn och bindings i OpenXR action map funktionernas inställningar?</li>
+<li><strong>Ingen förflyttning:</strong> ligger rörelsefunktionen under rätt kontroll och finns en aktiv PlayerBody?</li>
+<li><strong>Du faller igenom golvet:</strong> finns BoxShape3D och ingår golvets lager i kroppens mask?</li>
+<li><strong>Kub går inte att ta:</strong> är den ett XR Tools-pickable och innehåller pickup-funktionens mask kubens lager?</li>
+<li><strong>Kuben faller genom bordet:</strong> matchar collision och mesh och inkluderar kubens mask lager 1?</li>
+<li><strong>Spelaren skjuts bakåt vid grepp:</strong> kolliderar hållet objekt med PlayerBody? Kontrollera Picked Up Layer.</li>
+</ul>
+<p>Testa i ordningen huvud → kontroller → knapp → rörelse → grepp. <a href="05-objekt.html#lager">Kursens lagerexempel</a> · <a href="https://godotvr.github.io/godot-xr-tools/docs/physics_layers/">XR Tools Physics Layers</a></p>
+<h2 id="spegling">11. scrcpy saknas eller visar svart</h2>
+<p><code>Could not create child process: scrcpy</code> betyder att speglingsprogrammet inte kunde startas. Det säger inte att APK-installationen misslyckades. Prova appen i headsetet och stäng tillfälligt av Godots spegling.</p>
+<p>Om du vill använda scrcpy: följ <a href="03-macos-quest.html#scrcpy">installationssteget</a>, kör <code>command -v scrcpy</code> och ange sökvägen i Godots scrcpy-inställning. På Apple Silicon är <code>/opt/homebrew/bin/scrcpy</code> vanligt men inte garanterat.</p>
+<p><strong>Ett fönster öppnas men är svart:</strong> det är ett annat fel. Kontrollera om appen syns i headsetet, att Quest är vaket och att scrcpy är aktuellt. Prova direkt från Terminal med <code>--no-audio</code> och läs dess felutskrift. Förutsätt inte att spegling av all VR-/systemgrafik fungerar likadant på alla Horizon OS-versioner. <a href="https://github.com/Genymobile/scrcpy/blob/master/doc/macos.md">scrcpy för macOS</a></p>
+<p>Om ADB-servern startas om upprepade gånger: gå till <a href="#adb-konflikt">versionskonflikten</a>.</p>
+<h2 id="debugger">12. Remote debugging är ett eget steg</h2>
+<p>Om spelet går att starta självständigt men editorns debugger inte ansluter har du redan bevisat att spelet kan köras. Kontrollera Godots debug-/deployinställningar och rätt enhetsval. Under USB-test kan Godot använda <strong>ADB reverse</strong> för anslutningen tillbaka till datorn.</p>
+<p>Raden <code>Reverse result: 0</code> i underlagsfallet visade att just reverse-kommandot lyckades, inte att hela debugger-sessionen fungerade. Undvik att kopiera en gammal debugport från en annan installation; läs den aktuella loggen. <a href="https://docs.godotengine.org/en/4.7/tutorials/export/one-click_deploy.html">One-click deploy</a></p>
+<h2 id="varningar">13. Varningar som behöver värderas</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Meddelande</th>
+<th>Hur du går vidare</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>graph_offset property is deprecated</code></td>
+<td>Uppdatera berörd resurs/plugin när lämpligt. En deprecation är inte automatiskt orsaken till stängningen.</td>
+</tr>
+<tr>
+<td>Jolt: custom solver bias stöds inte</td>
+<td>Det anpassade värdet ignoreras. Felsök ett samtidigt parse-/resursfel först.</td>
+</tr>
+<tr>
+<td><code>Viewport Texture must be set to use it</code></td>
+<td>Kontrollera vilket material eller UI som använder ViewportTexture och tilldela rätt viewport.</td>
+</tr>
+<tr>
+<td><code>Uninstalling previous version</code></td>
+<td>Kan vara del av deploy. Läs nästa rader: lyckades installationen och sedan start?</td>
+</tr>
+</tbody>
+</table></div>
+<p>Dessa exempel kommer från det lokala felsökningsunderlaget. En varning kan fortfarande vara relevant för beteendet; prioritera efter loggens faktiska felkedja i stället för att behandla alla gula rader som krascher.</p>
+<h2 id="minimalprojekt">14. Isolera med ett minimalt projekt</h2>
+<p>Bygg bara <a href="02-forsta-scenen.html">golv, ljus, XROrigin3D, XRCamera3D och main.gd</a>. Använd samma Android-verktyg och exportinställningar som i ditt vanliga projekt.</p>
+<p>Om det fungerar på Quest har du belägg för att USB, bygge, installation och grundläggande OpenXR/rendering fungerar tillsammans. Lägg tillbaka XR Tools, händer, rörelse och föremål <strong>ett i taget</strong>. När felet återkommer vet du vilken förändring du ska undersöka.</p>
+<div class="checkpoint" data-checklist="debug"><h3>Underlag när du ber om hjälp</h3><label><input type="checkbox"> Godots fullständiga version och renderer.</label><label><input type="checkbox"> XR Tools- och eventuell Vendors-version.</label><label><input type="checkbox"> ADB-sökväg, version och anslutningsstatus.</label><label><input type="checkbox"> Exakt steg som misslyckas och första relevanta felraden.</label><label><input type="checkbox"> Resultatet från ett minimalt projekt.</label></div><nav class="page-nav" aria-label="Mellan kapitel"><a href="05-objekt.html"><small>← Föregående</small>Bord och greppbara objekt</a><a href="07-kallor.html"><small>Nästa →</small>Källor och versionskontroll</a></nav></article></div></main>
+<footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Granskat 20 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>

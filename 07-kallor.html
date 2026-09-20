@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Läs dokumentationen, jämförelserna och vad som ändrats från videon."><meta name="theme-color" content="#f5f7fc"><title>Källor och versionskontroll · VR med Godot</title><script src="js/theme.js"></script><link rel="stylesheet" href="css/style.css"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="js/search-index.js" defer></script><script src="js/app.js" defer></script></head>
+<body data-page="07-kallor"><a class="skip-link" href="#main">Hoppa till innehållet</a>
+<header class="navbar"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> VR med Godot</a><form class="site-search" role="search"><label class="sr-only" for="site-query">Sök i hela guiden</label><input id="site-query" type="search" placeholder="Sök i guiden …" autocomplete="off"><button aria-label="Sök" type="submit">⌕</button></form><button class="icon-button" id="menu-toggle" aria-label="Öppna kapitelmenyn" aria-controls="chapter-dialog" aria-expanded="false">☰</button><button class="icon-button" id="theme-toggle" aria-label="Byt färgtema" aria-pressed="false">◐</button></header>
+<dialog id="chapter-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-heading"><h2 id="menu-heading">Alla kapitel</h2><button class="icon-button" data-close aria-label="Stäng kapitelmenyn">✕</button></div><a class="home-link" href="index.html">← Till startsidan</a><nav aria-label="Kapitel"><a class="chapter-link" href="01-start.html"><span class="chapter-number">01</span><span><strong>Börja här</strong><small>Installera Godot och förstå arbetsflödet innan du börjar bygga.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="02-forsta-scenen.html"><span class="chapter-number">02</span><span><strong>Din första VR-scen</strong><small>Bygg golv, ljus och en XR-kamera. Lägg till svenskkommenterad startkod.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="03-macos-quest.html"><span class="chapter-number">03</span><span><strong>Från Mac till Quest 3</strong><small>Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="04-spelaren.html"><span class="chapter-number">04</span><span><strong>Händer och rörelse</strong><small>Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="05-objekt.html"><span class="chapter-number">05</span><span><strong>Bord och greppbara objekt</strong><small>Skapa kuber du kan plocka upp och ett bord att ställa dem på.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="06-felsokning.html"><span class="chapter-number">06</span><span><strong>Felsök steg för steg</strong><small>Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="07-kallor.html" aria-current="page"><span class="chapter-number">07</span><span><strong>Källor och versionskontroll</strong><small>Läs dokumentationen, jämförelserna och vad som ändrats från videon.</small></span><span class="arrow" aria-hidden="true">↗</span></a></nav></dialog>
+<dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-heading"><h2 id="search-heading">Sök i guiden</h2><button class="icon-button" data-close aria-label="Stäng sökresultaten">✕</button></div><label for="dialog-query">Sökord</label><input id="dialog-query" type="search" placeholder="Till exempel USB eller grepp"><p id="search-count" class="muted" aria-live="polite"></p><div id="search-results"></div></dialog>
+<main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 07</span></div><header class="chapter-header"><p class="eyebrow">Fördjupning · Kapitel 07</p><h1>Källor och versionskontroll</h1><p class="subtitle">Läs dokumentationen, jämförelserna och vad som ändrats från videon.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-20</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
+<ul>
+<li><a href="#underlag">Underlag och kontroll</a></li>
+<li><a href="#kontroll">Vad flera källor bekräftar</a></li>
+<li><a href="#skillnader">Skillnader och rättelser</a></li>
+<li><a href="#lankar">Officiell dokumentation att ha nära</a></li>
+<li><a href="#uppdatering">När du uppdaterar kursen</a></li>
+</ul>
+</div>
+</details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><h2 id="underlag">Underlag och kontroll</h2>
+<p>Senast granskad: <strong>20 september 2026</strong>. Kursen riktar sig till <strong>Godot 4.7-serien</strong>, Meta Quest 3 och macOS med Apple Silicon. Dokumentation med <code>/en/4.7/</code> prioriteras framför <code>latest</code>, som kan beskriva nästa utvecklingsversion.</p>
+<p>Pedagogiskt underlag är Virtual Rooks <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Getting Started With XR in Godot 4.3 Tutorial!</a>, den tillhandahållna svenska transkriptionen och det lokala felsökningsdokumentet <strong>Godot_4.7.2_Meta_Quest_3_felsokningsguide.md</strong>. Videons detaljer har bearbetats genom transkriptionen; varje bildruta i videon har inte verifierats på nytt. Egna exempelvärden används för scenens mått och placeringar.</p>
+<p>Design och läsupplägg följer <a href="https://paul-pauliskolan.github.io/prog1-python/index.html">Pauliskolans Programmering nivå 1 med Python</a>: ljus bakgrund, tydliga kort, numrerade kapitel, smal lästext och en meny som kan stängas.</p>
+<h2 id="kontroll">Vad flera källor bekräftar</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Uppgift</th>
+<th>Källor som jämförts</th>
+<th>Slutsats i kursen</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quest måste tillåta utveckling och USB-debuggning.</td>
+<td><a href="https://developers.meta.com/horizon/documentation/native/android/mobile-device-setup/">Meta Device Setup</a> + <a href="https://developer.android.com/tools/adb">Android ADB</a> + <a href="https://docs.godotengine.org/en/4.7/tutorials/export/one-click_deploy.html">Godot deploy</a></td>
+<td>Kontrollera <code>device</code> före exportfelsökning.</td>
+</tr>
+<tr>
+<td>JDK och SDK måste finnas på byggdatorn.</td>
+<td><a href="https://docs.godotengine.org/en/4.7/tutorials/export/exporting_for_android.html">Godot Android-export</a> + <a href="https://docs.godotengine.org/en/4.7/tutorials/xr/deploying_to_android.html">Godot Android-XR</a> + <a href="https://developer.android.com/studio/install">Android Studio</a></td>
+<td>Använd Godots versionsspecifika paketkrav; Google beskriver installationen.</td>
+</tr>
+<tr>
+<td>Vendors lägger till leverantörsspecifika funktioner.</td>
+<td><a href="https://docs.godotengine.org/en/4.7/tutorials/xr/deploying_to_android.html">Godot Android-XR</a> + <a href="https://godotvr.github.io/godot_openxr_vendors/">Vendors-projektet</a></td>
+<td>Grundtestet kan börja utan tillägget. Godot anger valfrihet från 4.6.</td>
+</tr>
+<tr>
+<td>Grepp kräver både en pickup-funktion och ett pickable-objekt.</td>
+<td><a href="https://godotvr.github.io/godot-xr-tools/docs/pickup/">Pickup Function</a> + <a href="https://godotvr.github.io/godot-xr-tools/docs/pickable/">Pickable Objects</a> + <a href="https://godotvr.github.io/godot-xr-tools/docs/physics_layers/">Physics Layers</a></td>
+<td>Lägg funktioner på kontrollerna och matcha kollisionslagren.</td>
+</tr>
+<tr>
+<td>Olika ADB-versioner kan störa varandra.</td>
+<td>Lokalt felsökningsfall + <a href="https://github.com/Genymobile/scrcpy/blob/master/FAQ.md">scrcpy FAQ</a></td>
+<td>Kontrollera faktiska sökvägar och välj samma ADB.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Flera sidor från samma projekt är kompletterande dokumentation, inte oberoende bevis. Google fastställer inte Godots exakta NDK-version och Vendors-introduktionen lovar inte stöd för varje Godot-utgåva. Där versionskrav har en enda primärkälla anges den direkt.</p>
+<h2 id="skillnader">Skillnader och rättelser</h2>
+<h3 id="openxr-start-anvand-47-exemplet">OpenXR-start: använd 4.7-exemplet</h3>
+<p>Den äldre granskningskommentaren i transkriptionen föreslog <code>initialize()</code>. Godots <strong>4.7 Setting up XR</strong> visar <code>is_initialized()</code> och förklarar att OpenXR startar före projektets scen. Därför använder kursen kontrollen och aktiverar <code>use_xr</code> därefter. Samma sida säger att OpenXR sköter bildtimingen; den gamla manuella VSync-raden har utelämnats. <a href="https://docs.godotengine.org/en/4.7/tutorials/xr/setting_up_xr.html">Läs förklaringen</a></p>
+<h3 id="renderer-kallorna-ar-inte-samstammiga">Renderer: källorna är inte samstämmiga</h3>
+<p><a href="https://docs.godotengine.org/en/4.7/tutorials/xr/setting_up_xr.html">Setting up XR</a> rekommenderar <strong>Mobile</strong>, uttryckligen även för Quest 3. <a href="https://docs.godotengine.org/en/4.7/tutorials/xr/deploying_to_android.html">Deploying to Android</a> har samtidigt en varning som rekommenderar <strong>Compatibility/OpenGL</strong>. Kursens praktiska val är Mobile för huvudspåret och Compatibility som jämförelse vid isolerade grafikfel. Det är ett redaktionellt val, inte ett påstående om att dokumentationen är enig.</p>
+<h3 id="xr-tools-folj-aktuell-komponentbeskrivning">XR Tools: följ aktuell komponentbeskrivning</h3>
+<p>Videon lägger till Player Body manuellt. Nuvarande <a href="https://godotvr.github.io/godot-xr-tools/docs/player_body/">Player Body</a> och <a href="https://godotvr.github.io/godot-xr-tools/docs/direct/">Direct Movement</a> beskriver automatisk tilläggning. Kursen undviker därför en dubbel kropp.</p>
+<p>XR Tools äldre generella <a href="https://godotvr.github.io/godot-xr-tools/docs/setup/">Setup-sida</a> innehåller fortfarande API-namn som <code>get_viewport().arvr</code> och <code>OS.vsync_enabled</code>. De används <strong>inte</strong> i kursens Godot 4.7-kod. För startkoden prioriteras Godots versionsspecifika dokumentation.</p>
+<h3 id="lokalt-felsokningsfall-ar-inte-en-universell-losning">Lokalt felsökningsfall är inte en universell lösning</h3>
+<p>Originalunderlagets användarsökväg och paketnamn är ersatta med allmänna exempel. Dess <code>open -a Godot</code> är beskrivet som en observation från det fallet. Guiden använder i stället appens körbara fil direkt när en kontrollerad shell-miljö behöver ärvas. <code>ADB</code> väljer ADB för scrcpy; Godots SDK-fält behöver också vara rätt inställt.</p>
+<h2 id="lankar">Officiell dokumentation att ha nära</h2>
+<h3 id="godot-och-openxr">Godot och OpenXR</h3>
+<ul>
+<li><a href="https://godotengine.org/download/archive/4.7.2-stable/">Godot 4.7.2 och exportmallar</a></li>
+<li><a href="https://docs.godotengine.org/en/4.7/tutorials/xr/setting_up_xr.html">Setting up XR, Godot 4.7</a></li>
+<li><a href="https://docs.godotengine.org/en/4.7/tutorials/xr/openxr_settings.html">OpenXR Settings</a></li>
+<li><a href="https://docs.godotengine.org/en/4.7/tutorials/xr/xr_action_map.html">OpenXR action map</a></li>
+<li><a href="https://docs.godotengine.org/en/4.7/tutorials/export/exporting_for_android.html">Exporting for Android</a></li>
+<li><a href="https://docs.godotengine.org/en/4.7/tutorials/xr/deploying_to_android.html">Deploying to Android för XR</a></li>
+<li><a href="https://docs.godotengine.org/en/4.7/tutorials/export/one-click_deploy.html">One-click deploy</a></li>
+</ul>
+<h3 id="meta-android-och-java">Meta, Android och Java</h3>
+<ul>
+<li><a href="https://developers.meta.com/horizon/documentation/native/android/mobile-device-setup/">Meta: förbered headsetet för utveckling</a></li>
+<li><a href="https://developers.meta.com/horizon/documentation/native/android/mobile-openxr/">Meta: OpenXR-stöd</a></li>
+<li><a href="https://developer.android.com/studio/install">Android Studio för din dator</a></li>
+<li><a href="https://developer.android.com/studio/intro/update#sdk-manager">SDK Manager och paket</a></li>
+<li><a href="https://developer.android.com/tools/adb">Android Debug Bridge</a></li>
+<li><a href="https://developer.android.com/tools/logcat">Logcat</a></li>
+<li><a href="https://adoptium.net/temurin/releases/?version=17">Temurin JDK 17</a></li>
+</ul>
+<h3 id="tillagg-och-skarmspegling">Tillägg och skärmspegling</h3>
+<ul>
+<li><a href="https://godotvr.github.io/godot-xr-tools/docs/installation/">Godot XR Tools: installation</a></li>
+<li><a href="https://github.com/GodotVR/godot-xr-tools/releases">XR Tools: releases och kompatibilitet</a></li>
+<li><a href="https://godotvr.github.io/godot_openxr_vendors/">OpenXR Vendors</a></li>
+<li><a href="https://github.com/Genymobile/scrcpy/blob/master/doc/macos.md">scrcpy: installation på macOS</a></li>
+<li><a href="https://github.com/Genymobile/scrcpy/blob/master/FAQ.md">scrcpy: fel och ADB-konflikter</a></li>
+</ul>
+<h2 id="uppdatering">När du uppdaterar kursen</h2>
+<p>Kontrollera Godot och exportmallar som ett par. Kontrollera sedan pluginversionerna, Android-paketkraven och ändrade Meta-menyer. Gör ett nytt minimalt headsettest innan du lovar att en ny kombination fungerar.</p>
+<p>Källkontroll och praktiskt test är olika saker. Innehållet är granskat mot dokumentationen och underlagen; någon fullständig hårdvaruverifiering av webbplatsens exempelprojekt har inte gjorts här. Menytexter och tillgång till utvecklarläge kan också variera mellan konton och OS-utgåvor.</p><nav class="page-nav" aria-label="Mellan kapitel"><a href="06-felsokning.html"><small>← Föregående</small>Felsök steg för steg</a><a href="index.html"><small>Tillbaka →</small>Alla kapitel</a></nav></article></div></main>
+<footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Granskat 20 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>

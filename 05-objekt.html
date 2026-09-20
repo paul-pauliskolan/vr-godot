@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Skapa kuber du kan plocka upp och ett bord att ställa dem på."><meta name="theme-color" content="#f5f7fc"><title>Bord och greppbara objekt · VR med Godot</title><script src="js/theme.js"></script><link rel="stylesheet" href="css/style.css"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="js/search-index.js" defer></script><script src="js/app.js" defer></script></head>
+<body data-page="05-objekt"><a class="skip-link" href="#main">Hoppa till innehållet</a>
+<header class="navbar"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> VR med Godot</a><form class="site-search" role="search"><label class="sr-only" for="site-query">Sök i hela guiden</label><input id="site-query" type="search" placeholder="Sök i guiden …" autocomplete="off"><button aria-label="Sök" type="submit">⌕</button></form><button class="icon-button" id="menu-toggle" aria-label="Öppna kapitelmenyn" aria-controls="chapter-dialog" aria-expanded="false">☰</button><button class="icon-button" id="theme-toggle" aria-label="Byt färgtema" aria-pressed="false">◐</button></header>
+<dialog id="chapter-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-heading"><h2 id="menu-heading">Alla kapitel</h2><button class="icon-button" data-close aria-label="Stäng kapitelmenyn">✕</button></div><a class="home-link" href="index.html">← Till startsidan</a><nav aria-label="Kapitel"><a class="chapter-link" href="01-start.html"><span class="chapter-number">01</span><span><strong>Börja här</strong><small>Installera Godot och förstå arbetsflödet innan du börjar bygga.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="02-forsta-scenen.html"><span class="chapter-number">02</span><span><strong>Din första VR-scen</strong><small>Bygg golv, ljus och en XR-kamera. Lägg till svenskkommenterad startkod.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="03-macos-quest.html"><span class="chapter-number">03</span><span><strong>Från Mac till Quest 3</strong><small>Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="04-spelaren.html"><span class="chapter-number">04</span><span><strong>Händer och rörelse</strong><small>Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="05-objekt.html" aria-current="page"><span class="chapter-number">05</span><span><strong>Bord och greppbara objekt</strong><small>Skapa kuber du kan plocka upp och ett bord att ställa dem på.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="06-felsokning.html"><span class="chapter-number">06</span><span><strong>Felsök steg för steg</strong><small>Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="07-kallor.html"><span class="chapter-number">07</span><span><strong>Källor och versionskontroll</strong><small>Läs dokumentationen, jämförelserna och vad som ändrats från videon.</small></span><span class="arrow" aria-hidden="true">↗</span></a></nav></dialog>
+<dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-heading"><h2 id="search-heading">Sök i guiden</h2><button class="icon-button" data-close aria-label="Stäng sökresultaten">✕</button></div><label for="dialog-query">Sökord</label><input id="dialog-query" type="search" placeholder="Till exempel USB eller grepp"><p id="search-count" class="muted" aria-live="polite"></p><div id="search-results"></div></dialog>
+<main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 05</span></div><header class="chapter-header"><p class="eyebrow">Bygg i Godot · Kapitel 05</p><h1>Bord och greppbara objekt</h1><p class="subtitle">Skapa kuber du kan plocka upp och ett bord att ställa dem på.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-20</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
+<ul>
+<li><a href="#kub">1. Skapa en återanvändbar kub</a></li>
+<li><a href="#lager">2. Ställ in kollisionslager</a></li>
+<li><a href="#greppunkter">3. Lägg till greppunkter</a></li>
+<li><a href="#bord">4. Bygg bordet som ett rätblock</a></li>
+<li><a href="#placering">5. Ställ tre kuber på bordet</a></li>
+<li><a href="#test">6. Testa och utveckla</a></li>
+</ul>
+</div>
+</details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><h2 id="kub">1. Skapa en återanvändbar kub</h2>
+<p><strong>Förutsättning:</strong> <a href="04-spelaren.html">Kapitel 4</a> är klart: händer och rörelse fungerar, och båda kontrollerna har FunctionPickup.</p>
+<p>Vi gör en kub som är <strong>10 centimeter</strong> bred. I det här projektet motsvarar en Godot-enhet en meter. Följ samma skala för golv, bord och spelare.</p>
+<ol>
+<li>Välj <strong>Scene → New Inherited Scene</strong>.</li>
+<li>Öppna <strong>addons/godot-xr-tools/objects/pickable.tscn</strong>. Videon använder benämningen Pickup, men den dokumenterade grundscenen heter <code>pickable.tscn</code>.</li>
+<li>Spara din ärvda scen som <strong>scenes/pickup_object.tscn</strong>. Spara inte över pluginets original.</li>
+<li>Lägg till en <strong>MeshInstance3D</strong> under objektets rot. Välj <strong>New BoxMesh</strong> och sätt <strong>Size = (0.1, 0.1, 0.1)</strong>.</li>
+<li>På den ärvda <strong>CollisionShape3D</strong>: skapa <strong>BoxShape3D</strong>, också <strong>Size = (0.1, 0.1, 0.1)</strong>. Om scenen redan har en delad shape-resurs, välj <strong>Make Unique</strong> innan du ändrar den för din kub.</li>
+<li>Ge BoxMesh ett <strong>StandardMaterial3D</strong> och en tydlig färg, till exempel turkos. Mesh och collision ska båda ligga vid lokal position <code>(0, 0, 0)</code>.</li>
+</ol>
+<p>Roten är en fysikkropp med pickup-logik. Lägg inte till en extra RigidBody3D runt den. <a href="https://godotvr.github.io/godot-xr-tools/docs/pickable/">XR Tools: Pickable Objects</a></p>
+<h2 id="lager">2. Ställ in kollisionslager</h2>
+<p>Ett <strong>Collision Layer</strong> säger vad objektet är. En <strong>Collision Mask</strong> säger vilka lager det ska upptäcka eller kollidera med. Följande enkla upplägg använder XR Tools rekommenderade lagernummer.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Del</th>
+<th>Collision Layer</th>
+<th>Collision Mask / annan inställning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Golv och bord</td>
+<td>1: Static World</td>
+<td>Behåll övriga grundinställningar.</td>
+</tr>
+<tr>
+<td>Kub som ligger löst</td>
+<td>3: Pickable Objects</td>
+<td>1 och 3: världen och andra kuber.</td>
+</tr>
+<tr>
+<td>FunctionPickup</td>
+<td>Behåll komponentens lager</td>
+<td>Masken måste innehålla 3.</td>
+</tr>
+<tr>
+<td>PlayerBody</td>
+<td>20: Player Body</td>
+<td>Masken måste innehålla 1; standarden inkluderar normalt 1–10.</td>
+</tr>
+<tr>
+<td>Kub medan den hålls</td>
+<td>Picked Up Layer = 17</td>
+<td>Lager 17 ska inte ingå i PlayerBodys kollisionsmask.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Lagernummer i tabellen är <strong>kryssrutornas nummer</strong>, inte de numeriska bitmaskvärdena. Namnge gärna lagren i <strong>Project Settings → Layer Names → 3D Physics</strong>. Pluginet kan också erbjuda <strong>Project → Tools → XR Tools → Set Physics Layers</strong>.</p>
+<p>Välj <strong>Release Mode = Original</strong> på pickup-objektet för att återställa dess ursprungliga fysik när du släpper. Kontrollera att objektet är aktiverat. <a href="https://godotvr.github.io/godot-xr-tools/docs/physics_layers/">Physics Layers</a> · <a href="https://godotvr.github.io/godot-xr-tools/docs/pickable/">Pickable-inställningar</a></p>
+<h2 id="greppunkter">3. Lägg till greppunkter</h2>
+<p>Greppunkter bestämmer hur handen placeras när den håller kuben. Markera pickup-scenens rot och instansiera <strong>Grab Point Hand Left</strong>. Slå tillfälligt på handens synlighet i editorn och flytta/rotera greppunkten så att handen ligger naturligt runt kuben.</p>
+<p>Gör samma sak med <strong>Grab Point Hand Right</strong>. Placera greppunkterna på objektet, inte under spelarens kontroller. Stäng av förhandsvisningshänderna när du är färdig, enligt handscenens inställning, och spara. Anpassa vänster och höger grepp var för sig i stället för att bara duplicera en identisk rotation. <a href="https://godotvr.github.io/godot-xr-tools/docs/grab_point/">Grab Points</a></p>
+<h2 id="bord">4. Bygg bordet som ett rätblock</h2>
+<p>Det här utvecklar det snabbspolade momentet omkring <strong>17:40</strong> i <a href="https://www.youtube.com/watch?v=gbTUNg99lrg&amp;t=1060s">ursprungsvideon</a>. Måtten är egna exempel. Golvets ovansida ligger på Y = 0 enligt kapitel 2.</p>
+<ol>
+<li>Öppna <strong>main.tscn</strong>. Lägg till <strong>StaticBody3D</strong> under <code>Main</code> och döp den till <code>Table</code>.</li>
+<li>Lägg till <strong>MeshInstance3D</strong> under <code>Table</code>. Skapa <strong>BoxMesh</strong> med <strong>Size = (1.5, 0.8, 0.7)</strong>.</li>
+<li>Lägg till <strong>CollisionShape3D</strong> som ett andra barn. Skapa <strong>BoxShape3D</strong> med exakt samma storlek.</li>
+<li>På <code>Table</code>: sätt <strong>Position = (0, 0.4, -1.5)</strong>. Bordets ovansida hamnar på <strong>Y = 0.8</strong>, och bordet står framför spelarens startpunkt.</li>
+<li>Låt barnens lokala position vara <code>(0, 0, 0)</code> och samtliga skalor vara <code>(1, 1, 1)</code>.</li>
+<li>Ge bordet en färg som skiljer sig från golvet. Kontrollera att det ligger på kollisionslager 1.</li>
+</ol>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>Table (StaticBody3D)
+├── MeshInstance3D → BoxMesh: 1.5 × 0.8 × 0.7
+└── CollisionShape3D → BoxShape3D: 1.5 × 0.8 × 0.7
+</code></pre></div>
+<p>Ett massivt rätblock räcker för övningen. Du kan senare göra en tunn skiva med ben, men börja med en enda lättkontrollerad kollisionsform.</p>
+<h2 id="placering">5. Ställ tre kuber på bordet</h2>
+<p>Dra <strong>scenes/pickup_object.tscn</strong> från FileSystem till <code>Main</code> i scenträdet. Den ska vara ett syskon till bordet. Markera <strong>hela objektets rot</strong> och sätt positionen enligt tabellen. Duplicera två gånger.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Instans</th>
+<th>X</th>
+<th>Y</th>
+<th>Z</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PickupObject</td>
+<td>-0.3</td>
+<td>0.86</td>
+<td>-1.5</td>
+</tr>
+<tr>
+<td>PickupObject2</td>
+<td>0</td>
+<td>0.86</td>
+<td>-1.5</td>
+</tr>
+<tr>
+<td>PickupObject3</td>
+<td>0.3</td>
+<td>0.86</td>
+<td>-1.5</td>
+</tr>
+</tbody>
+</table></div>
+<p>Varje kub har halva höjden 0.05. Dess undersida börjar därför på <strong>0.86 − 0.05 = 0.81</strong>: en centimeter ovanför bordet. Vid start faller den den lilla biten ner. Börja inte med kuben inuti bordets collision.</p>
+<h2 id="test">6. Testa och utveckla</h2>
+<p>Spara och kör på Quest. Gå fram med styrspaken, för handen till kuben och använd greppknappen som är bunden till pickup-funktionen. Släpp och kontrollera att kuben stannar på bordet. Upprepa med andra handen.</p>
+<div class="checkpoint" data-checklist="objects"><h3>Sluttest</h3><label><input type="checkbox"> Tre kuber ligger kvar på bordet.</label><label><input type="checkbox"> Jag kan greppa med båda händerna.</label><label><input type="checkbox"> Kuben faller när jag släpper den.</label><label><input type="checkbox"> Spelaren skjuts inte iväg av ett hållet objekt.</label></div>
+
+<p><strong>Öva vidare:</strong> gör en andra objektform med en matchande collision, flytta bordet och anpassa kubernas positioner, eller bygg ett litet rum. Behåll en kopia av den fungerande grundscenen innan du experimenterar.</p>
+<p>Faller kuber genom bordet? Kontrollera shape och mask. Skjuts spelaren iväg? Kontrollera lagret för hållna objekt. Fungerar inte grepp alls? Kontrollera pickup-funktionen, lager 3 och action map. Se <a href="06-felsokning.html#interaktion">felsökningen för interaktion</a>.</p><nav class="page-nav" aria-label="Mellan kapitel"><a href="04-spelaren.html"><small>← Föregående</small>Händer och rörelse</a><a href="06-felsokning.html"><small>Nästa →</small>Felsök steg för steg</a></nav></article></div></main>
+<footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Granskat 20 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>

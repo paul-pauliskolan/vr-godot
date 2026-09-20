@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Hela installationen för M-chip: Java, SDK, USB och första VR-testet."><meta name="theme-color" content="#f5f7fc"><title>Från Mac till Quest 3 · VR med Godot</title><script src="js/theme.js"></script><link rel="stylesheet" href="css/style.css"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="js/search-index.js" defer></script><script src="js/app.js" defer></script></head>
+<body data-page="03-macos-quest"><a class="skip-link" href="#main">Hoppa till innehållet</a>
+<header class="navbar"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> VR med Godot</a><form class="site-search" role="search"><label class="sr-only" for="site-query">Sök i hela guiden</label><input id="site-query" type="search" placeholder="Sök i guiden …" autocomplete="off"><button aria-label="Sök" type="submit">⌕</button></form><button class="icon-button" id="menu-toggle" aria-label="Öppna kapitelmenyn" aria-controls="chapter-dialog" aria-expanded="false">☰</button><button class="icon-button" id="theme-toggle" aria-label="Byt färgtema" aria-pressed="false">◐</button></header>
+<dialog id="chapter-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-heading"><h2 id="menu-heading">Alla kapitel</h2><button class="icon-button" data-close aria-label="Stäng kapitelmenyn">✕</button></div><a class="home-link" href="index.html">← Till startsidan</a><nav aria-label="Kapitel"><a class="chapter-link" href="01-start.html"><span class="chapter-number">01</span><span><strong>Börja här</strong><small>Installera Godot och förstå arbetsflödet innan du börjar bygga.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="02-forsta-scenen.html"><span class="chapter-number">02</span><span><strong>Din första VR-scen</strong><small>Bygg golv, ljus och en XR-kamera. Lägg till svenskkommenterad startkod.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="03-macos-quest.html" aria-current="page"><span class="chapter-number">03</span><span><strong>Från Mac till Quest 3</strong><small>Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="04-spelaren.html"><span class="chapter-number">04</span><span><strong>Händer och rörelse</strong><small>Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="05-objekt.html"><span class="chapter-number">05</span><span><strong>Bord och greppbara objekt</strong><small>Skapa kuber du kan plocka upp och ett bord att ställa dem på.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="06-felsokning.html"><span class="chapter-number">06</span><span><strong>Felsök steg för steg</strong><small>Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="07-kallor.html"><span class="chapter-number">07</span><span><strong>Källor och versionskontroll</strong><small>Läs dokumentationen, jämförelserna och vad som ändrats från videon.</small></span><span class="arrow" aria-hidden="true">↗</span></a></nav></dialog>
+<dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-heading"><h2 id="search-heading">Sök i guiden</h2><button class="icon-button" data-close aria-label="Stäng sökresultaten">✕</button></div><label for="dialog-query">Sökord</label><input id="dialog-query" type="search" placeholder="Till exempel USB eller grepp"><p id="search-count" class="muted" aria-live="polite"></p><div id="search-results"></div></dialog>
+<main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 03</span></div><header class="chapter-header"><p class="eyebrow">Installera och kör · Kapitel 03</p><h1>Från Mac till Quest 3</h1><p class="subtitle">Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-20</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
+<ul>
+<li><a href="#oversikt">Så fungerar vägen från Mac till Quest</a></li>
+<li><a href="#godot">1. Installera exportmallarna</a></li>
+<li><a href="#java">2. Installera Java 17 för Apple Silicon</a></li>
+<li><a href="#sdk">3. Installera Android SDK</a></li>
+<li><a href="#sokvagar">4. Tala om för Godot var verktygen finns</a></li>
+<li><a href="#quest">5. Förbered Meta Quest 3</a></li>
+<li><a href="#adb">6. Kontrollera USB innan du bygger</a></li>
+<li><a href="#export">7. Skapa Android-exporten</a></li>
+<li><a href="#kor">8. Kör med One-click deploy</a></li>
+<li><a href="#manuellt">9. Alternativ: exportera APK och installera manuellt</a></li>
+<li><a href="#scrcpy">10. Valfri skärmspegling med scrcpy</a></li>
+<li><a href="#nasta-gang">11. Nästa arbetspass</a></li>
+</ul>
+</div>
+</details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><h2 id="oversikt">Så fungerar vägen från Mac till Quest</h2>
+<p><strong>Godot på Mac → Android-app → USB/ADB → Quest 3 → VR.</strong> Du behöver ingen separat Windows-dator för det här arbetssättet. Du bygger appen på din Mac med M-chip och låter headsetet köra den. Vanlig F5 på Mac testar datorversionen; använd Android-knappen för test i Quest.</p>
+<p><strong>Innan du börjar:</strong> Godot är installerat enligt <a href="01-start.html#installera-godot">kapitel 1</a>, och du har sparat grundscenen, xr_player.tscn och main.gd enligt <a href="02-forsta-scenen.html">kapitel 2</a>. Ha projektet öppet i editorn. Det behöver ännu inte fungera i headsetet – det testar du i detta kapitel.</p>
+<div class="callout"><strong>Första gången och nästa gång</strong><p>Steg 1–7 är grundinstallation. Vid senare test räcker normalt: anslut Quest, spara projektet och välj One-click deploy. Första bygget kan ta längre tid eftersom Gradle hämtar byggberoenden.</p></div>
+
+<h2 id="godot">1. Installera exportmallarna</h2>
+<p>Godot installerade du i kapitel 1. Nu lägger du till de <strong>exportmallar</strong> som behövs för att bygga Android-appen.</p>
+<ol>
+<li>Öppna projektet från kapitel 2 och kontrollera hela versionsnumret via <strong>About / Om Godot</strong>.</li>
+<li>Öppna <strong>Manage Export Templates</strong> från editorns meny. På macOS kan editorfunktionerna ligga i menyn <strong>Godot</strong>.</li>
+<li>Installera mallarna för <strong>exakt samma utgåva</strong> som editorn. Mallar för 4.7.1 ska inte användas till 4.7.2.</li>
+</ol>
+<p><strong>Kontroll:</strong> Exportmallshanteraren ska visa att mallarna för den aktuella versionen är installerade. <a href="https://godotengine.org/download/archive/4.7.2-stable/">Godot 4.7.2 och exportmallar</a></p>
+<h2 id="java">2. Installera Java 17 för Apple Silicon</h2>
+<p>Hämta <strong>Temurin OpenJDK 17</strong> från Adoptium. Välj <strong>macOS</strong>, <strong>aarch64/ARM64</strong>, <strong>JDK</strong>, version <strong>17</strong>, och installera paketet. Välj JDK, inte bara JRE. <a href="https://adoptium.net/temurin/releases/?version=17">Adoptiums nedladdning</a></p>
+<p>Öppna macOS <strong>Terminal</strong>. Kör följande två kommandon var för sig:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>/usr/libexec/java_home -V
+/usr/libexec/java_home -v 17
+</code></pre></div>
+<p>Det andra skriver ut mappen som Godot ska använda, exempelvis:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home
+</code></pre></div>
+<p>Kontrollera den valda versionen direkt, även om din dator har flera Java-versioner:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>&quot;$(/usr/libexec/java_home -v 17)/bin/java&quot; -version
+</code></pre></div>
+<p><strong>Kontroll:</strong> Utdata ska visa Java <strong>17</strong>. Om <code>java_home</code> inte hittar den, kontrollera att JDK-installationen är färdig. Godots Android-exportguide rekommenderar JDK 17; att Android Studio har en egen Java-runtime betyder inte automatiskt att Godot pekar på rätt JDK. <a href="https://docs.godotengine.org/en/4.7/tutorials/export/exporting_for_android.html">Godot: Java och Android SDK</a></p>
+<h2 id="sdk">3. Installera Android SDK</h2>
+<p>Installera <strong>Android Studio för Mac med Apple chip</strong> och kör installationsguiden. Du behöver inget nytt Android Studio-projekt och ingen Android-emulator för den här kursen: Quest är testenheten. <a href="https://developer.android.com/studio/install">Googles installation för macOS</a></p>
+<p>Öppna <strong>SDK Manager</strong> från välkomstfönstrets <strong>More Actions</strong>, eller via Android Studios inställningar. Notera <strong>Android SDK Location</strong>. Standard är:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>/Users/ditt-anvandarnamn/Library/Android/sdk
+</code></pre></div>
+<p>Installera följande paket. Tabellen återger Godot <strong>4.7-dokumentationen kontrollerad 20 september 2026</strong>; använd versionsväljaren i dokumentationen om du senare byter Godot-serie.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Flik i SDK Manager</th>
+<th>Paket</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SDK Platforms</td>
+<td>Android SDK Platform</td>
+<td>35 (Android 15)</td>
+</tr>
+<tr>
+<td>SDK Tools</td>
+<td>Android SDK Platform-Tools</td>
+<td>35.0.0 eller senare</td>
+</tr>
+<tr>
+<td>SDK Tools</td>
+<td>Android SDK Build-Tools</td>
+<td>35.0.1</td>
+</tr>
+<tr>
+<td>SDK Tools</td>
+<td>Android SDK Command-line Tools</td>
+<td>latest</td>
+</tr>
+<tr>
+<td>SDK Tools</td>
+<td>NDK (Side by side)</td>
+<td>28.1.13356709 / r28b</td>
+</tr>
+<tr>
+<td>SDK Tools</td>
+<td>CMake</td>
+<td>3.10.2.4988404</td>
+</tr>
+</tbody>
+</table></div>
+<p>Kryssa i <strong>Show Package Details</strong> för att välja exakta äldre versioner. Klicka <strong>Apply</strong>, läs och godkänn licenserna och vänta på färdig installation. Nyare paket kan ligga kvar bredvid dessa. Ändra inte kursens versionsnummer enbart för att SDK Manager erbjuder en högre version. <a href="https://docs.godotengine.org/en/4.7/tutorials/export/exporting_for_android.html">Godots paketlista</a> · <a href="https://developer.android.com/studio/intro/update#sdk-manager">Android SDK Manager</a></p>
+<p>Prova sedan ADB. Kommandot nedan utgår från standardplatsen och använder ditt eget hemkatalogsnamn automatiskt:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; version
+</code></pre></div>
+<p><strong>Kontroll:</strong> ADB skriver ut version och sökväg. <code>No such file or directory</code> betyder att SDK ligger någon annanstans eller att Platform-Tools saknas. Använd då SDK Location från Android Studio.</p>
+<h2 id="sokvagar">4. Tala om för Godot var verktygen finns</h2>
+<p>Öppna <strong>Godot → Editor Settings → Export → Android</strong>. Sök efter Android om kategorin är svår att hitta.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Fält</th>
+<th>Vad du anger</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Java SDK Path</td>
+<td>Hela mappsökvägen från <code>java_home -v 17</code>, inklusive <code>Contents/Home</code>.</td>
+</tr>
+<tr>
+<td>Android SDK Path</td>
+<td>Android SDK Location, exempelvis <code>/Users/anna/Library/Android/sdk</code>.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Här ska du använda <strong>riktiga absoluta sökvägar</strong>. Klistra inte in <code>$HOME</code>, ett exempelanvändarnamn eller hela sökvägen till <code>adb</code> i SDK-fältet. SDK-fältet ska peka på mappen som innehåller <code>platform-tools</code>.</p>
+<p>Inställningarna gäller datorns editor. Projektets OpenXR-inställningar ligger däremot i <strong>Project Settings</strong>. De två fönstren har olika uppgifter. <a href="https://docs.godotengine.org/en/4.7/tutorials/export/exporting_for_android.html">Godots sökvägsinställningar</a></p>
+<h2 id="quest">5. Förbered Meta Quest 3</h2>
+<ol>
+<li>Använd Meta-kontot som är kopplat till ditt headset. Följ Metas guide för att <strong>skapa eller ansluta till en utvecklarorganisation</strong> och genomföra kontoverifieringen.</li>
+<li>Öppna <strong>Meta Horizon-appen</strong> på mobilen. Välj ditt Quest 3 och headsetets inställningar. Aktivera <strong>Developer Mode / Utvecklarläge</strong>. Om valet saknas, kontrollera organisation, verifiering och att rätt konto används.</li>
+<li>Starta headsetet och anslut det till Macen med en <strong>USB-datakabel</strong>.</li>
+<li>Ta på headsetet. Godkänn <strong>Allow USB debugging</strong> för din dator. Välj <strong>Always allow from this computer</strong> om det är din egen betrodda utvecklingsdator.</li>
+<li>Om du bara får en fråga om filåtkomst är det inte samma sak som USB-debuggning. Kör <code>adb devices -l</code> i nästa steg och titta efter behörighetsdialogen igen.</li>
+</ol>
+<p>Exakt menyplacering kan ändras med Horizon OS och mobilappen. Följ den aktuella <a href="https://developers.meta.com/horizon/documentation/native/android/mobile-device-setup/">Meta-guiden för Device Setup</a>. Metas särskilda Oculus ADB-drivrutin gäller <strong>Windows</strong>; den ska inte installeras på Mac.</p>
+<h2 id="adb">6. Kontrollera USB innan du bygger</h2>
+<p>Kör i Terminal:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; devices -l
+</code></pre></div>
+<p>Ett förenklat lyckat resultat:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>List of devices attached
+QUEST_SERIENUMMER    device
+</code></pre></div>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Resultat</th>
+<th>Nästa steg</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>device</code></td>
+<td>Anslutningen är klar. Fortsätt till exporten.</td>
+</tr>
+<tr>
+<td><code>unauthorized</code></td>
+<td>Godkänn USB-debuggning inne i Quest.</td>
+</tr>
+<tr>
+<td>Tom lista</td>
+<td>Kontrollera datakabel, utvecklarläge, USB-port och att headsetet är vaket.</td>
+</tr>
+<tr>
+<td><code>offline</code></td>
+<td>Återanslut och prova att starta om ADB.</td>
+</tr>
+<tr>
+<td>Flera enheter</td>
+<td>Koppla från andra Android-enheter eller välj rätt Quest vid deploy.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Att Quest laddas bevisar inte att datakabeln fungerar. Godot kan inte hitta en enhet som ADB inte ser. Metas installationsguide och Androids ADB-dokumentation beskriver samma krav på behörighet. <a href="https://developer.android.com/tools/adb">Android: enhetsanslutning</a> · <a href="06-felsokning.html#usb">Felsök USB</a></p>
+<h2 id="export">7. Skapa Android-exporten</h2>
+<p>Öppna ditt Godot-projekt. Kontrollera <strong>OpenXR Enabled</strong>, <strong>XR Shaders Enabled</strong> och att <code>main.tscn</code> är huvudscen. Spara allt.</p>
+<p>Välj <strong>Project → Install Android Build Template</strong> och installera för din editorversion. Öppna därefter <strong>Project → Export → Add → Android</strong>. Döp exportprofilen till <strong>Meta Quest</strong>.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Exportinställning</th>
+<th>Värde för kursen</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runnable</td>
+<td>På</td>
+</tr>
+<tr>
+<td>Gradle Build → Use Gradle Build</td>
+<td>På</td>
+</tr>
+<tr>
+<td>Export Format</td>
+<td>APK</td>
+</tr>
+<tr>
+<td>Architectures → arm64-v8a</td>
+<td>På (Quest använder ARM64)</td>
+</tr>
+<tr>
+<td>XR Features → XR Mode</td>
+<td>OpenXR</td>
+</tr>
+<tr>
+<td>Package → Unique Name</td>
+<td><code>com.example.vrstart</code></td>
+</tr>
+<tr>
+<td>Package → Name</td>
+<td>VR Start</td>
+</tr>
+<tr>
+<td>Version → Code</td>
+<td>Börja med 1; höj när det behövs vid uppdatering.</td>
+</tr>
+</tbody>
+</table></div>
+<p>För denna övning räcker ARM64; andra arkitekturer kan stängas av. Exportfönstret visar saknade beroenden längst ner. Åtgärda dessa innan du försöker starta appen. Använd debug-export för utveckling, och låt projektets vanliga resursberoenden följa med. <a href="https://docs.godotengine.org/en/4.7/tutorials/xr/deploying_to_android.html">Godots Android-XR-export</a></p>
+<p><strong>Behövs OpenXR Vendors?</strong> Inte för kursens grundtest. Från 4.6 är tillägget valfritt för många Android-XR-enheter. Behöver du Meta-specifika funktioner installerar du en kompatibel utgåva och aktiverar rätt vendor i exportprofilen. Börja med standard-OpenXR och lägg till Vendors först när grundtestet fungerar. <a href="https://godotvr.github.io/godot_openxr_vendors/">Vendors-projektet</a></p>
+<p><strong>Texturvarning om ETC2/ASTC?</strong> Följ Godots exportvarning och aktivera den efterfrågade importinställningen i <strong>Project Settings → Rendering → Textures → VRAM Compression</strong>. Sök efter <code>ETC2</code> med Advanced Settings på. Låt importen bli färdig före nästa bygge. Se <a href="06-felsokning.html#resurser">texturfelsökningen</a>.</p>
+<h2 id="kor">8. Kör med One-click deploy</h2>
+<ol>
+<li>Låt Quest vara anslutet, vaket och godkänt för USB-debuggning.</li>
+<li>Spara scener och script i Godot.</li>
+<li>Använd <strong>Android-/Remote Deploy-knappen uppe till höger</strong> och välj Quest 3. Den dyker upp när Android-exportprofilen är Runnable och enheten känns igen.</li>
+<li>Vänta medan Godot bygger, installerar och startar appen. Första Gradle-bygget behöver internet för beroenden.</li>
+<li>Ta på headsetet och kontrollera att du ser ditt golv. Vrid huvudet: perspektivet ska följa med.</li>
+</ol>
+<p>Om Godot erbjuder <strong>skärmspegling / scrcpy / embedded device view</strong>, lämna den avstängd för första testet. Spelet kan köras på Quest även om en speglingsprocess på Mac inte startar. <a href="https://docs.godotengine.org/en/4.7/tutorials/export/one-click_deploy.html">One-click deploy</a></p>
+<p><strong>Förväntat resultat:</strong> Appen startar i headsetet, scenen syns och huvudspårningen fungerar. Fungerar detta kan du fortsätta med <a href="04-spelaren.html">händer och rörelse</a>.</p>
+<h2 id="manuellt">9. Alternativ: exportera APK och installera manuellt</h2>
+<p>Det här är användbart för att skilja ett exportfel från ett fel i Godots automatiska start. I <strong>Project → Export</strong>, välj Meta Quest och <strong>Export Project</strong>. Behåll <strong>Export With Debug</strong> och spara som <strong>vr-start.apk</strong> i Hämtade filer (Downloads).</p>
+<p>Installera och ersätt en tidigare installation med samma signering:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; install -r &quot;$HOME/Downloads/vr-start.apk&quot;
+</code></pre></div>
+<p>Resultatet ska sluta med <strong>Success</strong>. Byt filsökväg om du sparade någon annanstans. Kontrollera paketet:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; shell pm list packages com.example.vrstart
+</code></pre></div>
+<p>Starta appen:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; shell monkey -p com.example.vrstart -c android.intent.category.LAUNCHER 1
+</code></pre></div>
+<p>Paketnamnet måste vara samma som i exportprofilen. <code>Events injected: 1</code> betyder att startförsöket skickades, inte att VR-spelet säkert fortsätter fungera. Vid omedelbar stängning: läs <a href="06-felsokning.html#logcat">logcat</a>. Installerade utvecklingsappar kan också hittas i headsetets appbibliotek under <strong>Unknown Sources / Okända källor</strong>, beroende på OS-version. <a href="https://developer.android.com/tools/adb">Android ADB</a> · <a href="https://developer.android.com/studio/test/other-testing-tools/monkey">Android Monkey</a></p>
+<h2 id="scrcpy">10. Valfri skärmspegling med scrcpy</h2>
+<p>Börja med detta först när appen fungerar inne i headsetet. Installera scrcpy från dess <a href="https://github.com/Genymobile/scrcpy/blob/master/doc/macos.md">officiella macOS-guide</a>. Om du redan använder Homebrew:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>brew install scrcpy
+command -v scrcpy
+scrcpy --version
+</code></pre></div>
+<p>På Apple Silicon är sökvägen ofta <code>/opt/homebrew/bin/scrcpy</code>; använd det verkliga svaret från <code>command -v</code>. Om Godot ber om <strong>scrcpy Path</strong> anger du den fullständiga sökvägen där.</p>
+<p>Låt scrcpy använda samma ADB som Godots Android SDK:</p>
+<div class="code-block"><div class="code-toolbar"><span>bash</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>ADB=&quot;$HOME/Library/Android/sdk/platform-tools/adb&quot; scrcpy --no-audio
+</code></pre></div>
+<p>Installera inte ytterligare ADB-versioner för att lösa ett rent scrcpy-fel. Ett svart speglingsfönster betyder inte automatiskt att bilden i headsetet är svart. <a href="https://github.com/Genymobile/scrcpy/blob/master/FAQ.md">scrcpy: ADB-konflikter</a></p>
+<h2 id="nasta-gang">11. Nästa arbetspass</h2>
+<p>Anslut Quest, kontrollera att det känns igen, spara och gör One-click deploy igen. Testa varje ny funktion separat. Du behöver inte installera om Android Studio, Java eller exportmallar varje gång.</p>
+<p>Om du vill testa utan kabel efter installationen: starta appen direkt från headsetets bibliotek. USB behövs för den här guidens installation och felsökning, inte för att en fristående app ska köras. Trådlös ADB är en senare möjlighet när USB-flödet redan är stabilt. <a href="https://developer.android.com/tools/adb#connect-to-a-device-over-wi-fi">Androids trådlösa debuganslutning</a></p>
+<div class="checkpoint" data-checklist="mac"><h3>Min installation är klar</h3><label><input type="checkbox"> Godot och exportmallarna har samma fullständiga versionsnummer.</label><label><input type="checkbox"> Java 17 och alla SDK-paket är installerade.</label><label><input type="checkbox"> Godot har rätt Java SDK Path och Android SDK Path.</label><label><input type="checkbox"> Quest visas som device i ADB.</label><label><input type="checkbox"> APK:n byggs och installeras.</label><label><input type="checkbox"> Min scen fungerar inne i headsetet.</label></div><nav class="page-nav" aria-label="Mellan kapitel"><a href="02-forsta-scenen.html"><small>← Föregående</small>Din första VR-scen</a><a href="04-spelaren.html"><small>Nästa →</small>Händer och rörelse</a></nav></article></div></main>
+<footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Granskat 20 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>

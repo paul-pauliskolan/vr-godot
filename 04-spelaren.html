@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Koppla kontrollerna, visa händer och rör dig i världen med XR Tools."><meta name="theme-color" content="#f5f7fc"><title>Händer och rörelse · VR med Godot</title><script src="js/theme.js"></script><link rel="stylesheet" href="css/style.css"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="js/search-index.js" defer></script><script src="js/app.js" defer></script></head>
+<body data-page="04-spelaren"><a class="skip-link" href="#main">Hoppa till innehållet</a>
+<header class="navbar"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> VR med Godot</a><form class="site-search" role="search"><label class="sr-only" for="site-query">Sök i hela guiden</label><input id="site-query" type="search" placeholder="Sök i guiden …" autocomplete="off"><button aria-label="Sök" type="submit">⌕</button></form><button class="icon-button" id="menu-toggle" aria-label="Öppna kapitelmenyn" aria-controls="chapter-dialog" aria-expanded="false">☰</button><button class="icon-button" id="theme-toggle" aria-label="Byt färgtema" aria-pressed="false">◐</button></header>
+<dialog id="chapter-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-heading"><h2 id="menu-heading">Alla kapitel</h2><button class="icon-button" data-close aria-label="Stäng kapitelmenyn">✕</button></div><a class="home-link" href="index.html">← Till startsidan</a><nav aria-label="Kapitel"><a class="chapter-link" href="01-start.html"><span class="chapter-number">01</span><span><strong>Börja här</strong><small>Installera Godot och förstå arbetsflödet innan du börjar bygga.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="02-forsta-scenen.html"><span class="chapter-number">02</span><span><strong>Din första VR-scen</strong><small>Bygg golv, ljus och en XR-kamera. Lägg till svenskkommenterad startkod.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="03-macos-quest.html"><span class="chapter-number">03</span><span><strong>Från Mac till Quest 3</strong><small>Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="04-spelaren.html" aria-current="page"><span class="chapter-number">04</span><span><strong>Händer och rörelse</strong><small>Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="05-objekt.html"><span class="chapter-number">05</span><span><strong>Bord och greppbara objekt</strong><small>Skapa kuber du kan plocka upp och ett bord att ställa dem på.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="06-felsokning.html"><span class="chapter-number">06</span><span><strong>Felsök steg för steg</strong><small>Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="07-kallor.html"><span class="chapter-number">07</span><span><strong>Källor och versionskontroll</strong><small>Läs dokumentationen, jämförelserna och vad som ändrats från videon.</small></span><span class="arrow" aria-hidden="true">↗</span></a></nav></dialog>
+<dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-heading"><h2 id="search-heading">Sök i guiden</h2><button class="icon-button" data-close aria-label="Stäng sökresultaten">✕</button></div><label for="dialog-query">Sökord</label><input id="dialog-query" type="search" placeholder="Till exempel USB eller grepp"><p id="search-count" class="muted" aria-live="polite"></p><div id="search-results"></div></dialog>
+<main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 04</span></div><header class="chapter-header"><p class="eyebrow">Bygg i Godot · Kapitel 04</p><h1>Händer och rörelse</h1><p class="subtitle">Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-20</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
+<ul>
+<li><a href="#xr-tools">1. Installera Godot XR Tools</a></li>
+<li><a href="#kontroller">2. Lägg till vänster och höger kontroll</a></li>
+<li><a href="#hander">3. Visa händer</a></li>
+<li><a href="#actions">4. Kontrollera OpenXR action map</a></li>
+<li><a href="#rorelse">5. Lägg till förflyttning</a></li>
+<li><a href="#pickup">6. Ge båda händerna en greppfunktion</a></li>
+<li><a href="#test">7. Testa en funktion i taget</a></li>
+</ul>
+</div>
+</details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><h2 id="xr-tools">1. Installera Godot XR Tools</h2>
+<p><strong>Förutsättning:</strong> Du har slutfört <a href="03-macos-quest.html#kor">kapitel 3</a> och sett grundscenen i headsetet. Öppna Godots <strong>AssetLib / Asset Store</strong>, sök efter <strong>Godot XR Tools</strong> och välj Godot 4-utgåvan från GodotVR-projektet. Installera i projektet och vänta tills importen är färdig.</p>
+<p>Öppna <strong>Project → Project Settings → Plugins</strong> och aktivera <strong>Godot XR Tools</strong>. Notera versionen du installerar. Läs tilläggets versionskrav innan uppgradering och spara en fungerande kopia av projektet. Importfel ska lösas innan du exporterar vidare. <a href="https://godotvr.github.io/godot-xr-tools/docs/installation/">Installation</a> · <a href="https://github.com/GodotVR/godot-xr-tools/releases">Utgåvor och versionskrav</a></p>
+<p>OpenXR aktiverades i kapitel 2 och provades på Quest i kapitel 3. XR Tools ersätter inte den inställningen. Behåll vårt <code>main.gd</code>; lägg inte samtidigt till tilläggets alternativa <code>start_xr.tscn</code>.</p>
+<h2 id="kontroller">2. Lägg till vänster och höger kontroll</h2>
+<p>Öppna <strong>scenes/xr_player.tscn</strong>. Lägg till två <strong>XRController3D</strong> direkt under <code>XRPlayer</code>.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Nodnamn</th>
+<th>Tracker</th>
+<th>Pose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>controller_left</td>
+<td>left_hand</td>
+<td>grip</td>
+</tr>
+<tr>
+<td>controller_right</td>
+<td>right_hand</td>
+<td>grip</td>
+</tr>
+</tbody>
+</table></div>
+<p>Välj värdena i Inspector. Om tracker visas som en sökväg väljer du motsvarande vänster eller höger hand i listan. Namnet på noden räcker inte: det är <strong>Tracker</strong> som avgör vilken fysisk kontroll noden följer.</p>
+<p>Håll kontrollernas skala vid <code>(1, 1, 1)</code>. Spårningen sätter deras position när spelet körs. <a href="https://docs.godotengine.org/en/4.7/tutorials/xr/setting_up_xr.html">Godots XR-noder</a></p>
+<h2 id="hander">3. Visa händer</h2>
+<ol>
+<li>Markera <code>controller_left</code> och välj <strong>Instantiate Child Scene</strong> (kedjeikonen i scenpanelen).</li>
+<li>I <strong>Select Scene</strong>: aktivera <strong>Addons</strong> längst nere till höger om pluginets scener inte visas.</li>
+<li>Sök efter <strong>Left Hand Low</strong> eller <code>left_hand_low</code> och lägg till handscenen.</li>
+<li>Upprepa på <code>controller_right</code> med <strong>Right Hand Low</strong>.</li>
+<li>Spara och exportera igen. Vicka på båda kontrollerna och kontrollera att rätt hand följer med.</li>
+</ol>
+<p>Om scenlistans namn skiljer sig, bläddra i <code>addons/godot-xr-tools</code> i FileSystem och använd motsvarande handscen i din installerade version. De här händerna är <strong>modeller som följer kontrollerna</strong>. Det är inte samma funktion som kamerabaserad handspårning utan kontroller. <a href="https://godotvr.github.io/godot-xr-tools/docs/hand_models/">XR Tools: Hand Models</a></p>
+<h2 id="actions">4. Kontrollera OpenXR action map</h2>
+<p>En <strong>action</strong> är en namngiven inmatning, exempelvis ett grepp eller en styrspak. En <strong>binding</strong> kopplar den till en fysisk knapp för en viss kontrolltyp. Spårningen kan fungera även om knappbindningarna är fel.</p>
+<p>Öppna projektets OpenXR action map, normalt <strong>openxr_action_map.tres</strong>, genom FileSystem. Du kan hitta resursen via <strong>Project Settings → XR → OpenXR → Default Action Map</strong>. Kontrollera att en interaction profile för Quest-kontrollerna finns, exempelvis Oculus Touch eller en relevant Meta Touch-profil som stöds av din version.</p>
+<p>Behåll de standardactions som XR Tools förväntar sig. Kontrollera i varje tillagd funktions Inspector vilket <strong>Action</strong>-namn den läser. Det måste motsvara namnet i action map och ha en binding i kontrollprofilen. Skapa inte ett nytt godtyckligt namn för samma knapp. Godots vanliga <strong>Input Map</strong> är inte ersättningen för OpenXR action map. <a href="https://docs.godotengine.org/en/4.7/tutorials/xr/xr_action_map.html">Actions och bindings</a></p>
+<h2 id="rorelse">5. Lägg till förflyttning</h2>
+<p>Markera <code>controller_left</code>, välj <strong>Instantiate Child Scene</strong> och sök efter <strong>Movement Direct</strong>. Lägg till den rörelsefunktion som använder styrspaken. Markera därefter <code>controller_right</code> och lägg till <strong>Movement Turn</strong>.</p>
+<p>Funktionerna ska vara barn till den kontroll vars styrspak de läser. I Inspector för svängfunktionen väljer du stegvis rotation, <strong>snap turn</strong>, till exempel <strong>30°</strong>. Börja med låg förflyttningshastighet. Prova först en liten rörelse, sedan en sväng.</p>
+<p>I aktuella XR Tools skapas <strong>PlayerBody</strong> automatiskt när en rörelsefunktion behöver den. Kontrollera därför scenen innan du lägger till en till. Om din installerade version kräver att kroppen läggs till manuellt använder du pluginets färdiga Player Body-scen under XROrigin3D. Lägg inte på en extra egen kapsel om pluginet redan hanterar kroppen. <a href="https://godotvr.github.io/godot-xr-tools/docs/direct/">Direct Movement</a> · <a href="https://godotvr.github.io/godot-xr-tools/docs/turn/">Turn</a> · <a href="https://godotvr.github.io/godot-xr-tools/docs/player_body/">Player Body</a></p>
+<p><strong>Kontroll:</strong> Spelaren ska stå kvar på golvet och kunna röra sig längs det. Om du faller igenom: kontrollera golvets collision och att PlayerBodys mask inkluderar golvets lager. Ändra inte kamerans höjd för att dölja ett kollisionsfel.</p>
+<h2 id="pickup">6. Ge båda händerna en greppfunktion</h2>
+<p>Instansiera <strong>addons/godot-xr-tools/functions/function_pickup.tscn</strong> under <code>controller_left</code>. Lägg en andra instans under <code>controller_right</code>. I scenvalet kan du söka efter <strong>Function Pickup</strong>.</p>
+<p>Pickup-funktionen söker efter särskilda pickable-objekt. En vanlig BoxMesh blir inte automatiskt greppbar. I nästa kapitel bygger du rätt typ av objekt. <a href="https://godotvr.github.io/godot-xr-tools/docs/pickup/">Pickup Function</a></p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>XRPlayer (XROrigin3D)
+├── XRCamera3D
+├── controller_left (XRController3D)
+│   ├── LeftHandLow
+│   ├── MovementDirect
+│   └── FunctionPickup
+└── controller_right (XRController3D)
+    ├── RightHandLow
+    ├── MovementTurn
+    └── FunctionPickup
+</code></pre></div>
+<p>Trädet visar dina egna tillägg. PlayerBody kan skapas automatiskt av rörelsekomponenten. De exakta visningsnamnen kan variera mellan XR Tools-versioner.</p>
+<h2 id="test">7. Testa en funktion i taget</h2>
+<div class="checkpoint" data-checklist="player"><h3>Spelaren fungerar när …</h3><label><input type="checkbox"> Huvudets rörelser styr kameran.</label><label><input type="checkbox"> Vänster och höger hand följer rätt kontroll.</label><label><input type="checkbox"> Vänster styrspak flyttar mig på golvet.</label><label><input type="checkbox"> Höger styrspak svänger i steg.</label><label><input type="checkbox"> Båda kontrollerna har en FunctionPickup.</label></div>
+
+<p>Om händerna följer med men knapparna inte reagerar: börja med <a href="#actions">action map</a>. Om något script inte kan tolkas: följ <a href="06-felsokning.html#plugin">pluginfelsökningen</a>.</p><nav class="page-nav" aria-label="Mellan kapitel"><a href="03-macos-quest.html"><small>← Föregående</small>Från Mac till Quest 3</a><a href="05-objekt.html"><small>Nästa →</small>Bord och greppbara objekt</a></nav></article></div></main>
+<footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Granskat 20 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>
