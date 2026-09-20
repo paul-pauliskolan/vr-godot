@@ -1,6 +1,6 @@
 # VR med Godot 4.7 och Meta Quest 3
 
-Svenskt läromedel med sju kapitel och startsida. Designen följer Pauliskolans
+Svenskt läromedel med åtta kapitel och startsida. Designen följer Pauliskolans
 prog1-python. Innehållet är bearbetat från de två ursprungliga Markdown-filerna
 i denna mapp och kontrollerat mot källorna på `07-kallor.html`.
 
@@ -51,3 +51,11 @@ körning behöver göras på den aktuella datorn och headsetet.
 
 Källor kontrollerade 2026-09-20. Kursen redovisar motstridiga renderer-råd och
 versionsskillnader uttryckligen på källsidan.
+
+## Arbetsflöde för det fortsatta spelprojektet
+
+Utvecklingsanteckningar, idéer och tutorialutkast skapas först tillsammans med
+Godot-projektet i dess `docs/`-mapp. Endast funktioner som har byggts och
+verifierats förs över till webbplatsens `content/`-kapitel. På så sätt följer
+kursmaterialet den faktiska spelversionen utan att webbbygget får skriva i eller
+ändra själva spelet.
