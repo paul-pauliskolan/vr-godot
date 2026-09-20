@@ -1,4 +1,4 @@
-<div class="callout"><strong>Obegränsad ammunition i första versionen.</strong><p>Vi bygger projektilens rörelse och träff först. Magasin, omladdning, rekyl, ljud och mynningsflamma läggs till först när grundmekaniken är stabil.</p></div>
+<div class="callout"><strong>Obegränsad ammunition i första versionen.</strong><p>Vi bygger projektilens rörelse och träff först. Magasin, omladdning, rekyl och ljud läggs till först när grundmekaniken är stabil.</p></div>
 
 ## Vad vi bygger {#vad-vi-bygger}
 
@@ -18,6 +18,8 @@ De tre blå testkuberna är redan `RigidBody3D`. När en kula träffar dem kan d
 | Projektilens livstid | 2 sekunder |
 
 Värdena ligger i ett rimligt område för en pistolprojektil. En riktig kula är så snabb att den nästan inte syns på de korta avstånden i testscenen.
+
+Pistolen visar därför en mycket kort orange mynningsflamma när `fire()` anropas. Flamman bekräftar att klicket registrerades utan att projektilens realistiska hastighet behöver sänkas.
 
 ## Problemet med mycket snabba objekt {#tunnling}
 
@@ -141,6 +143,7 @@ const BULLET_SCENE := preload("res://Blueprints/bullet.tscn")
 
 @onready var pistol: XRToolsPickable = get_parent() as XRToolsPickable
 @onready var muzzle_point: Marker3D = pistol.get_node("MuzzlePoint")
+@onready var muzzle_flash: MeshInstance3D = pistol.get_node("MuzzlePoint/MuzzleFlash")
 @onready var cooldown: Timer = $Cooldown
 
 func _ready() -> void:
@@ -155,6 +158,13 @@ func fire() -> void:
 	bullet.global_transform = muzzle_point.global_transform
 	bullet.launch(-muzzle_point.global_basis.z, pistol)
 	cooldown.start(seconds_between_shots)
+	_show_muzzle_flash()
+
+func _show_muzzle_flash() -> void:
+	muzzle_flash.visible = true
+	await get_tree().create_timer(0.04).timeout
+	if is_instance_valid(muzzle_flash):
+		muzzle_flash.visible = false
 
 func _on_action_pressed(_pickable: XRToolsPickable) -> void:
 	fire()
@@ -169,6 +179,8 @@ Pistol
 ```
 
 Sätt `Cooldown` till `One Shot` och `Wait Time` till `0.12`. Timern hindrar ett enda knapptryck från att skapa orimligt många projektiler, men någon ammunition förbrukas inte.
+
+Lägg också en liten orange, normalt dold `MeshInstance3D` med namnet `MuzzleFlash` under `MuzzlePoint`. Den visas i `0,04` sekunder vid varje godkänt skott.
 
 ## Desktop och XR använder samma fire {#gemensam-fire}
 

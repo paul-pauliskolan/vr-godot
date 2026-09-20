@@ -9,6 +9,7 @@
 <li><a href="#varfor-desktoplage">Varför ett separat testläge?</a></li>
 <li><a href="#tva-spelare">Två spelare, samma spelvärld</a></li>
 <li><a href="#desktop-kontroller">Kontroller i desktopläget</a></li>
+<li><a href="#hoppa-huka">Hoppa och huka</a></li>
 <li><a href="#desktop-pickup">Plocka upp utan XR-kontroller</a></li>
 <li><a href="#dubbelkodning">Blir det mycket dubbelkodning?</a></li>
 <li><a href="#kan-testas">Vad kan testas utan headset?</a></li>
@@ -65,6 +66,18 @@ func _ready() -&gt; void:
 <td>Plocka upp eller släpp ett greppbart föremål</td>
 </tr>
 <tr>
+<td>Vänsterklick med ett vapen</td>
+<td>Skjut</td>
+</tr>
+<tr>
+<td>Mellanslag</td>
+<td>Hoppa</td>
+</tr>
+<tr>
+<td>Vänster Ctrl eller C</td>
+<td>Huka så länge tangenten hålls nere</td>
+</tr>
+<tr>
 <td>Esc</td>
 <td>Släpp muspekaren</td>
 </tr>
@@ -75,9 +88,13 @@ func _ready() -&gt; void:
 </tbody>
 </table></div>
 <p>Spelaren använder gravitation och <code>move_and_slide()</code>. Kollisionskapseln har samma collision layer och mask som XR-spelarens kropp, så båda spelarna möter samma golv och hinder.</p>
+<h2 id="hoppa-huka">Hoppa och huka</h2>
+<p>Mellanslag ger spelaren en uppåtriktad hastighet när kroppen står på golvet. Gravitationen tar sedan tillbaka spelaren till marken.</p>
+<p>När vänster Ctrl eller C hålls nere sänks både kameran och kollisionskapseln gradvis. Det är viktigt att ändra båda: om bara kameran sänks ser spelaren hukad ut men den osynliga kroppen är fortfarande fullhög.</p>
 <h2 id="desktop-pickup">Plocka upp utan XR-kontroller</h2>
 <p>En <code>RayCast3D</code> går från kameran genom siktet. När spelaren högerklickar kontrollerar desktopspelaren om strålen träffar ett greppbart XR Tools-föremål. Föremålet flyttas då till en <code>HoldPoint</code> framför kameran. Nästa högerklick släpper tillbaka det i spelvärlden och aktiverar fysiken igen.</p>
 <p>Funktionen ligger i desktopspelaren, inte i pistolen. Därför fungerar samma kod för den primitiva pistolen, testkuberna och framtida greppbara föremål.</p>
+<p>Ett hållet fysikobjekt sätts till kinematiskt frysläge och synkas med <code>HoldPoint</code> varje bildruta. Därför följer pistolen både spelarens förflyttning och musens kamerarotation utan att fysikmotorn lämnar kvar den i världen.</p>
 <h2 id="dubbelkodning">Blir det mycket dubbelkodning?</h2>
 <p>Nej, inte om vi håller gränsen tydlig. Det som beror på hur personen styr spelet behöver vara separat. Själva spelets regler ska vara gemensamma.</p>
 <div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
@@ -146,9 +163,10 @@ Musklick ─────┘
 <li>Kontrollera att Output visar <code>Inget aktivt OpenXR-headset: startar desktop-spelaren.</code></li>
 <li>Gå runt med WASD och musen och kontrollera att spelaren stannar mot hindret.</li>
 <li>Rikta siktet mot ett greppbart föremål och högerklicka för att plocka upp och släppa det.</li>
+<li>Tryck på mellanslag för att hoppa och håll Ctrl eller C för att huka.</li>
 </ol>
 <p>Om OpenXR är aktivt väljer spelet i stället XR-spelaren automatiskt. Du behöver inte ändra huvudscenen mellan testen.</p>
-<div class="checkpoint" data-checklist="desktoplage"><h3>Kontrollera desktopläget</h3><label><input type="checkbox"> Spelet startar utan ett anslutet headset.</label><label><input type="checkbox"> WASD eller piltangenter flyttar spelaren.</label><label><input type="checkbox"> Musen styr kameran.</label><label><input type="checkbox"> Golvet och hindret stoppar spelaren.</label><label><input type="checkbox"> Ett greppbart föremål kan plockas upp och släppas med högerklick.</label><label><input type="checkbox"> XR-spelaren startar fortfarande när OpenXR är aktivt.</label></div>
+<div class="checkpoint" data-checklist="desktoplage"><h3>Kontrollera desktopläget</h3><label><input type="checkbox"> Spelet startar utan ett anslutet headset.</label><label><input type="checkbox"> WASD eller piltangenter flyttar spelaren.</label><label><input type="checkbox"> Musen styr kameran och ett hållet vapen följer med.</label><label><input type="checkbox"> Golvet och hindret stoppar spelaren.</label><label><input type="checkbox"> Ett greppbart föremål kan plockas upp och släppas med högerklick.</label><label><input type="checkbox"> Mellanslag får spelaren att hoppa.</label><label><input type="checkbox"> Ctrl eller C sänker både kameran och kollisionskapseln.</label><label><input type="checkbox"> XR-spelaren startar fortfarande när OpenXR är aktivt.</label></div>
 
 <h2 id="regel-framat">Regeln för fortsatt utveckling</h2>
 <p>Nya spelmekaniker byggs som fristående scener och skript när det är möjligt. Spelarna ansvarar bara för inmatning och för att uttrycka spelarens avsikt. På så sätt kan samma monster, vapen och bana användas i både XR- och desktopläget utan kopierad spelkod.</p><nav class="page-nav" aria-label="Mellan kapitel"><a href="08-spelprojekt.html"><small>← Föregående</small>Från XR-prototyp till spel</a><a href="10-pistol.html"><small>Nästa →</small>Bygg en enkel pistol</a></nav></article></div></main>

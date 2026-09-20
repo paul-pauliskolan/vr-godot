@@ -11,8 +11,9 @@
 <li><a href="#hander">3. Visa händer</a></li>
 <li><a href="#actions">4. Kontrollera OpenXR action map</a></li>
 <li><a href="#rorelse">5. Lägg till förflyttning</a></li>
-<li><a href="#pickup">6. Ge båda händerna en greppfunktion</a></li>
-<li><a href="#test">7. Testa en funktion i taget</a></li>
+<li><a href="#hopp-hukning">6. Lägg till hopp och hukning</a></li>
+<li><a href="#pickup">7. Ge båda händerna en greppfunktion</a></li>
+<li><a href="#test">8. Testa en funktion i taget</a></li>
 </ul>
 </div>
 </details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><h2 id="xr-tools">1. Installera Godot XR Tools</h2>
@@ -62,7 +63,44 @@
 <p>Funktionerna ska vara barn till den kontroll vars styrspak de läser. I Inspector för svängfunktionen väljer du stegvis rotation, <strong>snap turn</strong>, till exempel <strong>30°</strong>. Börja med låg förflyttningshastighet. Prova först en liten rörelse, sedan en sväng.</p>
 <p>I aktuella XR Tools skapas <strong>PlayerBody</strong> automatiskt när en rörelsefunktion behöver den. Kontrollera därför scenen innan du lägger till en till. Om din installerade version kräver att kroppen läggs till manuellt använder du pluginets färdiga Player Body-scen under XROrigin3D. Lägg inte på en extra egen kapsel om pluginet redan hanterar kroppen. <a href="https://godotvr.github.io/godot-xr-tools/docs/direct/">Direct Movement</a> · <a href="https://godotvr.github.io/godot-xr-tools/docs/turn/">Turn</a> · <a href="https://godotvr.github.io/godot-xr-tools/docs/player_body/">Player Body</a></p>
 <p><strong>Kontroll:</strong> Spelaren ska stå kvar på golvet och kunna röra sig längs det. Om du faller igenom: kontrollera golvets collision och att PlayerBodys mask inkluderar golvets lager. Ändra inte kamerans höjd för att dölja ett kollisionsfel.</p>
-<h2 id="pickup">6. Ge båda händerna en greppfunktion</h2>
+<h2 id="hopp-hukning">6. Lägg till hopp och hukning</h2>
+<p>I det här projektet följer vi Metas vanliga kontrollkarta för artificiell förflyttning:</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Kontroll</th>
+<th>Funktion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vänster styrspak</td>
+<td>Gå</td>
+</tr>
+<tr>
+<td>Höger styrspak åt sidan</td>
+<td>Sväng</td>
+</tr>
+<tr>
+<td><strong>A på höger kontroll</strong></td>
+<td>Hoppa</td>
+</tr>
+<tr>
+<td><strong>Klick på höger styrspak</strong></td>
+<td>Växla mellan stående och hukad</td>
+</tr>
+</tbody>
+</table></div>
+<p>Det är alltså <strong>ett klick på styrspaken</strong>, som om den vore en knapp. Att dra höger styrspak nedåt gör inte spelaren hukad; styrspakens riktning är fortfarande reserverad för svängning. B används ofta för tillbaka eller avbryt i menyer och används därför inte som hoppknapp här. Se <a href="https://developers.meta.com/horizon/design/locomotion-input-maps/">Metas rekommenderade locomotion-bindningar</a>.</p>
+<ol>
+<li>Markera <code>controller_right</code> och instansiera XR Tools-scenen <strong>Movement Jump</strong>.</li>
+<li>Markera <code>MovementJump</code> och sätt <strong>Jump Button Action</strong> till <code>ax_button</code>. Eftersom noden ligger under höger kontroll betyder det höger <strong>A</strong>.</li>
+<li>Markera <code>controller_right</code> igen och instansiera <strong>Movement Crouch</strong>.</li>
+<li>Sätt <strong>Crouch Button Action</strong> till <code>primary_click</code>, <strong>Crouch Type</strong> till <code>Toggle</code> och <strong>Crouch Height</strong> till <code>1.0</code> meter.</li>
+</ol>
+<p><code>Toggle</code> innebär att ett klick hukar spelaren och nästa klick reser spelaren. Funktionen använder samma PlayerBody som den övriga rörelsen, så lägg inte till en separat kropp eller egen hoppfysik.</p>
+<p>Kontrollera i <strong>openxr_action_map.tres</strong> att <code>ax_button</code> är bunden till A på höger kontroll och att <code>primary_click</code> är bunden till höger styrspaksklick. Samma actionnamn kan också ha en binding för vänster kontroll; det är nodens placering under <code>controller_right</code> som väljer höger hand.</p>
+<h2 id="pickup">7. Ge båda händerna en greppfunktion</h2>
 <p>Instansiera <strong>addons/godot-xr-tools/functions/function_pickup.tscn</strong> under <code>controller_left</code>. Lägg en andra instans under <code>controller_right</code>. I scenvalet kan du söka efter <strong>Function Pickup</strong>.</p>
 <p>Pickup-funktionen söker efter särskilda pickable-objekt. En vanlig BoxMesh blir inte automatiskt greppbar. I nästa kapitel bygger du rätt typ av objekt. <a href="https://godotvr.github.io/godot-xr-tools/docs/pickup/">Pickup Function</a></p>
 <div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>XRPlayer (XROrigin3D)
@@ -74,11 +112,13 @@
 └── controller_right (XRController3D)
     ├── RightHandLow
     ├── MovementTurn
+    ├── MovementJump
+    ├── MovementCrouch
     └── FunctionPickup
 </code></pre></div>
 <p>Trädet visar dina egna tillägg. PlayerBody kan skapas automatiskt av rörelsekomponenten. De exakta visningsnamnen kan variera mellan XR Tools-versioner.</p>
-<h2 id="test">7. Testa en funktion i taget</h2>
-<div class="checkpoint" data-checklist="player"><h3>Spelaren fungerar när …</h3><label><input type="checkbox"> Huvudets rörelser styr kameran.</label><label><input type="checkbox"> Vänster och höger hand följer rätt kontroll.</label><label><input type="checkbox"> Vänster styrspak flyttar mig på golvet.</label><label><input type="checkbox"> Höger styrspak svänger i steg.</label><label><input type="checkbox"> Båda kontrollerna har en FunctionPickup.</label></div>
+<h2 id="test">8. Testa en funktion i taget</h2>
+<div class="checkpoint" data-checklist="player"><h3>Spelaren fungerar när …</h3><label><input type="checkbox"> Huvudets rörelser styr kameran.</label><label><input type="checkbox"> Vänster och höger hand följer rätt kontroll.</label><label><input type="checkbox"> Vänster styrspak flyttar mig på golvet.</label><label><input type="checkbox"> Höger styrspak svänger i steg.</label><label><input type="checkbox"> A på höger kontroll får mig att hoppa.</label><label><input type="checkbox"> Ett klick på höger styrspak växlar mellan stående och hukad.</label><label><input type="checkbox"> Båda kontrollerna har en FunctionPickup.</label></div>
 
 <p>Om händerna följer med men knapparna inte reagerar: börja med <a href="#actions">action map</a>. Om något script inte kan tolkas: följ <a href="06-felsokning.html#plugin">pluginfelsökningen</a>.</p><nav class="page-nav" aria-label="Mellan kapitel"><a href="03-macos-quest.html"><small>← Föregående</small>Från Mac till Quest 3</a><a href="05-objekt.html"><small>Nästa →</small>Bord och greppbara objekt</a></nav></article></div></main>
 <footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Granskat 20 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>

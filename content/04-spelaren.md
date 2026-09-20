@@ -47,7 +47,29 @@ I aktuella XR Tools skapas **PlayerBody** automatiskt när en rörelsefunktion b
 
 **Kontroll:** Spelaren ska stå kvar på golvet och kunna röra sig längs det. Om du faller igenom: kontrollera golvets collision och att PlayerBodys mask inkluderar golvets lager. Ändra inte kamerans höjd för att dölja ett kollisionsfel.
 
-## 6. Ge båda händerna en greppfunktion {#pickup}
+## 6. Lägg till hopp och hukning {#hopp-hukning}
+
+I det här projektet följer vi Metas vanliga kontrollkarta för artificiell förflyttning:
+
+| Kontroll | Funktion |
+| --- | --- |
+| Vänster styrspak | Gå |
+| Höger styrspak åt sidan | Sväng |
+| **A på höger kontroll** | Hoppa |
+| **Klick på höger styrspak** | Växla mellan stående och hukad |
+
+Det är alltså **ett klick på styrspaken**, som om den vore en knapp. Att dra höger styrspak nedåt gör inte spelaren hukad; styrspakens riktning är fortfarande reserverad för svängning. B används ofta för tillbaka eller avbryt i menyer och används därför inte som hoppknapp här. Se [Metas rekommenderade locomotion-bindningar](https://developers.meta.com/horizon/design/locomotion-input-maps/).
+
+1. Markera `controller_right` och instansiera XR Tools-scenen **Movement Jump**.
+2. Markera `MovementJump` och sätt **Jump Button Action** till `ax_button`. Eftersom noden ligger under höger kontroll betyder det höger **A**.
+3. Markera `controller_right` igen och instansiera **Movement Crouch**.
+4. Sätt **Crouch Button Action** till `primary_click`, **Crouch Type** till `Toggle` och **Crouch Height** till `1.0` meter.
+
+`Toggle` innebär att ett klick hukar spelaren och nästa klick reser spelaren. Funktionen använder samma PlayerBody som den övriga rörelsen, så lägg inte till en separat kropp eller egen hoppfysik.
+
+Kontrollera i **openxr_action_map.tres** att `ax_button` är bunden till A på höger kontroll och att `primary_click` är bunden till höger styrspaksklick. Samma actionnamn kan också ha en binding för vänster kontroll; det är nodens placering under `controller_right` som väljer höger hand.
+
+## 7. Ge båda händerna en greppfunktion {#pickup}
 
 Instansiera **addons/godot-xr-tools/functions/function_pickup.tscn** under `controller_left`. Lägg en andra instans under `controller_right`. I scenvalet kan du söka efter **Function Pickup**.
 
@@ -63,13 +85,15 @@ XRPlayer (XROrigin3D)
 └── controller_right (XRController3D)
     ├── RightHandLow
     ├── MovementTurn
+    ├── MovementJump
+    ├── MovementCrouch
     └── FunctionPickup
 ```
 
 Trädet visar dina egna tillägg. PlayerBody kan skapas automatiskt av rörelsekomponenten. De exakta visningsnamnen kan variera mellan XR Tools-versioner.
 
-## 7. Testa en funktion i taget {#test}
+## 8. Testa en funktion i taget {#test}
 
-<div class="checkpoint" data-checklist="player"><h3>Spelaren fungerar när …</h3><label><input type="checkbox"> Huvudets rörelser styr kameran.</label><label><input type="checkbox"> Vänster och höger hand följer rätt kontroll.</label><label><input type="checkbox"> Vänster styrspak flyttar mig på golvet.</label><label><input type="checkbox"> Höger styrspak svänger i steg.</label><label><input type="checkbox"> Båda kontrollerna har en FunctionPickup.</label></div>
+<div class="checkpoint" data-checklist="player"><h3>Spelaren fungerar när …</h3><label><input type="checkbox"> Huvudets rörelser styr kameran.</label><label><input type="checkbox"> Vänster och höger hand följer rätt kontroll.</label><label><input type="checkbox"> Vänster styrspak flyttar mig på golvet.</label><label><input type="checkbox"> Höger styrspak svänger i steg.</label><label><input type="checkbox"> A på höger kontroll får mig att hoppa.</label><label><input type="checkbox"> Ett klick på höger styrspak växlar mellan stående och hukad.</label><label><input type="checkbox"> Båda kontrollerna har en FunctionPickup.</label></div>
 
 Om händerna följer med men knapparna inte reagerar: börja med [action map](#actions). Om något script inte kan tolkas: följ [pluginfelsökningen](06-felsokning.html#plugin).

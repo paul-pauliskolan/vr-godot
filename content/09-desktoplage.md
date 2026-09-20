@@ -44,16 +44,27 @@ Koden på webbplatsen visar principen i koncentrerad form. Projektets `main.gd` 
 | WASD eller piltangenter | Gå framåt, bakåt och åt sidorna |
 | Mus | Titta uppåt, nedåt och åt sidorna |
 | Högerklick | Plocka upp eller släpp ett greppbart föremål |
+| Vänsterklick med ett vapen | Skjut |
+| Mellanslag | Hoppa |
+| Vänster Ctrl eller C | Huka så länge tangenten hålls nere |
 | Esc | Släpp muspekaren |
 | Vänsterklick efter Esc | Fånga muspekaren igen |
 
 Spelaren använder gravitation och `move_and_slide()`. Kollisionskapseln har samma collision layer och mask som XR-spelarens kropp, så båda spelarna möter samma golv och hinder.
+
+## Hoppa och huka {#hoppa-huka}
+
+Mellanslag ger spelaren en uppåtriktad hastighet när kroppen står på golvet. Gravitationen tar sedan tillbaka spelaren till marken.
+
+När vänster Ctrl eller C hålls nere sänks både kameran och kollisionskapseln gradvis. Det är viktigt att ändra båda: om bara kameran sänks ser spelaren hukad ut men den osynliga kroppen är fortfarande fullhög.
 
 ## Plocka upp utan XR-kontroller {#desktop-pickup}
 
 En `RayCast3D` går från kameran genom siktet. När spelaren högerklickar kontrollerar desktopspelaren om strålen träffar ett greppbart XR Tools-föremål. Föremålet flyttas då till en `HoldPoint` framför kameran. Nästa högerklick släpper tillbaka det i spelvärlden och aktiverar fysiken igen.
 
 Funktionen ligger i desktopspelaren, inte i pistolen. Därför fungerar samma kod för den primitiva pistolen, testkuberna och framtida greppbara föremål.
+
+Ett hållet fysikobjekt sätts till kinematiskt frysläge och synkas med `HoldPoint` varje bildruta. Därför följer pistolen både spelarens förflyttning och musens kamerarotation utan att fysikmotorn lämnar kvar den i världen.
 
 ## Blir det mycket dubbelkodning? {#dubbelkodning}
 
@@ -105,10 +116,11 @@ Ett riktigt headset behövs fortfarande för att bedöma:
 4. Kontrollera att Output visar `Inget aktivt OpenXR-headset: startar desktop-spelaren.`
 5. Gå runt med WASD och musen och kontrollera att spelaren stannar mot hindret.
 6. Rikta siktet mot ett greppbart föremål och högerklicka för att plocka upp och släppa det.
+7. Tryck på mellanslag för att hoppa och håll Ctrl eller C för att huka.
 
 Om OpenXR är aktivt väljer spelet i stället XR-spelaren automatiskt. Du behöver inte ändra huvudscenen mellan testen.
 
-<div class="checkpoint" data-checklist="desktoplage"><h3>Kontrollera desktopläget</h3><label><input type="checkbox"> Spelet startar utan ett anslutet headset.</label><label><input type="checkbox"> WASD eller piltangenter flyttar spelaren.</label><label><input type="checkbox"> Musen styr kameran.</label><label><input type="checkbox"> Golvet och hindret stoppar spelaren.</label><label><input type="checkbox"> Ett greppbart föremål kan plockas upp och släppas med högerklick.</label><label><input type="checkbox"> XR-spelaren startar fortfarande när OpenXR är aktivt.</label></div>
+<div class="checkpoint" data-checklist="desktoplage"><h3>Kontrollera desktopläget</h3><label><input type="checkbox"> Spelet startar utan ett anslutet headset.</label><label><input type="checkbox"> WASD eller piltangenter flyttar spelaren.</label><label><input type="checkbox"> Musen styr kameran och ett hållet vapen följer med.</label><label><input type="checkbox"> Golvet och hindret stoppar spelaren.</label><label><input type="checkbox"> Ett greppbart föremål kan plockas upp och släppas med högerklick.</label><label><input type="checkbox"> Mellanslag får spelaren att hoppa.</label><label><input type="checkbox"> Ctrl eller C sänker både kameran och kollisionskapseln.</label><label><input type="checkbox"> XR-spelaren startar fortfarande när OpenXR är aktivt.</label></div>
 
 ## Regeln för fortsatt utveckling {#regel-framat}
 
