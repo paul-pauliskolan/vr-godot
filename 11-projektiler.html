@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Skjut snabba kulor, undvik tunnling och flytta fysiska mål med realistisk impuls."><meta name="theme-color" content="#f5f7fc"><title>Skjut realistiska projektiler · VR med Godot</title><script src="js/theme.js"></script><link rel="stylesheet" href="css/style.css"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="js/search-index.js" defer></script><script src="js/app.js" defer></script></head>
+<body data-page="11-projektiler"><a class="skip-link" href="#main">Hoppa till innehållet</a>
+<header class="navbar"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> VR med Godot</a><form class="site-search" role="search"><label class="sr-only" for="site-query">Sök i hela guiden</label><input id="site-query" type="search" placeholder="Sök i guiden …" autocomplete="off"><button aria-label="Sök" type="submit">⌕</button></form><button class="icon-button" id="menu-toggle" aria-label="Öppna kapitelmenyn" aria-controls="chapter-dialog" aria-expanded="false">☰</button><button class="icon-button" id="theme-toggle" aria-label="Byt färgtema" aria-pressed="false">◐</button></header>
+<dialog id="chapter-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-heading"><h2 id="menu-heading">Alla kapitel</h2><button class="icon-button" data-close aria-label="Stäng kapitelmenyn">✕</button></div><a class="home-link" href="index.html">← Till startsidan</a><nav aria-label="Kapitel"><a class="chapter-link" href="01-start.html"><span class="chapter-number">01</span><span><strong>Börja här</strong><small>Installera Godot och förstå arbetsflödet innan du börjar bygga.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="02-forsta-scenen.html"><span class="chapter-number">02</span><span><strong>Din första VR-scen</strong><small>Bygg golv, ljus och en XR-kamera. Lägg till svenskkommenterad startkod.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="03-macos-quest.html"><span class="chapter-number">03</span><span><strong>Från Mac till Quest 3</strong><small>Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="04-spelaren.html"><span class="chapter-number">04</span><span><strong>Händer och rörelse</strong><small>Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="05-objekt.html"><span class="chapter-number">05</span><span><strong>Bord och greppbara objekt</strong><small>Skapa kuber du kan plocka upp och ett bord att ställa dem på.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="06-felsokning.html"><span class="chapter-number">06</span><span><strong>Felsök steg för steg</strong><small>Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="07-kallor.html"><span class="chapter-number">07</span><span><strong>Källor och versionskontroll</strong><small>Läs dokumentationen, jämförelserna och vad som ändrats från videon.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="08-spelprojekt.html"><span class="chapter-number">08</span><span><strong>Från XR-prototyp till spel</strong><small>Planera ett enkelt skjutspel och utveckla en liten, testbar funktion i taget.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="09-desktoplage.html"><span class="chapter-number">09</span><span><strong>Testa utan headset</strong><small>Använd ett valfritt desktopläge för snabba tester utan att ersätta XR-spelaren.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="10-pistol.html"><span class="chapter-number">10</span><span><strong>Bygg en enkel pistol</strong><small>Skapa en svart pistol av primitiva former och förbered den för XR-grepp och projektiler.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="11-projektiler.html" aria-current="page"><span class="chapter-number">11</span><span><strong>Skjut realistiska projektiler</strong><small>Skjut snabba kulor, undvik tunnling och flytta fysiska mål med realistisk impuls.</small></span><span class="arrow" aria-hidden="true">↗</span></a></nav></dialog>
+<dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-heading"><h2 id="search-heading">Sök i guiden</h2><button class="icon-button" data-close aria-label="Stäng sökresultaten">✕</button></div><label for="dialog-query">Sökord</label><input id="dialog-query" type="search" placeholder="Till exempel USB eller grepp"><p id="search-count" class="muted" aria-live="polite"></p><div id="search-results"></div></dialog>
+<main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 11</span></div><header class="chapter-header"><p class="eyebrow">Fortsätt bygga · Kapitel 11</p><h1>Skjut realistiska projektiler</h1><p class="subtitle">Skjut snabba kulor, undvik tunnling och flytta fysiska mål med realistisk impuls.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-20</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
+<ul>
+<li><a href="#vad-vi-bygger">Vad vi bygger</a></li>
+<li><a href="#varden">Realistiska värden i liten skala</a></li>
+<li><a href="#tunnling">Problemet med mycket snabba objekt</a></li>
+<li><a href="#projektilscen">Skapa projektilscenen</a></li>
+<li><a href="#bullet-script">Projektilens GDScript</a></li>
+<li><a href="#impuls">Varför kuben flyttar sig</a></li>
+<li><a href="#weapon-script">Skapa vapenlogiken</a></li>
+<li><a href="#gemensam-fire">Desktop och XR använder samma fire</a></li>
+<li><a href="#testa">Testa med de blå kuberna</a></li>
+<li><a href="#nasta-steg">Nästa steg</a></li>
+</ul>
+</div>
+</details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><div class="callout"><strong>Obegränsad ammunition i första versionen.</strong><p>Vi bygger projektilens rörelse och träff först. Magasin, omladdning, rekyl, ljud och mynningsflamma läggs till först när grundmekaniken är stabil.</p></div>
+
+<h2 id="vad-vi-bygger">Vad vi bygger</h2>
+<p>Pistolen ska skapa en liten kopparfärgad projektil vid <code>MuzzlePoint</code>. Kulan rör sig med <code>320 m/s</code>, påverkas av gravitation och överför sin rörelsemängd till ett fysiskt objekt som den träffar.</p>
+<p>De tre blå testkuberna är redan <code>RigidBody3D</code>. När en kula träffar dem kan de därför flyttas och rotera beroende på träffpunkten.</p>
+<h2 id="varden">Realistiska värden i liten skala</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Egenskap</th>
+<th style="text-align: right;">Värde i projektet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Projektilens diameter</td>
+<td style="text-align: right;">9 mm</td>
+</tr>
+<tr>
+<td>Projektilens längd</td>
+<td style="text-align: right;">18 mm</td>
+</tr>
+<tr>
+<td>Projektilens massa</td>
+<td style="text-align: right;">8 gram</td>
+</tr>
+<tr>
+<td>Mynninghastighet</td>
+<td style="text-align: right;">320 m/s</td>
+</tr>
+<tr>
+<td>Tid mellan skott</td>
+<td style="text-align: right;">0,12 sekunder</td>
+</tr>
+<tr>
+<td>Projektilens livstid</td>
+<td style="text-align: right;">2 sekunder</td>
+</tr>
+</tbody>
+</table></div>
+<p>Värdena ligger i ett rimligt område för en pistolprojektil. En riktig kula är så snabb att den nästan inte syns på de korta avstånden i testscenen.</p>
+<h2 id="tunnling">Problemet med mycket snabba objekt</h2>
+<p>Vid 60 fysiksteg per sekund hinner en kula i <code>320 m/s</code> färdas mer än fem meter mellan två fysikuppdateringar. Om vi bara använder en liten vanlig fysikkropp kan den befinna sig framför kuben i ett steg och bakom kuben i nästa. Motorn ser då aldrig någon kontakt. Detta kallas <strong>tunnling</strong>.</p>
+<p>Projektet använder en vanlig spelteknisk hybrid:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>synlig projektil
+      +
+rörelse och gravitation
+      +
+stråltest över hela sträckan varje fysiksteg
+      =
+snabb projektil utan missade träffar
+</code></pre></div>
+<p>Många skjutspel använder enbart ett omedelbart stråltest, ofta kallat <em>hitscan</em>. Vår lösning behåller i stället en riktig projektilposition och kulbana men använder strålen för säker kollisionskontroll.</p>
+<h2 id="projektilscen">Skapa projektilscenen</h2>
+<p>Skapa <code>Blueprints/bullet.tscn</code> med följande struktur:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>Bullet (Node3D)
+└── MeshInstance3D
+</code></pre></div>
+<p>Använd en <code>CapsuleMesh</code> med:</p>
+<ul>
+<li><code>Radius</code>: <code>0.0045</code></li>
+<li><code>Height</code>: <code>0.018</code></li>
+<li>X-rotation: <code>90°</code></li>
+<li>ett kopparfärgat <code>StandardMaterial3D</code></li>
+</ul>
+<p>Kapseln roteras så att dess längdriktning följer pistolens negativa Z-axel.</p>
+<h2 id="bullet-script">Projektilens GDScript</h2>
+<p>Skapa <code>Blueprints/bullet.gd</code> och fäst skriptet på <code>Bullet</code>:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>class_name Bullet
+extends Node3D
+
+@export var speed: float = 320.0
+@export var mass_kg: float = 0.008
+@export var gravity_multiplier: float = 1.0
+@export var lifetime_seconds: float = 2.0
+@export_flags_3d_physics var collision_mask: int = 5
+
+var velocity: Vector3
+var shooter: CollisionObject3D
+
+func launch(direction: Vector3, source: CollisionObject3D = null) -&gt; void:
+    velocity = direction.normalized() * speed
+    shooter = source
+
+func _physics_process(delta: float) -&gt; void:
+    var start_position := global_position
+    var gravity: float = ProjectSettings.get_setting(
+        &quot;physics/3d/default_gravity&quot;, 9.8
+    )
+    velocity += Vector3.DOWN * gravity * gravity_multiplier * delta
+    var end_position := start_position + velocity * delta
+
+    var query := PhysicsRayQueryParameters3D.create(
+        start_position, end_position, collision_mask
+    )
+    query.collide_with_areas = false
+    query.collide_with_bodies = true
+    if is_instance_valid(shooter):
+        query.exclude = [shooter.get_rid()]
+
+    var hit := get_world_3d().direct_space_state.intersect_ray(query)
+    if hit:
+        global_position = hit.position
+        _apply_hit(hit)
+        return
+
+    global_position = end_position
+    lifetime_seconds -= delta
+    if lifetime_seconds &lt;= 0.0:
+        queue_free()
+
+func _apply_hit(hit: Dictionary) -&gt; void:
+    var body := hit.get(&quot;collider&quot;) as RigidBody3D
+    if body:
+        var impulse := velocity.normalized() * mass_kg * velocity.length()
+        var contact_offset := Vector3(hit.position) - body.global_position
+        body.apply_impulse(impulse, contact_offset)
+
+    queue_free()
+</code></pre></div>
+<p>Kollisionsmasken <code>5</code> betyder att strålen testar lager 1 och 3. Det omfattar testmiljön och de greppbara kuberna i detta projekt. Pistolen undantas uttryckligen så att kulan inte träffar vapnet som skapade den.</p>
+<h2 id="impuls">Varför kuben flyttar sig</h2>
+<p>Rörelsemängden beräknas med:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>impuls = massa × hastighet
+impuls = 0,008 kg × 320 m/s
+impuls = 2,56 kg·m/s
+</code></pre></div>
+<p><code>apply_impulse()</code> använder både impulsens riktning och träffpunktens avstånd från kubens centrum. En träff mitt på kuben flyttar den huvudsakligen bakåt. En träff nära kanten kan också få den att rotera.</p>
+<h2 id="weapon-script">Skapa vapenlogiken</h2>
+<p>Skapa <code>Blueprints/weapon.gd</code>:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>class_name Weapon
+extends Node
+
+const BULLET_SCENE := preload(&quot;res://Blueprints/bullet.tscn&quot;)
+
+@export var seconds_between_shots: float = 0.12
+
+@onready var pistol: XRToolsPickable = get_parent() as XRToolsPickable
+@onready var muzzle_point: Marker3D = pistol.get_node(&quot;MuzzlePoint&quot;)
+@onready var cooldown: Timer = $Cooldown
+
+func _ready() -&gt; void:
+    pistol.action_pressed.connect(_on_action_pressed)
+
+func fire() -&gt; void:
+    if not cooldown.is_stopped():
+        return
+
+    var bullet := BULLET_SCENE.instantiate() as Bullet
+    get_tree().current_scene.add_child(bullet)
+    bullet.global_transform = muzzle_point.global_transform
+    bullet.launch(-muzzle_point.global_basis.z, pistol)
+    cooldown.start(seconds_between_shots)
+
+func _on_action_pressed(_pickable: XRToolsPickable) -&gt; void:
+    fire()
+</code></pre></div>
+<p>Lägg till följande under pistolens rotnod:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>Pistol
+└── Weapon (Node, weapon.gd)
+    └── Cooldown (Timer)
+</code></pre></div>
+<p>Sätt <code>Cooldown</code> till <code>One Shot</code> och <code>Wait Time</code> till <code>0.12</code>. Timern hindrar ett enda knapptryck från att skapa orimligt många projektiler, men någon ammunition förbrukas inte.</p>
+<h2 id="gemensam-fire">Desktop och XR använder samma fire</h2>
+<p>XR Tools skickar <code>action_pressed</code> när avtryckaren används medan pistolen hålls. Signalen anropar <code>Weapon.fire()</code>.</p>
+<p>Desktopspelaren letar efter barnnoden <code>Weapon</code> på det hållna föremålet. Vänster musknapp anropar samma metod:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>func _fire_held_object() -&gt; void:
+    var weapon := _held_object.get_node_or_null(&quot;Weapon&quot;)
+    if weapon and weapon.has_method(&quot;fire&quot;):
+        weapon.fire()
+</code></pre></div>
+<p>Detta är ett exempel på hur vi undviker dubbelkodning. Inmatningen är olika, men vapnet och projektilen är gemensamma.</p>
+<h2 id="testa">Testa med de blå kuberna</h2>
+<ol>
+<li>Starta projektet utan headset.</li>
+<li>Rikta siktet mot pistolen och högerklicka för att plocka upp den.</li>
+<li>Rikta pistolen mot en av de tre blå kuberna.</li>
+<li>Vänsterklicka för att skjuta.</li>
+<li>Kontrollera att kuben flyttas i skottriktningen.</li>
+<li>Träffa kuben nära en kant och observera om den också roterar.</li>
+</ol>
+<p>Kulan är mycket liten och snabb. Det är normalt att du tydligare ser kubens reaktion än själva kulan.</p>
+<div class="checkpoint" data-checklist="projektiler"><h3>Kontrollera skjutmekaniken</h3><label><input type="checkbox"> Pistolen kan plockas upp med högerklick.</label><label><input type="checkbox"> Vänsterklick skapar en projektil vid MuzzlePoint.</label><label><input type="checkbox"> Projektilen färdas i pistolens riktning.</label><label><input type="checkbox"> En blå kub flyttas när den träffas.</label><label><input type="checkbox"> En träff utanför centrum kan få kuben att rotera.</label><label><input type="checkbox"> Flera skott kan avfyras utan omladdning.</label><label><input type="checkbox"> XR-avtryckaren har verifierats i headsetet.</label></div>
+
+<h2 id="nasta-steg">Nästa steg</h2>
+<p>De blå kuberna visar att projektilens fysik fungerar. Nästa steg är ett särskilt mål med ett litet skript som upptäcker träffen och försvinner. Projektilsystemet ska inte behöva skrivas om för detta.</p><nav class="page-nav" aria-label="Mellan kapitel"><a href="10-pistol.html"><small>← Föregående</small>Bygg en enkel pistol</a><a href="index.html"><small>Tillbaka →</small>Alla kapitel</a></nav></article></div></main>
+<footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Granskat 20 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>
