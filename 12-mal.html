@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Ge målet träffpoäng, tydlig träffrespons och ett återanvändbart skadegränssnitt."><meta name="theme-color" content="#f5f7fc"><title>Bygg ett förstörbart mål · VR med Godot</title><script src="js/theme.js"></script><link rel="stylesheet" href="css/style.css"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="js/search-index.js" defer></script><script src="js/app.js" defer></script></head>
+<body data-page="12-mal"><a class="skip-link" href="#main">Hoppa till innehållet</a>
+<header class="navbar"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> VR med Godot</a><form class="site-search" role="search"><label class="sr-only" for="site-query">Sök i hela guiden</label><input id="site-query" type="search" placeholder="Sök i guiden …" autocomplete="off"><button aria-label="Sök" type="submit">⌕</button></form><button class="icon-button" id="menu-toggle" aria-label="Öppna kapitelmenyn" aria-controls="chapter-dialog" aria-expanded="false">☰</button><button class="icon-button" id="theme-toggle" aria-label="Byt färgtema" aria-pressed="false">◐</button></header>
+<dialog id="chapter-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-heading"><h2 id="menu-heading">Alla kapitel</h2><button class="icon-button" data-close aria-label="Stäng kapitelmenyn">✕</button></div><a class="home-link" href="index.html">← Till startsidan</a><nav aria-label="Kapitel"><a class="chapter-link" href="01-start.html"><span class="chapter-number">01</span><span><strong>Börja här</strong><small>Installera Godot och förstå arbetsflödet innan du börjar bygga.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="02-forsta-scenen.html"><span class="chapter-number">02</span><span><strong>Din första VR-scen</strong><small>Bygg golv, ljus och en XR-kamera. Lägg till svenskkommenterad startkod.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="03-macos-quest.html"><span class="chapter-number">03</span><span><strong>Från Mac till Quest 3</strong><small>Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="04-spelaren.html"><span class="chapter-number">04</span><span><strong>Händer och rörelse</strong><small>Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="05-objekt.html"><span class="chapter-number">05</span><span><strong>Bord och greppbara objekt</strong><small>Skapa kuber du kan plocka upp och ett bord att ställa dem på.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="06-felsokning.html"><span class="chapter-number">06</span><span><strong>Felsök steg för steg</strong><small>Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="07-kallor.html"><span class="chapter-number">07</span><span><strong>Källor och versionskontroll</strong><small>Läs dokumentationen, jämförelserna och vad som ändrats från videon.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="08-spelprojekt.html"><span class="chapter-number">08</span><span><strong>Från XR-prototyp till spel</strong><small>Planera ett enkelt skjutspel och utveckla en liten, testbar funktion i taget.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="09-desktoplage.html"><span class="chapter-number">09</span><span><strong>Testa utan headset</strong><small>Använd ett valfritt desktopläge för snabba tester utan att ersätta XR-spelaren.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="10-pistol.html"><span class="chapter-number">10</span><span><strong>Bygg en enkel pistol</strong><small>Skapa en svart pistol av primitiva former och förbered den för XR-grepp och projektiler.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="11-projektiler.html"><span class="chapter-number">11</span><span><strong>Skjut realistiska projektiler</strong><small>Skjut snabba kulor, undvik tunnling och flytta fysiska mål med realistisk impuls.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="12-mal.html" aria-current="page"><span class="chapter-number">12</span><span><strong>Bygg ett förstörbart mål</strong><small>Ge målet träffpoäng, tydlig träffrespons och ett återanvändbart skadegränssnitt.</small></span><span class="arrow" aria-hidden="true">↗</span></a></nav></dialog>
+<dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-heading"><h2 id="search-heading">Sök i guiden</h2><button class="icon-button" data-close aria-label="Stäng sökresultaten">✕</button></div><label for="dialog-query">Sökord</label><input id="dialog-query" type="search" placeholder="Till exempel USB eller grepp"><p id="search-count" class="muted" aria-live="polite"></p><div id="search-results"></div></dialog>
+<main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 12</span></div><header class="chapter-header"><p class="eyebrow">Fortsätt bygga · Kapitel 12</p><h1>Bygg ett förstörbart mål</h1><p class="subtitle">Ge målet träffpoäng, tydlig träffrespons och ett återanvändbart skadegränssnitt.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-21</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
+<ul>
+<li><a href="#vad-vi-bygger">Vad vi bygger</a></li>
+<li><a href="#projektilskada">Ge projektilen ett skadevärde</a></li>
+<li><a href="#mal-scen">Skapa målscenen</a></li>
+<li><a href="#target-script">Lägg till målets skript</a></li>
+<li><a href="#signaler">Signaler för nästa spelsteg</a></li>
+<li><a href="#placera">Placera målet i huvudscenen</a></li>
+<li><a href="#testa-desktop">Testa i desktopläget</a></li>
+<li><a href="#testa-quest">Testa i Quest</a></li>
+<li><a href="#nasta-steg">Nästa steg</a></li>
+</ul>
+</div>
+</details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><div class="callout"><strong>Tre träffar till första förstörbara målet.</strong><p>Nu kopplar vi projektilen till speldata. Vapnet ska fortfarande inte behöva veta vad det träffar.</p></div>
+
+<h2 id="vad-vi-bygger">Vad vi bygger</h2>
+<p>Vi skapar ett stillastående turkost mål med tre träffpoäng. Vid varje träff blinkar målet rött. Efter den tredje träffen försvinner det.</p>
+<p>Lösningen delas upp så här:</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Del</th>
+<th>Ansvar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vapen</td>
+<td>Skapar projektilen.</td>
+</tr>
+<tr>
+<td>Projektil</td>
+<td>Upptäcker träffen och skickar skada.</td>
+</tr>
+<tr>
+<td>Mål</td>
+<td>Håller reda på hälsa och visar träffrespons.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Vapnet känner alltså inte till målet. Det gör att samma projektil senare kan skada ett monster, en låda eller något annat förstörbart objekt.</p>
+<h2 id="projektilskada">Ge projektilen ett skadevärde</h2>
+<p>Öppna <code>Blueprints/bullet.gd</code> och lägg till ett exporterat skadevärde tillsammans med de övriga inställningarna:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>@export var damage: int = 1
+</code></pre></div>
+<p>Ändra sedan början av <code>_apply_hit()</code>:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>func _apply_hit(hit: Dictionary) -&gt; void:
+    var collider := hit.get(&quot;collider&quot;) as Node
+    if collider and collider.has_method(&quot;take_damage&quot;):
+        collider.call(&quot;take_damage&quot;, damage)
+
+    var body := hit.get(&quot;collider&quot;) as RigidBody3D
+    if body:
+        var impulse := velocity.normalized() * mass_kg * velocity.length()
+        var contact_offset := Vector3(hit.position) - body.global_position
+        body.apply_impulse(impulse, contact_offset)
+
+    queue_free()
+</code></pre></div>
+<p><code>has_method()</code> är ett litet kontrakt: om objektet erbjuder <code>take_damage()</code> kan projektilen skada det. De blå fysikkuberna saknar metoden och får därför fortfarande bara en fysisk impuls.</p>
+<h2 id="mal-scen">Skapa målscenen</h2>
+<p>Skapa en ny scen med denna struktur och spara den som <code>Blueprints/target.tscn</code>:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>Target (StaticBody3D)
+├── MeshInstance3D
+├── CollisionShape3D
+└── HitFlashTimer
+</code></pre></div>
+<p>Använd en enkel <code>BoxMesh</code> och motsvarande <code>BoxShape3D</code> med storleken:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>X: 0.9
+Y: 1.2
+Z: 0.2
+</code></pre></div>
+<p>Ge meshen ett turkost <code>StandardMaterial3D</code>. Sätt <code>HitFlashTimer</code> till <code>One Shot</code> och <code>Wait Time</code> till <code>0.12</code> sekunder.</p>
+<h2 id="target-script">Lägg till målets skript</h2>
+<p>Skapa <code>Blueprints/target.gd</code> och fäst det på scenens rotnod:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>class_name Target
+extends StaticBody3D
+
+signal damaged(current_health: int, max_health: int)
+signal destroyed
+
+@export_range(1, 100, 1) var max_health: int = 3
+@export var normal_color := Color(0.15, 0.75, 0.65, 1.0)
+@export var hit_color := Color(1.0, 0.2, 0.12, 1.0)
+
+@onready var mesh_instance: MeshInstance3D = $MeshInstance3D
+@onready var collision_shape: CollisionShape3D = $CollisionShape3D
+@onready var hit_flash_timer: Timer = $HitFlashTimer
+
+var current_health: int
+var _material: StandardMaterial3D
+var _is_destroyed := false
+
+func _ready() -&gt; void:
+    current_health = max_health
+
+    var source_material := mesh_instance.material_override as StandardMaterial3D
+    _material = source_material.duplicate() as StandardMaterial3D
+    mesh_instance.material_override = _material
+    _material.albedo_color = normal_color
+
+    hit_flash_timer.timeout.connect(_on_hit_flash_timer_timeout)
+
+func take_damage(amount: int = 1) -&gt; void:
+    if _is_destroyed or amount &lt;= 0:
+        return
+
+    current_health = maxi(current_health - amount, 0)
+    damaged.emit(current_health, max_health)
+    _material.albedo_color = hit_color
+    hit_flash_timer.start()
+
+    if current_health == 0:
+        _is_destroyed = true
+        collision_shape.set_deferred(&quot;disabled&quot;, true)
+        destroyed.emit()
+
+func _on_hit_flash_timer_timeout() -&gt; void:
+    if _is_destroyed:
+        queue_free()
+    else:
+        _material.albedo_color = normal_color
+</code></pre></div>
+<p>Materialet dupliceras när målet startar. Därmed kan varje framtida mål blinka oberoende utan att alla instanser delar samma färgändring.</p>
+<p>Kollisionsformen stängs av när hälsan når noll. Timern får ändå löpa klart så att den sista röda träffreaktionen syns innan <code>queue_free()</code> tar bort målet.</p>
+<h2 id="signaler">Signaler för nästa spelsteg</h2>
+<p>Målet skickar två signaler:</p>
+<ul>
+<li><code>damaged</code> efter varje giltig träff</li>
+<li><code>destroyed</code> när hälsan når noll</li>
+</ul>
+<p>Inget lyssnar på signalerna ännu. Senare kan en poängräknare, en ljudeffekt eller en dörr reagera utan att den logiken behöver byggas in i målet.</p>
+<h2 id="placera">Placera målet i huvudscenen</h2>
+<p>Öppna <code>Main.tscn</code>, dra in <code>Blueprints/target.tscn</code> och döp instansen till <code>Target</code>.</p>
+<p>Använd positionen:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>X: 0
+Y: 1.4
+Z: -4
+</code></pre></div>
+<p>Målet hamnar bakom det låga hindret men tillräckligt högt för att kunna beskjutas från spelarens startposition.</p>
+<h2 id="testa-desktop">Testa i desktopläget</h2>
+<ol>
+<li>Starta projektet utan ett aktivt OpenXR-headset.</li>
+<li>Rikta siktet mot pistolen och högerklicka för att plocka upp den.</li>
+<li>Sikta på det turkosa målet bakom hindret.</li>
+<li>Skjut med vänster musknapp.</li>
+<li>Kontrollera att målet blinkar rött och återgår till turkost.</li>
+<li>Skjut totalt tre gånger och kontrollera att målet försvinner.</li>
+</ol>
+<p>Om kulan påverkar de blå kuberna men inte målet, kontrollera att skriptet sitter på samma <code>StaticBody3D</code> som projektilens stråltest träffar och att metoden heter exakt <code>take_damage</code>.</p>
+<h2 id="testa-quest">Testa i Quest</h2>
+<p>Exportera och starta samma scen i headsetet. Plocka upp pistolen med en hand, använd avtryckaren och bekräfta att tre träffar förstör målet. Skadekoden är gemensam för desktop och XR; headsettestet kontrollerar främst grepp, siktriktning och avtryckare.</p>
+<div class="checkpoint" data-checklist="mal"><h3>Kontrollera målsystemet</h3><label><input type="checkbox"> Målet syns bakom hindret.</label><label><input type="checkbox"> Första och andra träffen ger en kort röd blinkning.</label><label><input type="checkbox"> Målet försvinner efter den tredje träffen.</label><label><input type="checkbox"> De blå kuberna kan fortfarande knuffas av projektiler.</label><label><input type="checkbox"> Vapenkoden innehåller ingen särskild referens till Target.</label><label><input type="checkbox"> Samma beteende har verifierats i headsetet.</label></div>
+
+<h2 id="nasta-steg">Nästa steg</h2>
+<p>Målet ger oss nu en återanvändbar gräns mellan projektil och hälsa. Nästa större steg är ett enkelt monster som rör sig långsamt mot spelaren och använder samma <code>take_damage()</code>-kontrakt.</p><nav class="page-nav" aria-label="Mellan kapitel"><a href="11-projektiler.html"><small>← Föregående</small>Skjut realistiska projektiler</a><a href="index.html"><small>Tillbaka →</small>Alla kapitel</a></nav></article></div></main>
+<footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Granskat 21 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>

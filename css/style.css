@@ -8,4 +8,4 @@ html[data-theme=dark]{color-scheme:dark;--bg:#101526;--bg-end:#151b30;--surface:
 @media print{body{background:white;color:black;font-size:11pt}.navbar,.toc-panel,.breadcrumb,.page-nav,footer,.copy-button,.reset-checks,#toast,.skip-link{display:none!important}.container{width:100%;max-width:none;padding:0}.reading-layout{display:block}.prose,.chapter-header,.panel{border:0;box-shadow:none;padding:0;background:white}.prose>h2{break-after:avoid;margin-top:20px}.code-block,table,.checkpoint{break-inside:avoid}.code-block pre{white-space:pre-wrap}.table-wrap{overflow:visible}.prose a{color:inherit;text-decoration:underline}.chapter-header h1{font-size:26pt}.metadata{display:none}.chapter-grid{grid-template-columns:1fr 1fr}}
 /* Keep long resource names and Swedish compound words inside narrow columns. */
 .prose,.chapter-header,.page-toc,.chapter-link{overflow-wrap:anywhere}
-.chapter-link>span:nth-child(2){min-width:0}
+.chapter-number{flex:0 0 2.2ch;text-align:right;font-variant-numeric:tabular-nums}.chapter-link>span:nth-child(2){min-width:0;flex:1}.arrow{flex-shrink:0}
