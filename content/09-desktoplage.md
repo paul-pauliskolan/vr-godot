@@ -66,6 +66,14 @@ Funktionen ligger i desktopspelaren, inte i pistolen. Därför fungerar samma ko
 
 Ett hållet fysikobjekt sätts till kinematiskt frysläge och synkas med `HoldPoint` varje bildruta. Därför följer pistolen både spelarens förflyttning och musens kamerarotation utan att fysikmotorn lämnar kvar den i världen.
 
+## Sikta och skjut {#desktop-sikte}
+
+Siktet ligger mitt på skärmen, men den hållna pistolen ligger lite åt höger och nedanför kameran. Om kulan bara skulle flyga rakt fram parallellt med kameran skulle den därför hamna bredvid siktet, särskilt på nära håll.
+
+När du vänsterklickar skickar desktopspelaren en osynlig stråle från kamerans mitt genom siktet. Träffpunkten blir målet, men själva projektilen skapas fortfarande vid pistolens `MuzzlePoint` och flyger från mynningen till målet. Om siktstrålen inte träffar något används en punkt långt fram i kamerans riktning.
+
+Detta är bara en korrigering för desktoplägets skärmsikte. I XR finns inget fast sikte mitt i bilden: där fortsätter kulan längs den fysiska pistolens riktning.
+
 ## Blir det mycket dubbelkodning? {#dubbelkodning}
 
 Nej, inte om vi håller gränsen tydlig. Det som beror på hur personen styr spelet behöver vara separat. Själva spelets regler ska vara gemensamma.
@@ -79,12 +87,12 @@ Nej, inte om vi håller gränsen tydlig. Det som beror på hur personen styr spe
 | Haptik | Slumpgenererade rum |
 | XR-specifika menyer | Poäng, vinst och förlust |
 
-När vi senare bygger ett vapen ska vapnets skada, ammunition och projektil inte skrivas två gånger. XR-spelaren och desktopspelaren ska bara skicka samma kommando, till exempel `fire()`, till samma vapenskript.
+Vapnets skada, ammunition och projektil ska inte skrivas två gånger. XR-spelaren och desktopspelaren använder samma vapenskript, men kan ange riktningen på olika sätt.
 
 ```text
-XR-avtryckare ─┐
-               ├──> Weapon.fire() ──> gemensam projektil och skada
-Musklick ─────┘
+XR-avtryckare ──> Weapon.fire() ─────────┐
+                                         ├──> gemensam projektil och skada
+Musklick ───────> Weapon.fire_towards() ─┘
 ```
 
 Detta mönster gör att desktopläget ger lite extra kod nu men kan spara mycket testtid senare.
@@ -116,11 +124,12 @@ Ett riktigt headset behövs fortfarande för att bedöma:
 4. Kontrollera att Output visar `Inget aktivt OpenXR-headset: startar desktop-spelaren.`
 5. Gå runt med WASD och musen och kontrollera att spelaren stannar mot hindret.
 6. Rikta siktet mot ett greppbart föremål och högerklicka för att plocka upp och släppa det.
-7. Tryck på mellanslag för att hoppa och håll Ctrl eller C för att huka.
+7. Plocka upp pistolen, rikta siktet mot en kub och vänsterklicka. Kulan ska gå mot siktets punkt.
+8. Tryck på mellanslag för att hoppa och håll Ctrl eller C för att huka.
 
 Om OpenXR är aktivt väljer spelet i stället XR-spelaren automatiskt. Du behöver inte ändra huvudscenen mellan testen.
 
-<div class="checkpoint" data-checklist="desktoplage"><h3>Kontrollera desktopläget</h3><label><input type="checkbox"> Spelet startar utan ett anslutet headset.</label><label><input type="checkbox"> WASD eller piltangenter flyttar spelaren.</label><label><input type="checkbox"> Musen styr kameran och ett hållet vapen följer med.</label><label><input type="checkbox"> Golvet och hindret stoppar spelaren.</label><label><input type="checkbox"> Ett greppbart föremål kan plockas upp och släppas med högerklick.</label><label><input type="checkbox"> Mellanslag får spelaren att hoppa.</label><label><input type="checkbox"> Ctrl eller C sänker både kameran och kollisionskapseln.</label><label><input type="checkbox"> XR-spelaren startar fortfarande när OpenXR är aktivt.</label></div>
+<div class="checkpoint" data-checklist="desktoplage"><h3>Kontrollera desktopläget</h3><label><input type="checkbox"> Spelet startar utan ett anslutet headset.</label><label><input type="checkbox"> WASD eller piltangenter flyttar spelaren.</label><label><input type="checkbox"> Musen styr kameran och ett hållet vapen följer med.</label><label><input type="checkbox"> Golvet och hindret stoppar spelaren.</label><label><input type="checkbox"> Ett greppbart föremål kan plockas upp och släppas med högerklick.</label><label><input type="checkbox"> En kula från den hållna pistolen går mot siktets punkt.</label><label><input type="checkbox"> Mellanslag får spelaren att hoppa.</label><label><input type="checkbox"> Ctrl eller C sänker både kameran och kollisionskapseln.</label><label><input type="checkbox"> XR-spelaren startar fortfarande när OpenXR är aktivt.</label></div>
 
 ## Regeln för fortsatt utveckling {#regel-framat}
 
