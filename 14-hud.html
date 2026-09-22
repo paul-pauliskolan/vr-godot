@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Bygg en healthbar och monsterräknare för både desktop och Quest."><meta name="theme-color" content="#f5f7fc"><title>Visa hälsa och besegrade monster · VR med Godot</title><script src="js/theme.js"></script><link rel="stylesheet" href="css/style.css?v=20260921"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="js/search-index.js" defer></script><script src="js/app.js" defer></script></head>
+<body data-page="14-hud"><a class="skip-link" href="#main">Hoppa till innehållet</a>
+<header class="navbar"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> VR med Godot</a><form class="site-search" role="search"><label class="sr-only" for="site-query">Sök i hela guiden</label><input id="site-query" type="search" placeholder="Sök i guiden …" autocomplete="off"><button aria-label="Sök" type="submit">⌕</button></form><button class="icon-button" id="menu-toggle" aria-label="Öppna kapitelmenyn" aria-controls="chapter-dialog" aria-expanded="false">☰</button><button class="icon-button" id="theme-toggle" aria-label="Byt färgtema" aria-pressed="false">◐</button></header>
+<dialog id="chapter-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-heading"><h2 id="menu-heading">Alla kapitel</h2><button class="icon-button" data-close aria-label="Stäng kapitelmenyn">✕</button></div><a class="home-link" href="index.html">← Till startsidan</a><nav aria-label="Kapitel"><a class="chapter-link" href="01-start.html"><span class="chapter-number">01</span><span><strong>Börja här</strong><small>Installera Godot och förstå arbetsflödet innan du börjar bygga.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="02-forsta-scenen.html"><span class="chapter-number">02</span><span><strong>Din första VR-scen</strong><small>Bygg golv, ljus och en XR-kamera. Lägg till svenskkommenterad startkod.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="03-macos-quest.html"><span class="chapter-number">03</span><span><strong>Från Mac till Quest 3</strong><small>Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="04-spelaren.html"><span class="chapter-number">04</span><span><strong>Händer och rörelse</strong><small>Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="05-objekt.html"><span class="chapter-number">05</span><span><strong>Bord och greppbara objekt</strong><small>Skapa kuber du kan plocka upp och ett bord att ställa dem på.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="06-felsokning.html"><span class="chapter-number">06</span><span><strong>Felsök steg för steg</strong><small>Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="07-kallor.html"><span class="chapter-number">07</span><span><strong>Källor och versionskontroll</strong><small>Läs dokumentationen, jämförelserna och vad som ändrats från videon.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="08-spelprojekt.html"><span class="chapter-number">08</span><span><strong>Från XR-prototyp till spel</strong><small>Planera ett enkelt skjutspel och utveckla en liten, testbar funktion i taget.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="09-desktoplage.html"><span class="chapter-number">09</span><span><strong>Testa utan headset</strong><small>Använd ett valfritt desktopläge för snabba tester utan att ersätta XR-spelaren.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="10-pistol.html"><span class="chapter-number">10</span><span><strong>Bygg en enkel pistol</strong><small>Skapa en svart pistol av primitiva former och förbered den för XR-grepp och projektiler.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="11-projektiler.html"><span class="chapter-number">11</span><span><strong>Skjut realistiska projektiler</strong><small>Skjut snabba kulor, undvik tunnling och flytta fysiska mål med realistisk impuls.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="12-mal.html"><span class="chapter-number">12</span><span><strong>Bygg ett förstörbart mål</strong><small>Ge målet träffpoäng, tydlig träffrespons och ett återanvändbart skadegränssnitt.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="13-monster.html"><span class="chapter-number">13</span><span><strong>Bygg det första monstret</strong><small>Låt en kapsel följa spelaren, ta tre träffar och göra enkel kontaktskada.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="14-hud.html" aria-current="page"><span class="chapter-number">14</span><span><strong>Visa hälsa och besegrade monster</strong><small>Bygg en healthbar och monsterräknare för både desktop och Quest.</small></span><span class="arrow" aria-hidden="true">↗</span></a></nav></dialog>
+<dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-heading"><h2 id="search-heading">Sök i guiden</h2><button class="icon-button" data-close aria-label="Stäng sökresultaten">✕</button></div><label for="dialog-query">Sökord</label><input id="dialog-query" type="search" placeholder="Till exempel USB eller grepp"><p id="search-count" class="muted" aria-live="polite"></p><div id="search-results"></div></dialog>
+<main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 14</span></div><header class="chapter-header"><p class="eyebrow">Fortsätt bygga · Kapitel 14</p><h1>Visa hälsa och besegrade monster</h1><p class="subtitle">Bygg en healthbar och monsterräknare för både desktop och Quest.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-22</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
+<ul>
+<li><a href="#vad-vi-bygger">Vad vi bygger</a></li>
+<li><a href="#game-state">Skapa gemensam GameState</a></li>
+<li><a href="#koppla-speldata">Koppla spelaren och monstret</a></li>
+<li><a href="#desktop-hud">Bygg desktop-HUD:en</a></li>
+<li><a href="#xr-hud">Bygg en XR-anpassad handledspanel</a></li>
+<li><a href="#testa-desktop">Testa i desktopläget</a></li>
+<li><a href="#testa-quest">Testa i Quest</a></li>
+<li><a href="#nasta-steg">Nästa steg</a></li>
+</ul>
+</div>
+</details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><div class="callout"><strong>Gör spelreglerna synliga.</strong><p>Spelaren ska inte behöva läsa Godots Output för att förstå skada eller framsteg. Nu bygger vi en healthbar och en räknare för besegrade monster.</p></div>
+
+<h2 id="vad-vi-bygger">Vad vi bygger</h2>
+<p>HUD-systemet består av gemensam speldata och två presentationer:</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Del</th>
+<th>Ansvar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GameState</code></td>
+<td>Lagrar aktuell hälsa och antal besegrade monster.</td>
+</tr>
+<tr>
+<td>Desktop-HUD</td>
+<td>Visar informationen i skärmens övre vänstra hörn.</td>
+</tr>
+<tr>
+<td>XR-HUD</td>
+<td>Visar samma information på vänster handled.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Spelreglerna är gemensamma. Endast presentationen skiljer sig eftersom en platt skärm och ett XR-headset har olika ergonomiska behov.</p>
+<h2 id="game-state">Skapa gemensam GameState</h2>
+<p>Skapa <code>Blueprints/game_state.gd</code>:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>extends Node
+
+signal health_changed(current_health: int, max_health: int)
+signal monsters_killed_changed(monsters_killed: int)
+
+var current_health: int = 1
+var max_health: int = 1
+var monsters_killed: int = 0
+
+func reset_run() -&gt; void:
+    monsters_killed = 0
+    monsters_killed_changed.emit(monsters_killed)
+
+func track_player_health(player_health: PlayerHealth) -&gt; void:
+    var callback := Callable(self, &quot;_on_player_health_changed&quot;)
+    if not player_health.health_changed.is_connected(callback):
+        player_health.health_changed.connect(callback)
+    _on_player_health_changed(player_health.current_health, player_health.max_health)
+
+func track_monster(monster: SimpleMonster) -&gt; void:
+    var callback := Callable(self, &quot;_on_monster_destroyed&quot;)
+    if not monster.destroyed.is_connected(callback):
+        monster.destroyed.connect(callback)
+</code></pre></div>
+<p>Lägg skriptet under <strong>Project → Project Settings → Globals → Autoload</strong> med namnet <code>GameState</code>. I projektfilen motsvarar det:</p>
+<div class="code-block"><div class="code-toolbar"><span>ini</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>[autoload]
+
+GameState=&quot;*res://Blueprints/game_state.gd&quot;
+</code></pre></div>
+<p>När spelarhälsan ändras kopierar <code>GameState</code> värdena och skickar sin egen signal. När ett bevakat monster skickar <code>destroyed</code> höjs <code>monsters_killed</code> med ett.</p>
+<h2 id="koppla-speldata">Koppla spelaren och monstret</h2>
+<p>Lägg <code>SimpleMonster</code> i gruppen <code>monsters</code>. När <code>main.gd</code> startar återställer det spelomgången, kopplar alla monster och kopplar rätt spelares <code>Health</code>-nod.</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>func _track_monsters() -&gt; void:
+    for monster in get_tree().get_nodes_in_group(&quot;monsters&quot;):
+        if monster is SimpleMonster:
+            game_state.track_monster(monster)
+</code></pre></div>
+<p>Det ger ett tydligt signalflöde:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>PlayerHealth.health_changed ──&gt; GameState ──&gt; healthbar och text
+SimpleMonster.destroyed ──────&gt; GameState ──&gt; MONSTERS KILLED
+</code></pre></div>
+<h2 id="desktop-hud">Bygg desktop-HUD:en</h2>
+<p>Skapa <code>Blueprints/hud_panel.tscn</code> med en <code>PanelContainer</code> som rot. Lägg till en <code>VBoxContainer</code> med:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>HUDPanel (PanelContainer)
+└── Rows (VBoxContainer)
+    ├── HealthLabel
+    ├── HealthBar (ProgressBar)
+    └── KillsLabel
+</code></pre></div>
+<p>Använd starttexterna <code>HEALTH: 5 / 5</code> och <code>MONSTERS KILLED: 0</code>. Sätt <code>HealthBar.max_value</code> och <code>value</code> till <code>5</code> och dölj standardprocenten. En mörk panel, grön stapel och gul monsterräknare gör informationen lätt att skilja åt.</p>
+<p>Fäst <code>hud_panel.gd</code> och anslut till båda signalerna från <code>GameState</code>:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>func _on_health_changed(current_health: int, max_health: int) -&gt; void:
+    health_bar.max_value = max_health
+    health_bar.value = current_health
+    health_label.text = &quot;HEALTH: %d / %d&quot; % [current_health, max_health]
+
+func _on_monsters_killed_changed(monsters_killed: int) -&gt; void:
+    kills_label.text = &quot;MONSTERS KILLED: %d&quot; % monsters_killed
+</code></pre></div>
+<p>Instansiera panelen under desktopspelarens befintliga <code>CanvasLayer</code> och placera den i övre vänstra hörnet, under kontrollinstruktionerna.</p>
+<h2 id="xr-hud">Bygg en XR-anpassad handledspanel</h2>
+<p>En skärmfast HUD framför ögonen kan bli störande i VR. Skapa därför <code>Blueprints/xr_wrist_hud.tscn</code> som en liten 3D-panel med två <code>Label3D</code> och två tunna <code>QuadMesh</code> för healthbarens bakgrund och fyllning.</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>XRWristHUD (Node3D)
+├── Panel
+├── HealthLabel
+├── HealthBackground
+├── HealthFill
+└── KillsLabel
+</code></pre></div>
+<p>Instansiera scenen under <code>Controller_left</code> i <code>xr_player.tscn</code>. En lämplig första lokal position är <code>(0, 0.08, 0.06)</code> och rotationen är <code>-90</code> grader runt X-axeln. Då fungerar panelen ungefär som en klocka: lyft och vrid vänster hand mot ansiktet för att läsa den.</p>
+<p>Den gröna stapeln skalas efter andelen återstående hälsa och flyttas samtidigt så att dess vänsterkant står still:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>var ratio := clampf(float(current_health) / float(maxi(max_health, 1)), 0.0, 1.0)
+health_fill.scale.x = ratio
+health_fill.position.x = -HEALTH_BAR_WIDTH * (1.0 - ratio) * 0.5
+</code></pre></div>
+<h2 id="testa-desktop">Testa i desktopläget</h2>
+<ol>
+<li>Tryck på Godots vanliga Play-knapp.</li>
+<li>Kontrollera att HUD:en visar <code>HEALTH: 5 / 5</code> och <code>MONSTERS KILLED: 0</code>.</li>
+<li>Låt monstret nå spelaren och kontrollera att texten och den gröna stapeln minskar.</li>
+<li>Skjut monstret tre gånger och kontrollera att räknaren blir 1.</li>
+</ol>
+<h2 id="testa-quest">Testa i Quest</h2>
+<ol>
+<li>Starta spelet med Android/Quest-knappen.</li>
+<li>Lyft vänster handled och vrid panelen mot ansiktet.</li>
+<li>Kontrollera att text och healthbar är skarpa och läsbara.</li>
+<li>Kontrollera att panelen inte stör greppet eller skymmer världen när handen hålls normalt.</li>
+<li>Ta kontaktskada och besegra monstret. Båda värdena ska uppdateras direkt.</li>
+</ol>
+<p>Handledens position och vinkel kan behöva finjusteras efter det verkliga headsettestet. Det är en presentationsjustering; speldata och signalerna påverkas inte.</p>
+<div class="checkpoint" data-checklist="hud"><h3>Kontrollera spelarstatusen</h3><label><input type="checkbox"> Desktop-HUD:en visar fem hälsopoäng vid start.</label><label><input type="checkbox"> Kontaktskada minskar text och healthbar.</label><label><input type="checkbox"> Ett besegrat monster höjer räknaren till 1.</label><label><input type="checkbox"> XR-panelen sitter på vänster handled.</label><label><input type="checkbox"> Texten är läsbar i Quest 3.</label><label><input type="checkbox"> Panelen stör inte grepp eller rörelse.</label></div>
+
+<h2 id="nasta-steg">Nästa steg</h2>
+<p>Nu kan spelet visa förändringar i hälsa. Nästa steg blir därför en grön hälsopower-up som återställer två poäng och omedelbart uppdaterar healthbaren.</p><nav class="page-nav" aria-label="Mellan kapitel"><a href="13-monster.html"><small>← Föregående</small>Bygg det första monstret</a><a href="index.html"><small>Tillbaka →</small>Alla kapitel</a></nav></article></div></main>
+<footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Granskat 22 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>
