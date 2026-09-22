@@ -7,6 +7,7 @@
 <main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 09</span></div><header class="chapter-header"><p class="eyebrow">Valfritt testläge · Kapitel 09</p><h1>Testa utan headset</h1><p class="subtitle">Använd ett valfritt desktopläge för snabba tester utan att ersätta XR-spelaren.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-22</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
 <ul>
 <li><a href="#varfor-desktoplage">Varför ett separat testläge?</a></li>
+<li><a href="#openxr-varning">Undvik OpenXR-varningen på Mac</a></li>
 <li><a href="#tva-spelare">Två spelare, samma spelvärld</a></li>
 <li><a href="#desktop-kontroller">Kontroller i desktopläget</a></li>
 <li><a href="#hoppa-huka">Hoppa och huka</a></li>
@@ -23,6 +24,22 @@
 <h2 id="varfor-desktoplage">Varför ett separat testläge?</h2>
 <p>Ett XR-spel behöver normalt ett aktivt OpenXR-headset för kamera- och kontrollspårning. Det gör små tester onödigt långsamma. Med en separat skrivbordsspelare kan vi starta samma huvudscen direkt på datorn och testa exempelvis rum, kollisioner, monster och projektiler.</p>
 <p>Desktopläget ersätter inte ett riktigt XR-test. Det är ett extra verktyg under utvecklingen.</p>
+<h2 id="openxr-varning">Undvik OpenXR-varningen på Mac</h2>
+<p>OpenXR måste vara aktivt redan när Godot startar ett XR-program. Om inställningen är påslagen för alla plattformar försöker därför den vanliga Play-knappen hitta ett Mac-anslutet headset innan spelets egen reservlösning hinner välja desktopspelaren. Utan en aktiv OpenXR-runtime visas då varningen <code>HMD was not detected</code>.</p>
+<p>Projektet använder i stället en plattformsanpassad inställning i <code>project.godot</code>:</p>
+<div class="code-block"><div class="code-toolbar"><span>ini</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>[xr]
+
+openxr/enabled=false
+openxr/enabled.android=true
+openxr/reference_space=2
+shaders/enabled=true
+</code></pre></div>
+<p>Grundvärdet <code>false</code> gör att <strong>Play/F6 på Mac</strong> startar desktopläget utan varning. Android-överskrivningen aktiverar OpenXR i den exporterade Quest-appen. Exportpreseten <strong>Meta Quest</strong> har dessutom <code>XR Mode</code> satt till <code>OpenXR</code>.</p>
+<p>Det ger två tydliga testknappar:</p>
+<ul>
+<li>Godots vanliga Play-knapp testar desktopläget på Mac.</li>
+<li>Android/Quest-knappen uppe till höger bygger, installerar och startar XR-versionen i headsetet.</li>
+</ul>
 <h2 id="tva-spelare">Två spelare, samma spelvärld</h2>
 <p>Projektet har nu två fristående spelarscener:</p>
 <div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>Blueprints/
@@ -171,7 +188,7 @@ Musklick ───────&gt; Weapon.fire_towards() ─┘
 <li>Plocka upp pistolen, rikta siktet mot en kub och vänsterklicka. Kulan ska gå mot siktets punkt.</li>
 <li>Tryck på mellanslag för att hoppa och håll Ctrl eller C för att huka.</li>
 </ol>
-<p>Om OpenXR är aktivt väljer spelet i stället XR-spelaren automatiskt. Du behöver inte ändra huvudscenen mellan testen.</p>
+<p>Android/Quest-exporten aktiverar OpenXR och väljer XR-spelaren automatiskt. Du behöver inte ändra huvudscenen eller projektinställningen mellan testen.</p>
 <div class="checkpoint" data-checklist="desktoplage"><h3>Kontrollera desktopläget</h3><label><input type="checkbox"> Spelet startar utan ett anslutet headset.</label><label><input type="checkbox"> WASD eller piltangenter flyttar spelaren.</label><label><input type="checkbox"> Musen styr kameran och ett hållet vapen följer med.</label><label><input type="checkbox"> Golvet och hindret stoppar spelaren.</label><label><input type="checkbox"> Ett greppbart föremål kan plockas upp och släppas med högerklick.</label><label><input type="checkbox"> En kula från den hållna pistolen går mot siktets punkt.</label><label><input type="checkbox"> Mellanslag får spelaren att hoppa.</label><label><input type="checkbox"> Ctrl eller C sänker både kameran och kollisionskapseln.</label><label><input type="checkbox"> XR-spelaren startar fortfarande när OpenXR är aktivt.</label></div>
 
 <h2 id="regel-framat">Regeln för fortsatt utveckling</h2>
