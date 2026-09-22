@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Skapa säkra monsterstarter och fyll på power-ups med tydliga maxgränser."><meta name="theme-color" content="#f5f7fc"><title>Spawna monster och power-ups · VR med Godot</title><script src="js/theme.js"></script><link rel="stylesheet" href="css/style.css?v=20260921"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="js/search-index.js" defer></script><script src="js/app.js" defer></script></head>
+<body data-page="16-spawners"><a class="skip-link" href="#main">Hoppa till innehållet</a>
+<header class="navbar"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> VR med Godot</a><form class="site-search" role="search"><label class="sr-only" for="site-query">Sök i hela guiden</label><input id="site-query" type="search" placeholder="Sök i guiden …" autocomplete="off"><button aria-label="Sök" type="submit">⌕</button></form><button class="icon-button" id="menu-toggle" aria-label="Öppna kapitelmenyn" aria-controls="chapter-dialog" aria-expanded="false">☰</button><button class="icon-button" id="theme-toggle" aria-label="Byt färgtema" aria-pressed="false">◐</button></header>
+<dialog id="chapter-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-heading"><h2 id="menu-heading">Alla kapitel</h2><button class="icon-button" data-close aria-label="Stäng kapitelmenyn">✕</button></div><a class="home-link" href="index.html">← Till startsidan</a><nav aria-label="Kapitel"><a class="chapter-link" href="01-start.html"><span class="chapter-number">01</span><span><strong>Börja här</strong><small>Installera Godot och förstå arbetsflödet innan du börjar bygga.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="02-forsta-scenen.html"><span class="chapter-number">02</span><span><strong>Din första VR-scen</strong><small>Bygg golv, ljus och en XR-kamera. Lägg till svenskkommenterad startkod.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="03-macos-quest.html"><span class="chapter-number">03</span><span><strong>Från Mac till Quest 3</strong><small>Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="04-spelaren.html"><span class="chapter-number">04</span><span><strong>Händer och rörelse</strong><small>Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="05-objekt.html"><span class="chapter-number">05</span><span><strong>Bord och greppbara objekt</strong><small>Skapa kuber du kan plocka upp och ett bord att ställa dem på.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="06-felsokning.html"><span class="chapter-number">06</span><span><strong>Felsök steg för steg</strong><small>Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="07-kallor.html"><span class="chapter-number">07</span><span><strong>Källor och versionskontroll</strong><small>Läs dokumentationen, jämförelserna och vad som ändrats från videon.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="08-spelprojekt.html"><span class="chapter-number">08</span><span><strong>Från XR-prototyp till spel</strong><small>Planera ett enkelt skjutspel och utveckla en liten, testbar funktion i taget.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="09-desktoplage.html"><span class="chapter-number">09</span><span><strong>Testa utan headset</strong><small>Använd ett valfritt desktopläge för snabba tester utan att ersätta XR-spelaren.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="10-pistol.html"><span class="chapter-number">10</span><span><strong>Bygg en enkel pistol</strong><small>Skapa en svart pistol av primitiva former och förbered den för XR-grepp och projektiler.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="11-projektiler.html"><span class="chapter-number">11</span><span><strong>Skjut realistiska projektiler</strong><small>Skjut snabba kulor, undvik tunnling och flytta fysiska mål med realistisk impuls.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="12-mal.html"><span class="chapter-number">12</span><span><strong>Bygg ett förstörbart mål</strong><small>Ge målet träffpoäng, tydlig träffrespons och ett återanvändbart skadegränssnitt.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="13-monster.html"><span class="chapter-number">13</span><span><strong>Bygg det första monstret</strong><small>Låt en kapsel följa spelaren, ta tre träffar och göra enkel kontaktskada.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="14-hud.html"><span class="chapter-number">14</span><span><strong>Visa hälsa och besegrade monster</strong><small>Bygg en healthbar och monsterräknare för både desktop och Quest.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="15-health-power-up.html"><span class="chapter-number">15</span><span><strong>Lägg till en hälsopower-up</strong><small>Skapa en grön power-up som läker spelaren och uppdaterar HUD:en.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="16-spawners.html" aria-current="page"><span class="chapter-number">16</span><span><strong>Spawna monster och power-ups</strong><small>Skapa säkra monsterstarter och fyll på power-ups med tydliga maxgränser.</small></span><span class="arrow" aria-hidden="true">↗</span></a></nav></dialog>
+<dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-heading"><h2 id="search-heading">Sök i guiden</h2><button class="icon-button" data-close aria-label="Stäng sökresultaten">✕</button></div><label for="dialog-query">Sökord</label><input id="dialog-query" type="search" placeholder="Till exempel USB eller grepp"><p id="search-count" class="muted" aria-live="polite"></p><div id="search-results"></div></dialog>
+<main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 16</span></div><header class="chapter-header"><p class="eyebrow">Fortsätt bygga · Kapitel 16</p><h1>Spawna monster och power-ups</h1><p class="subtitle">Skapa säkra monsterstarter och fyll på power-ups med tydliga maxgränser.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-22</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
+<ul>
+<li><a href="#vad-vi-bygger">Vad vi bygger</a></li>
+<li><a href="#fasta-punkter">Varför använda fasta spawnpunkter?</a></li>
+<li><a href="#monster-spawner">Skapa monsterspawnern</a></li>
+<li><a href="#sakerhetsavstand">Filtrera bort farliga punkter</a></li>
+<li><a href="#max-monster">Begränsa antalet monster</a></li>
+<li><a href="#koppla-raknare">Koppla nya monster till räknaren</a></li>
+<li><a href="#power-up-spawner">Skapa power-up-spawnern</a></li>
+<li><a href="#huvudscen">Uppdatera huvudscenen</a></li>
+<li><a href="#testa-desktop">Testa i desktopläget</a></li>
+<li><a href="#testa-quest">Testa i Quest</a></li>
+<li><a href="#nasta-steg">Nästa steg</a></li>
+</ul>
+</div>
+</details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><div class="callout"><strong>Skapa tryck utan orättvisa starter.</strong><p>Monstren kommer nu från säkra punkter nära banans kanter. Power-ups fylls också på, men båda systemen har tydliga maxgränser.</p></div>
+
+<h2 id="vad-vi-bygger">Vad vi bygger</h2>
+<p>De enskilda monster- och power-up-instanserna tas bort ur <code>Main.tscn</code> och ersätts av två fristående spawners:</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Spawner</th>
+<th style="text-align: right;">Start</th>
+<th style="text-align: right;">Intervall</th>
+<th style="text-align: right;">Max samtidigt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Monster</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6 sekunder</td>
+<td style="text-align: right;">4 levande</td>
+</tr>
+<tr>
+<td>Hälsopower-up</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">10 sekunder</td>
+<td style="text-align: right;">3 tillgängliga</td>
+</tr>
+</tbody>
+</table></div>
+<p>Monsterspawnern kräver dessutom minst <code>3.5</code> meters avstånd mellan spelarens aktuella position och den valda spawnpunkten.</p>
+<h2 id="fasta-punkter">Varför använda fasta spawnpunkter?</h2>
+<p>Slumpmässiga koordinater kan hamna i ett hinder, utanför golvet eller precis bakom spelaren. I den här första versionen använder vi därför <code>Marker3D</code>-noder på kontrollerade platser. Spawnern väljer slumpmässigt bland de punkter som är giltiga just nu.</p>
+<p>Det är enklare än navigation och ger ändå variation. Senare kan samma system byta markörer när modulära rum införs.</p>
+<h2 id="monster-spawner">Skapa monsterspawnern</h2>
+<p>Skapa <code>Blueprints/monster_spawner.tscn</code>:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>MonsterSpawner (Node3D)
+├── SpawnPoints (Node3D)
+│   ├── NorthWest
+│   ├── NorthEast
+│   ├── SouthWest
+│   ├── SouthEast
+│   └── South
+└── SpawnTimer
+</code></pre></div>
+<p>Placera markörerna nära golvets kanter:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>NorthWest: (-4, 0.05, -4)
+NorthEast: ( 4, 0.05, -4)
+SouthWest: (-4, 0.05,  4)
+SouthEast: ( 4, 0.05,  4)
+South:     ( 0, 0.05,  4.3)
+</code></pre></div>
+<p>Lägg spawnerns rotnod i gruppen <code>monster_spawners</code> och fäst <code>monster_spawner.gd</code>.</p>
+<h2 id="sakerhetsavstand">Filtrera bort farliga punkter</h2>
+<p>Innan ett monster skapas hämtar spawnern spelarens fysikkropp från gruppen <code>player_body</code>. Varje markör kontrolleras på markplanet:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>if _flat_distance(marker.global_position, player.global_position) &lt; minimum_player_distance:
+    continue
+if _is_point_occupied(marker.global_position):
+    continue
+valid_points.append(marker)
+</code></pre></div>
+<p><code>_flat_distance()</code> använder X och Z men ignorerar höjden. Det är den horisontella spelradien som spelar roll. Standardvärdet <code>3.5</code> meter gör att inget startmonster dyker upp direkt intill spelaren.</p>
+<p>Punkter närmare än en meter från ett redan levande monster väljs också bort. Om ingen punkt är giltig hoppar spawnern över försöket i stället för att skapa ett orättvist monster.</p>
+<h2 id="max-monster">Begränsa antalet monster</h2>
+<p>Spawnern håller referenser till skapade monster och tar bort ogiltiga referenser innan varje försök:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>func spawn_monster() -&gt; SimpleMonster:
+    _remove_invalid_monsters()
+    if _spawned_monsters.size() &gt;= max_alive_monsters:
+        return null
+</code></pre></div>
+<p>Två monster skapas med ett uppskjutet anrop efter scenstarten. Det ger <code>main.gd</code> tid att skapa rätt spelarkropp innan säkerhetsavståndet räknas ut. Därefter försöker timern skapa ett monster var sjätte sekund tills fyra lever samtidigt.</p>
+<h2 id="koppla-raknare">Koppla nya monster till räknaren</h2>
+<p>Varje lyckad spawn skickar signalen <code>monster_spawned</code>. <code>main.gd</code> lyssnar på alla noder i gruppen <code>monster_spawners</code> och registrerar varje nytt monster i <code>GameState</code>:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>func _on_monster_spawned(monster: SimpleMonster) -&gt; void:
+    game_state.track_monster(monster)
+</code></pre></div>
+<p>Den befintliga texten <code>MONSTERS KILLED</code> räknar därför även dynamiskt skapade monster.</p>
+<h2 id="power-up-spawner">Skapa power-up-spawnern</h2>
+<p><code>HealthPowerUpSpawner</code> använder samma grundidé men behöver inget säkerhetsavstånd till spelaren. Den har fem egna markörer spridda över banan:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>FrontLeft:  (-2,   0.55, -2.5)
+FrontRight: ( 2,   0.55, -2.5)
+BackLeft:   (-3.5, 0.55,  2)
+BackRight:  ( 3.5, 0.55,  2)
+BackCenter: ( 0,   0.55,  4)
+</code></pre></div>
+<p>Två power-ups skapas vid start. Var tionde sekund görs ett nytt försök tills tre finns tillgängliga. En redan upptagen markör filtreras bort, så kristallerna hamnar inte ovanpå varandra.</p>
+<h2 id="huvudscen">Uppdatera huvudscenen</h2>
+<p>Ta bort de gamla enskilda noderna <code>SimpleMonster</code> och <code>HealthPowerUp</code> ur <code>Main.tscn</code>. Instansiera i stället:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>MonsterSpawner
+HealthPowerUpSpawner
+</code></pre></div>
+<p>Monster- och power-up-scenerna förblir självständiga. Spawnern ansvarar endast för när och var de skapas.</p>
+<h2 id="testa-desktop">Testa i desktopläget</h2>
+<ol>
+<li>Tryck på Godots vanliga Play-knapp.</li>
+<li>Kontrollera att inget monster skapas inom 3,5 meter från startpositionen.</li>
+<li>Kontrollera att två monster närmar sig från banans kanter.</li>
+<li>Vänta och kontrollera att högst fyra monster lever samtidigt.</li>
+<li>Kontrollera att två power-ups finns vid start.</li>
+<li>Använd en power-up och kontrollera att systemet senare fyller på, men aldrig över tre.</li>
+<li>Besegra flera monster och kontrollera att HUD-räknaren fortsätter öka.</li>
+</ol>
+<h2 id="testa-quest">Testa i Quest</h2>
+<ol>
+<li>Starta med Android/Quest-knappen och stå still de första sekunderna.</li>
+<li>Bekräfta att inga monster dyker upp precis bredvid eller bakom kroppen.</li>
+<li>Kontrollera att riktningen till de första monstren känns läsbar och rättvis.</li>
+<li>Spela tills fyra monster finns och bedöm om tempot är bekvämt.</li>
+<li>Kontrollera att flera gröna kristaller går att hitta utan att de överlappar.</li>
+</ol>
+<div class="checkpoint" data-checklist="spawners"><h3>Kontrollera spawnersystemen</h3><label><input type="checkbox"> Två monster skapas på säkert avstånd vid start.</label><label><input type="checkbox"> Inget monster skapas närmare än 3,5 meter.</label><label><input type="checkbox"> Högst fyra monster lever samtidigt.</label><label><input type="checkbox"> Dynamiska monster räknas i HUD:en.</label><label><input type="checkbox"> Två power-ups finns vid start.</label><label><input type="checkbox"> Högst tre power-ups finns och de överlappar inte.</label></div>
+
+<h2 id="nasta-steg">Nästa steg</h2>
+<p>Nu finns en enkel, pågående stridsslinga. Nästa rimliga steg är antingen en tydlig förlust och omstart när hälsan når noll, eller flera vapentyper som ger spelaren fler sätt att hantera de växande monstergrupperna.</p><nav class="page-nav" aria-label="Mellan kapitel"><a href="15-health-power-up.html"><small>← Föregående</small>Lägg till en hälsopower-up</a><a href="index.html"><small>Tillbaka →</small>Alla kapitel</a></nav></article></div></main>
+<footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Granskat 22 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>
