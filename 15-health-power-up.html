@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Skapa en grön power-up som läker spelaren och uppdaterar HUD:en."><meta name="theme-color" content="#f5f7fc"><title>Lägg till en hälsopower-up · VR med Godot</title><script src="js/theme.js"></script><link rel="stylesheet" href="css/style.css?v=20260921"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="js/search-index.js" defer></script><script src="js/app.js" defer></script></head>
+<body data-page="15-health-power-up"><a class="skip-link" href="#main">Hoppa till innehållet</a>
+<header class="navbar"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> VR med Godot</a><form class="site-search" role="search"><label class="sr-only" for="site-query">Sök i hela guiden</label><input id="site-query" type="search" placeholder="Sök i guiden …" autocomplete="off"><button aria-label="Sök" type="submit">⌕</button></form><button class="icon-button" id="menu-toggle" aria-label="Öppna kapitelmenyn" aria-controls="chapter-dialog" aria-expanded="false">☰</button><button class="icon-button" id="theme-toggle" aria-label="Byt färgtema" aria-pressed="false">◐</button></header>
+<dialog id="chapter-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-heading"><h2 id="menu-heading">Alla kapitel</h2><button class="icon-button" data-close aria-label="Stäng kapitelmenyn">✕</button></div><a class="home-link" href="index.html">← Till startsidan</a><nav aria-label="Kapitel"><a class="chapter-link" href="01-start.html"><span class="chapter-number">01</span><span><strong>Börja här</strong><small>Installera Godot och förstå arbetsflödet innan du börjar bygga.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="02-forsta-scenen.html"><span class="chapter-number">02</span><span><strong>Din första VR-scen</strong><small>Bygg golv, ljus och en XR-kamera. Lägg till svenskkommenterad startkod.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="03-macos-quest.html"><span class="chapter-number">03</span><span><strong>Från Mac till Quest 3</strong><small>Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="04-spelaren.html"><span class="chapter-number">04</span><span><strong>Händer och rörelse</strong><small>Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="05-objekt.html"><span class="chapter-number">05</span><span><strong>Bord och greppbara objekt</strong><small>Skapa kuber du kan plocka upp och ett bord att ställa dem på.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="06-felsokning.html"><span class="chapter-number">06</span><span><strong>Felsök steg för steg</strong><small>Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="07-kallor.html"><span class="chapter-number">07</span><span><strong>Källor och versionskontroll</strong><small>Läs dokumentationen, jämförelserna och vad som ändrats från videon.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="08-spelprojekt.html"><span class="chapter-number">08</span><span><strong>Från XR-prototyp till spel</strong><small>Planera ett enkelt skjutspel och utveckla en liten, testbar funktion i taget.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="09-desktoplage.html"><span class="chapter-number">09</span><span><strong>Testa utan headset</strong><small>Använd ett valfritt desktopläge för snabba tester utan att ersätta XR-spelaren.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="10-pistol.html"><span class="chapter-number">10</span><span><strong>Bygg en enkel pistol</strong><small>Skapa en svart pistol av primitiva former och förbered den för XR-grepp och projektiler.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="11-projektiler.html"><span class="chapter-number">11</span><span><strong>Skjut realistiska projektiler</strong><small>Skjut snabba kulor, undvik tunnling och flytta fysiska mål med realistisk impuls.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="12-mal.html"><span class="chapter-number">12</span><span><strong>Bygg ett förstörbart mål</strong><small>Ge målet träffpoäng, tydlig träffrespons och ett återanvändbart skadegränssnitt.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="13-monster.html"><span class="chapter-number">13</span><span><strong>Bygg det första monstret</strong><small>Låt en kapsel följa spelaren, ta tre träffar och göra enkel kontaktskada.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="14-hud.html"><span class="chapter-number">14</span><span><strong>Visa hälsa och besegrade monster</strong><small>Bygg en healthbar och monsterräknare för både desktop och Quest.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="15-health-power-up.html" aria-current="page"><span class="chapter-number">15</span><span><strong>Lägg till en hälsopower-up</strong><small>Skapa en grön power-up som läker spelaren och uppdaterar HUD:en.</small></span><span class="arrow" aria-hidden="true">↗</span></a></nav></dialog>
+<dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-heading"><h2 id="search-heading">Sök i guiden</h2><button class="icon-button" data-close aria-label="Stäng sökresultaten">✕</button></div><label for="dialog-query">Sökord</label><input id="dialog-query" type="search" placeholder="Till exempel USB eller grepp"><p id="search-count" class="muted" aria-live="polite"></p><div id="search-results"></div></dialog>
+<main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 15</span></div><header class="chapter-header"><p class="eyebrow">Fortsätt bygga · Kapitel 15</p><h1>Lägg till en hälsopower-up</h1><p class="subtitle">Skapa en grön power-up som läker spelaren och uppdaterar HUD:en.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-22</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
+<ul>
+<li><a href="#vad-vi-bygger">Vad vi bygger</a></li>
+<li><a href="#heal">Lägg till läkning i PlayerHealth</a></li>
+<li><a href="#power-up-scen">Skapa power-up-scenen</a></li>
+<li><a href="#animation">Rotera och låt kristallen sväva</a></li>
+<li><a href="#spelarkontakt">Känn igen båda spelarna</a></li>
+<li><a href="#placera">Placera power-upen</a></li>
+<li><a href="#testa-desktop">Testa i desktopläget</a></li>
+<li><a href="#testa-quest">Testa i Quest</a></li>
+<li><a href="#nasta-steg">Nästa steg</a></li>
+</ul>
+</div>
+</details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><div class="callout"><strong>Den första positiva spelresursen.</strong><p>Den gröna power-upen återställer hälsa och visar direkt att HUD:en reagerar åt båda håll – inte bara när spelaren skadas.</p></div>
+
+<h2 id="vad-vi-bygger">Vad vi bygger</h2>
+<p>Power-upen är en grön, självlysande kristall som svävar och roterar. När en skadad spelare går in i den:</p>
+<ul>
+<li>återställs två hälsopoäng,</li>
+<li>hälsan begränsas till maxvärdet fem,</li>
+<li>HUD:ens text och stapel uppdateras,</li>
+<li>power-upen försvinner.</li>
+</ul>
+<p>Om spelaren redan har full hälsa ligger power-upen kvar för senare användning.</p>
+<h2 id="heal">Lägg till läkning i PlayerHealth</h2>
+<p>Öppna <code>Blueprints/player_health.gd</code> och lägg till en metod som kompletterar <code>take_damage()</code>:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>func heal(amount: int = 1) -&gt; int:
+    if amount &lt;= 0 or current_health &gt;= max_health:
+        return 0
+
+    var previous_health := current_health
+    current_health = mini(current_health + amount, max_health)
+    var restored_health := current_health - previous_health
+    health_changed.emit(current_health, max_health)
+    return restored_health
+</code></pre></div>
+<p>Metoden returnerar den verkliga läkningen. Om spelaren har fyra av fem och begär två blir resultatet ett, inte två. Vid full hälsa returneras noll.</p>
+<p>Samma <code>health_changed</code>-signal används för skada och läkning. Därför behöver varken desktop-HUD:en eller handledspanelen någon särskild power-up-kod.</p>
+<h2 id="power-up-scen">Skapa power-up-scenen</h2>
+<p>Skapa <code>Blueprints/health_power_up.tscn</code>:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>HealthPowerUp (Area3D)
+├── Crystal (MeshInstance3D)
+├── Ring (MeshInstance3D)
+└── CollisionShape3D
+</code></pre></div>
+<p>Sätt rotens <code>Collision Layer</code> till <code>0</code> och dess <code>Collision Mask</code> till spelarens lager, lager 20. Använd en <code>SphereShape3D</code> med radien <code>0.3</code>.</p>
+<p>Kristallen kan byggas med en <code>PrismMesh</code> på ungefär <code>0.3 × 0.48 × 0.3</code> meter. Ge den ett grönt, oskuggat material med emission. Lägg en halvtransparent grön <code>TorusMesh</code> under kristallen för en tydlig silhuett.</p>
+<h2 id="animation">Rotera och låt kristallen sväva</h2>
+<p>Fäst <code>health_power_up.gd</code> på <code>Area3D</code>-roten. Spara starthöjden i <code>_ready()</code> och animera sedan hela power-upen:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>func _process(delta: float) -&gt; void:
+    _elapsed += delta
+    rotate_y(rotation_speed * delta)
+    position.y = _start_height + sin(_elapsed * bob_speed) * bob_height
+</code></pre></div>
+<p>Projektet använder rotationshastigheten <code>1.8</code>, svävhöjden <code>0.08</code> meter och svävhastigheten <code>2.2</code>.</p>
+<h2 id="spelarkontakt">Känn igen båda spelarna</h2>
+<p>Anslut <code>body_entered</code> och acceptera bara fysikkroppar i gruppen <code>player_body</code>. Desktopspelarens <code>Health</code> är barn till kroppen. I XR är <code>PlayerBody</code> barn till <code>XROrigin3D</code>, och <code>Health</code> ligger bredvid kroppen. Därför kontrolleras båda placeringarna:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>func _on_body_entered(body: Node3D) -&gt; void:
+    if _is_consumed or not body.is_in_group(&quot;player_body&quot;):
+        return
+
+    var health := body.get_node_or_null(&quot;Health&quot;)
+    if not health and body.get_parent():
+        health = body.get_parent().get_node_or_null(&quot;Health&quot;)
+    if not health or not health.has_method(&quot;heal&quot;):
+        return
+
+    var restored_health: int = health.call(&quot;heal&quot;, heal_amount)
+    if restored_health &lt;= 0:
+        return
+
+    _is_consumed = true
+    monitoring = false
+    $CollisionShape3D.set_deferred(&quot;disabled&quot;, true)
+    queue_free()
+</code></pre></div>
+<p>Power-upen markeras som förbrukad innan den tas bort. Det hindrar två samtidiga fysikhändelser från att ge dubbel läkning.</p>
+<h2 id="placera">Placera power-upen</h2>
+<p>Instansiera <code>health_power_up.tscn</code> i <code>Main.tscn</code> med positionen:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>X: -2
+Y: 0.55
+Z: -2.5
+</code></pre></div>
+<p>Den hamnar till vänster framför startpositionen, tydligt skild från monstret till höger.</p>
+<h2 id="testa-desktop">Testa i desktopläget</h2>
+<ol>
+<li>Tryck på Godots vanliga Play-knapp.</li>
+<li>Gå först in i power-upen med full hälsa. Den ska ligga kvar.</li>
+<li>Låt monstret göra minst en kontaktskada.</li>
+<li>Gå in i den gröna kristallen.</li>
+<li>Kontrollera att hälsan ökar med två, men aldrig över fem.</li>
+<li>Kontrollera att healthbaren uppdateras och att kristallen försvinner.</li>
+</ol>
+<h2 id="testa-quest">Testa i Quest</h2>
+<ol>
+<li>Starta spelet med Android/Quest-knappen.</li>
+<li>Ta kontaktskada från monstret och läs värdet på vänster handled.</li>
+<li>Gå fysiskt eller med styrspaken till den gröna kristallen.</li>
+<li>Kontrollera att handledens healthbar ökar direkt.</li>
+<li>Bekräfta att power-upen försvinner efter användning.</li>
+</ol>
+<div class="checkpoint" data-checklist="health-power-up"><h3>Kontrollera hälsopower-upen</h3><label><input type="checkbox"> Kristallen är tydligt grön, roterar och svävar.</label><label><input type="checkbox"> Power-upen ligger kvar vid full hälsa.</label><label><input type="checkbox"> Skadad spelare återfår två hälsopoäng.</label><label><input type="checkbox"> Hälsan går aldrig över fem.</label><label><input type="checkbox"> HUD:en uppdateras omedelbart.</label><label><input type="checkbox"> Power-upen försvinner efter lyckad läkning.</label></div>
+
+<h2 id="nasta-steg">Nästa steg</h2>
+<p>Nu finns skada, läkning och synlig spelarstatus. Nästa lämpliga steg är flera monster eller en enkel spawner, så att monsterräknaren får en större roll i spelomgången.</p><nav class="page-nav" aria-label="Mellan kapitel"><a href="14-hud.html"><small>← Föregående</small>Visa hälsa och besegrade monster</a><a href="index.html"><small>Tillbaka →</small>Alla kapitel</a></nav></article></div></main>
+<footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Granskat 22 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>
