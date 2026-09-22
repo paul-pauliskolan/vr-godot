@@ -87,6 +87,14 @@ valid_points.append(marker)
     if _spawned_monsters.size() &gt;= max_alive_monsters:
         return null
 </code></pre></div>
+<p>När ett monster har förstörts kan dess gamla referens fortfarande ligga kvar i listan. Rensa den bakifrån, så att borttagna poster inte ändrar index för de poster som återstår:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>func _remove_invalid_monsters() -&gt; void:
+    for index in range(_spawned_monsters.size() - 1, -1, -1):
+        var monster := _spawned_monsters[index]
+        if not is_instance_valid(monster) or monster.is_queued_for_deletion():
+            _spawned_monsters.remove_at(index)
+</code></pre></div>
+<p>Använd inte <code>Array.filter()</code> med en typad lambda för just den här listan: Godot kan försöka omvandla en redan frigjord nod till <code>SimpleMonster</code> <em>innan</em> lambdan får kontrollera den. Det gav felet <code>Cannot convert argument 1 from Object to Object</code> när timern skulle skapa nästa monster.</p>
 <p>Två monster skapas med ett uppskjutet anrop efter scenstarten. Det ger <code>main.gd</code> tid att skapa rätt spelarkropp innan säkerhetsavståndet räknas ut. Därefter försöker timern skapa ett monster var sjätte sekund tills fyra lever samtidigt.</p>
 <h2 id="koppla-raknare">Koppla nya monster till räknaren</h2>
 <p>Varje lyckad spawn skickar signalen <code>monster_spawned</code>. <code>main.gd</code> lyssnar på alla noder i gruppen <code>monster_spawners</code> och registrerar varje nytt monster i <code>GameState</code>:</p>
@@ -103,6 +111,13 @@ BackRight:  ( 3.5, 0.55,  2)
 BackCenter: ( 0,   0.55,  4)
 </code></pre></div>
 <p>Två power-ups skapas vid start. Var tionde sekund görs ett nytt försök tills tre finns tillgängliga. En redan upptagen markör filtreras bort, så kristallerna hamnar inte ovanpå varandra.</p>
+<p>Power-up-spawnern behöver samma säkra rensning efter att spelaren plockat upp en kristall:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>func _remove_invalid_power_ups() -&gt; void:
+    for index in range(_spawned_power_ups.size() - 1, -1, -1):
+        var power_up := _spawned_power_ups[index]
+        if not is_instance_valid(power_up) or power_up.is_queued_for_deletion():
+            _spawned_power_ups.remove_at(index)
+</code></pre></div>
 <h2 id="huvudscen">Uppdatera huvudscenen</h2>
 <p>Ta bort de gamla enskilda noderna <code>SimpleMonster</code> och <code>HealthPowerUp</code> ur <code>Main.tscn</code>. Instansiera i stället:</p>
 <div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>MonsterSpawner
@@ -117,7 +132,7 @@ HealthPowerUpSpawner
 <li>Vänta och kontrollera att högst fyra monster lever samtidigt.</li>
 <li>Kontrollera att två power-ups finns vid start.</li>
 <li>Använd en power-up och kontrollera att systemet senare fyller på, men aldrig över tre.</li>
-<li>Besegra flera monster och kontrollera att HUD-räknaren fortsätter öka.</li>
+<li>Besegra flera monster och vänta på nästa spawn. Kontrollera att nya monster dyker upp utan fel i Godots debugger och att HUD-räknaren fortsätter öka.</li>
 </ol>
 <h2 id="testa-quest">Testa i Quest</h2>
 <ol>

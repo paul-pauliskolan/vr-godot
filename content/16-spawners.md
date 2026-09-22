@@ -71,6 +71,18 @@ func spawn_monster() -> SimpleMonster:
 		return null
 ```
 
+När ett monster har förstörts kan dess gamla referens fortfarande ligga kvar i listan. Rensa den bakifrån, så att borttagna poster inte ändrar index för de poster som återstår:
+
+```gdscript
+func _remove_invalid_monsters() -> void:
+	for index in range(_spawned_monsters.size() - 1, -1, -1):
+		var monster := _spawned_monsters[index]
+		if not is_instance_valid(monster) or monster.is_queued_for_deletion():
+			_spawned_monsters.remove_at(index)
+```
+
+Använd inte `Array.filter()` med en typad lambda för just den här listan: Godot kan försöka omvandla en redan frigjord nod till `SimpleMonster` *innan* lambdan får kontrollera den. Det gav felet `Cannot convert argument 1 from Object to Object` när timern skulle skapa nästa monster.
+
 Två monster skapas med ett uppskjutet anrop efter scenstarten. Det ger `main.gd` tid att skapa rätt spelarkropp innan säkerhetsavståndet räknas ut. Därefter försöker timern skapa ett monster var sjätte sekund tills fyra lever samtidigt.
 
 ## Koppla nya monster till räknaren {#koppla-raknare}
@@ -98,6 +110,16 @@ BackCenter: ( 0,   0.55,  4)
 
 Två power-ups skapas vid start. Var tionde sekund görs ett nytt försök tills tre finns tillgängliga. En redan upptagen markör filtreras bort, så kristallerna hamnar inte ovanpå varandra.
 
+Power-up-spawnern behöver samma säkra rensning efter att spelaren plockat upp en kristall:
+
+```gdscript
+func _remove_invalid_power_ups() -> void:
+	for index in range(_spawned_power_ups.size() - 1, -1, -1):
+		var power_up := _spawned_power_ups[index]
+		if not is_instance_valid(power_up) or power_up.is_queued_for_deletion():
+			_spawned_power_ups.remove_at(index)
+```
+
 ## Uppdatera huvudscenen {#huvudscen}
 
 Ta bort de gamla enskilda noderna `SimpleMonster` och `HealthPowerUp` ur `Main.tscn`. Instansiera i stället:
@@ -117,7 +139,7 @@ Monster- och power-up-scenerna förblir självständiga. Spawnern ansvarar endas
 4. Vänta och kontrollera att högst fyra monster lever samtidigt.
 5. Kontrollera att två power-ups finns vid start.
 6. Använd en power-up och kontrollera att systemet senare fyller på, men aldrig över tre.
-7. Besegra flera monster och kontrollera att HUD-räknaren fortsätter öka.
+7. Besegra flera monster och vänta på nästa spawn. Kontrollera att nya monster dyker upp utan fel i Godots debugger och att HUD-räknaren fortsätter öka.
 
 ## Testa i Quest {#testa-quest}
 
