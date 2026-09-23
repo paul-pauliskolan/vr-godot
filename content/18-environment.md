@@ -50,7 +50,11 @@ Placeringen av monster och power-ups från kapitel 16 ligger kvar. Ytorna är nu
 
 Det gamla bordet var en enda grå låda. `Blueprints/workbench.tscn` består nu av en sliten träskiva, fyra rostiga metallben, fram- och bakre stag, en nedre hylla, en lådfront, handtag och små hörnplåtar. Bordsskivan och benen har egna kollisioner.
 
-Arbetsbordet står kvar framför spelaren. Pistolen och de greppbara testföremålen är placerade ovanför skivan, så den gamla interaktionen går att använda i den nya miljön. Håll ett tydligt grepputrymme runt pistolen när du lägger till fler dekorationer senare.
+Arbetsbordet står kvar framför spelaren. Pistolen är placerad ovanför skivan, så greppinteraktionen går att använda i den nya miljön. Håll ett tydligt grepputrymme runt pistolen när du lägger till fler dekorationer senare.
+
+## Rensa bort prototypobjekten {#rensa-prototypobjekt}
+
+När monster och miljö har tagit över testrollen behöver den platta målnoden `Target` och de tre turkosa `PickableObject`-kuberna inte längre stå i `Main.tscn`. Ta bort just dessa fyra **instanser** ur huvudscenen. Behåll `Blueprints/target.tscn` och `Blueprints/pickable_object.tscn` som övningsmaterial för de tidigare kapitlen. Golvet, arbetsbordet, pistolen, spawnerna och HUD:en ska vara kvar.
 
 ## Ljus och främmande stämning {#ljus}
 
@@ -62,7 +66,7 @@ Håll antalet dynamiska ljus och skuggor lågt i Quest. De tre lokala ljusen kas
 
 1. Starta spelet med Godots Play-knapp. Kontrollera att speltexten är på engelska.
 2. Gå runt: golv, väggar, tak och bord ska ha fungerande kollision.
-3. Plocka upp pistolen från den nya bordsskivan och skjut ett monster.
+3. Plocka upp pistolen från den nya bordsskivan och skjut ett monster. Kontrollera att måltavlan och de tre testkuberna inte längre finns i scenen.
 4. Kontrollera att monster och power-ups fortfarande skapas på giltiga punkter.
 5. Låt hälsan ta slut och kontrollera att `GAME OVER` och `Play again (R)` visas.
 
@@ -81,4 +85,4 @@ Det sista godkännandet måste göras i headsetet:
 
 ## Nästa steg {#nasta-steg}
 
-När miljön är godkänd i Quest kan nästa steg vara en andra vapentyp eller mer varierade monster. Vi bör inte lägga till fler visuella effekter förrän denna scen har testats för komfort och prestanda i headsetet.
+När miljön är godkänd i Quest kan vi ersätta den lila prototypkapseln med en animerad modell. Tre möjliga CC0-källor är [Zombie Apocalypse Kit](https://quaternius.com/packs/zombieapocalypsekit.html) för en urban fiende, [Ultimate Monsters](https://quaternius.com/packs/ultimatemonsters.html) för ett mer främmande väsen och [Sci-Fi Essentials Kit](https://quaternius.com/packs/scifiessentialskit.html) för en mekanisk fiende. Alla tre kommer från Quaternius och respektive källsida anger CC0. Välj en enda modell först och behåll den nuvarande kollisionen och skadefunktionen när den visuella modellen byts ut. Kontrollera också polygonantal och animationer i Quest innan fler fiender läggs till.
