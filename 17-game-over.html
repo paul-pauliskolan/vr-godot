@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Visa resultatet när hälsan tar slut och låt spelaren starta en ny omgång."><meta name="theme-color" content="#f5f7fc"><title>Förlust och omstart · VR med Godot</title><script src="js/theme.js"></script><link rel="stylesheet" href="css/style.css?v=20260921"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="js/search-index.js" defer></script><script src="js/app.js" defer></script></head>
+<body data-page="17-game-over"><a class="skip-link" href="#main">Hoppa till innehållet</a>
+<header class="navbar"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> VR med Godot</a><form class="site-search" role="search"><label class="sr-only" for="site-query">Sök i hela guiden</label><input id="site-query" type="search" placeholder="Sök i guiden …" autocomplete="off"><button aria-label="Sök" type="submit">⌕</button></form><button class="icon-button" id="menu-toggle" aria-label="Öppna kapitelmenyn" aria-controls="chapter-dialog" aria-expanded="false">☰</button><button class="icon-button" id="theme-toggle" aria-label="Byt färgtema" aria-pressed="false">◐</button></header>
+<dialog id="chapter-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-heading"><h2 id="menu-heading">Alla kapitel</h2><button class="icon-button" data-close aria-label="Stäng kapitelmenyn">✕</button></div><a class="home-link" href="index.html">← Till startsidan</a><nav aria-label="Kapitel"><a class="chapter-link" href="01-start.html"><span class="chapter-number">01</span><span><strong>Börja här</strong><small>Installera Godot och förstå arbetsflödet innan du börjar bygga.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="02-forsta-scenen.html"><span class="chapter-number">02</span><span><strong>Din första VR-scen</strong><small>Bygg golv, ljus och en XR-kamera. Lägg till svenskkommenterad startkod.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="03-macos-quest.html"><span class="chapter-number">03</span><span><strong>Från Mac till Quest 3</strong><small>Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="04-spelaren.html"><span class="chapter-number">04</span><span><strong>Händer och rörelse</strong><small>Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="05-objekt.html"><span class="chapter-number">05</span><span><strong>Bord och greppbara objekt</strong><small>Skapa kuber du kan plocka upp och ett bord att ställa dem på.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="06-felsokning.html"><span class="chapter-number">06</span><span><strong>Felsök steg för steg</strong><small>Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="07-kallor.html"><span class="chapter-number">07</span><span><strong>Källor och versionskontroll</strong><small>Läs dokumentationen, jämförelserna och vad som ändrats från videon.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="08-spelprojekt.html"><span class="chapter-number">08</span><span><strong>Från XR-prototyp till spel</strong><small>Planera ett enkelt skjutspel och utveckla en liten, testbar funktion i taget.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="09-desktoplage.html"><span class="chapter-number">09</span><span><strong>Testa utan headset</strong><small>Använd ett valfritt desktopläge för snabba tester utan att ersätta XR-spelaren.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="10-pistol.html"><span class="chapter-number">10</span><span><strong>Bygg en enkel pistol</strong><small>Skapa en svart pistol av primitiva former och förbered den för XR-grepp och projektiler.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="11-projektiler.html"><span class="chapter-number">11</span><span><strong>Skjut realistiska projektiler</strong><small>Skjut snabba kulor, undvik tunnling och flytta fysiska mål med realistisk impuls.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="12-mal.html"><span class="chapter-number">12</span><span><strong>Bygg ett förstörbart mål</strong><small>Ge målet träffpoäng, tydlig träffrespons och ett återanvändbart skadegränssnitt.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="13-monster.html"><span class="chapter-number">13</span><span><strong>Bygg det första monstret</strong><small>Låt en kapsel följa spelaren, ta tre träffar och göra enkel kontaktskada.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="14-hud.html"><span class="chapter-number">14</span><span><strong>Visa hälsa och besegrade monster</strong><small>Bygg en healthbar och monsterräknare för både desktop och Quest.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="15-health-power-up.html"><span class="chapter-number">15</span><span><strong>Lägg till en hälsopower-up</strong><small>Skapa en grön power-up som läker spelaren och uppdaterar HUD:en.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="16-spawners.html"><span class="chapter-number">16</span><span><strong>Spawna monster och power-ups</strong><small>Skapa säkra monsterstarter och fyll på power-ups med tydliga maxgränser.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="17-game-over.html" aria-current="page"><span class="chapter-number">17</span><span><strong>Förlust och omstart</strong><small>Visa resultatet när hälsan tar slut och låt spelaren starta en ny omgång.</small></span><span class="arrow" aria-hidden="true">↗</span></a></nav></dialog>
+<dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-heading"><h2 id="search-heading">Sök i guiden</h2><button class="icon-button" data-close aria-label="Stäng sökresultaten">✕</button></div><label for="dialog-query">Sökord</label><input id="dialog-query" type="search" placeholder="Till exempel USB eller grepp"><p id="search-count" class="muted" aria-live="polite"></p><div id="search-results"></div></dialog>
+<main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 17</span></div><header class="chapter-header"><p class="eyebrow">Fortsätt bygga · Kapitel 17</p><h1>Förlust och omstart</h1><p class="subtitle">Visa resultatet när hälsan tar slut och låt spelaren starta en ny omgång.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-23</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
+<ul>
+<li><a href="#vad-vi-bygger">Vad vi bygger</a></li>
+<li><a href="#fanga-forlust">Fånga spelarens förlust</a></li>
+<li><a href="#stoppa-striden">Stoppa striden</a></li>
+<li><a href="#visa-resultatet">Visa resultatet</a></li>
+<li><a href="#starta-om">Starta en ny omgång</a></li>
+<li><a href="#testa-desktop">Testa i desktopläget</a></li>
+<li><a href="#testa-quest">Testa i Quest</a></li>
+<li><a href="#nasta-steg">Nästa steg</a></li>
+</ul>
+</div>
+</details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><div class="callout"><strong>Ge spelomgången ett slut.</strong><p>När spelarens hälsa når noll stannar striden. Resultatet visas, och spelaren kan starta en ny omgång utan att lämna spelet.</p></div>
+
+<h2 id="vad-vi-bygger">Vad vi bygger</h2>
+<p>Kapitel 14 gav spelaren hälsa och kapitel 16 fyller på monster. Nu kopplar vi ihop dessa system till en enkel spel-loop:</p>
+<ol>
+<li><code>PlayerHealth</code> skickar signalen <code>defeated</code> vid noll hälsa.</li>
+<li><code>main.gd</code> stoppar rörelse, monster och spawners.</li>
+<li>En Game over-panel visar antal besegrade monster.</li>
+<li>R på datorn eller B på höger Quest-kontroll laddar om huvudscenen.</li>
+</ol>
+<p>Det här steget lägger inte till någon vinst eller poängtabell ännu. Vi bygger först ett tydligt och testbart förlustläge.</p>
+<h2 id="fanga-forlust">Fånga spelarens förlust</h2>
+<p>I <code>PlayerHealth</code> finns redan signalen <code>defeated</code>. När <code>main.gd</code> skapar spelaren kopplar den signalen till en metod:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>var player_health := player.get_node_or_null(&quot;Health&quot;) as PlayerHealth
+if player_health:
+    game_state.track_player_health(player_health)
+    player_health.defeated.connect(_on_player_defeated)
+</code></pre></div>
+<p><code>_on_player_defeated()</code> sätter en flagga, stoppar spelandet och väljer rätt presentation för desktop eller XR. Flaggan hindrar att samma förlust hanteras två gånger:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>func _on_player_defeated() -&gt; void:
+    if _game_over:
+        return
+    _game_over = true
+    game_state.is_game_over = true
+    _stop_gameplay()
+    if _player is DesktopPlayer:
+        _show_desktop_game_over()
+    else:
+        _show_xr_game_over()
+</code></pre></div>
+<h2 id="stoppa-striden">Stoppa striden</h2>
+<p><code>_stop_gameplay()</code> stoppar båda spawn-timrarna och de befintliga monstrens rörelse och kontaktskada. Aktiva kulor tas bort och vapnet kan inte skjuta fler skott. Hälsopower-ups kan inte återuppliva en spelare med noll hälsa. På datorn stoppas spelarens rörelse och muspekaren släpps. I Quest stängs XR Tools-funktionerna för rörelse och grepp av, medan kameran och höger kontroll fortsätter att fungera. Därför kan spelaren fortfarande se panelen och trycka B för omstart.</p>
+<p>Vi pausar inte hela scen-trädet: då skulle även kamerans och kontrollens uppdatering kunna påverkas i headsetet.</p>
+<h2 id="visa-resultatet">Visa resultatet</h2>
+<p>Desktopläget skapar en centrerad <code>CanvasLayer</code> med texten <strong>SPELET ÄR SLUT</strong>, antal besegrade monster och knappen <strong>Spela igen (R)</strong>. Quest använder i stället en enkel 3D-panel 1,2 meter framför <code>XRCamera3D</code>, med samma resultat och instruktionen <strong>Tryck B för att spela igen</strong>. Panelen är fäst vid kameran så att den är synlig oavsett var spelaren tittar när hälsan tar slut.</p>
+<p>Resultatet hämtas från <code>GameState.monsters_killed</code> innan räknaren nollställs.</p>
+<h2 id="starta-om">Starta en ny omgång</h2>
+<p>Båda kontrollerna anropar samma metod:</p>
+<div class="code-block"><div class="code-toolbar"><span>gdscript</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>func _restart_run() -&gt; void:
+    get_tree().reload_current_scene()
+</code></pre></div>
+<p>När huvudscenen laddas om skapas en ny spelare med full hälsa. <code>GameState.reset_run()</code> nollställer monsterräknaren och förlustflaggan, och spawnernas timrar startar på nytt.</p>
+<p>På desktop kan spelaren klicka knappen eller trycka R. På Quest används <code>by_button</code> på höger <code>XRController3D</code>, vilket motsvarar B på Quest-kontrollen.</p>
+<h2 id="testa-desktop">Testa i desktopläget</h2>
+<ol>
+<li>Starta med Godots vanliga Play-knapp och låt monstren sänka hälsan till noll.</li>
+<li>Kontrollera att Game over-panelen visar rätt antal besegrade monster.</li>
+<li>Kontrollera att monster och spawners stannar och att muspekaren syns.</li>
+<li>Klicka <strong>Spela igen (R)</strong> eller tryck R.</li>
+<li>Kontrollera att hälsan är full, räknaren är noll och nya monster börjar dyka upp.</li>
+</ol>
+<p>Det automatiska testet <code>tests/phase48_game_over_test.gd</code> kontrollerar förlust, stopp och omstart i desktopläget.</p>
+<h2 id="testa-quest">Testa i Quest</h2>
+<p>Quest-visningen behöver också provas i headsetet:</p>
+<ol>
+<li>Låt hälsan gå till noll och kontrollera att panelen är läsbar och bekvämt placerad.</li>
+<li>Kontrollera att du kan titta omkring utan att spelet fortsätter röra spelaren.</li>
+<li>Tryck B på höger kontroll och kontrollera att en ny omgång startar med full hälsa.</li>
+</ol>
+<div class="checkpoint" data-checklist="game-over"><h3>Kontrollera förlustläget</h3><label><input type="checkbox"> Förlust visas vid noll hälsa.</label><label><input type="checkbox"> Monster och spawners stannar.</label><label><input type="checkbox"> Antalet besegrade monster visas.</label><label><input type="checkbox"> Omstart återställer hälsa och räknare.</label><label><input type="checkbox"> Panel och B-knapp fungerar i Quest.</label></div>
+
+<h2 id="nasta-steg">Nästa steg</h2>
+<p>Nu går det att spela en hel omgång. Nästa utvecklingssteg kan vara en andra vapentyp med annan skadetakt, följt av mer varierade möten. Behåll den enkla omstarten som säkerhetstest när de systemen byggs ut.</p><nav class="page-nav" aria-label="Mellan kapitel"><a href="16-spawners.html"><small>← Föregående</small>Spawna monster och power-ups</a><a href="index.html"><small>Tillbaka →</small>Alla kapitel</a></nav></article></div></main>
+<footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Uppdaterat 23 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>

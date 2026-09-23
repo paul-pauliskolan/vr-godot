@@ -153,4 +153,4 @@ Monster- och power-up-scenerna förblir självständiga. Spawnern ansvarar endas
 
 ## Nästa steg {#nasta-steg}
 
-Nu finns en enkel, pågående stridsslinga. Nästa rimliga steg är antingen en tydlig förlust och omstart när hälsan når noll, eller flera vapentyper som ger spelaren fler sätt att hantera de växande monstergrupperna.
+Nu finns en enkel, pågående stridsslinga. I [kapitel 17](17-game-over.html) lägger vi till ett tydligt slut när hälsan når noll och ett sätt att starta en ny omgång.
