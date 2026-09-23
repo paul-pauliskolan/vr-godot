@@ -45,7 +45,7 @@ Vi pausar inte hela scen-trädet: då skulle även kamerans och kontrollens uppd
 
 ## Visa resultatet {#visa-resultatet}
 
-Desktopläget skapar en centrerad `CanvasLayer` med texten **SPELET ÄR SLUT**, antal besegrade monster och knappen **Spela igen (R)**. Quest använder i stället en enkel 3D-panel 1,2 meter framför `XRCamera3D`, med samma resultat och instruktionen **Tryck B för att spela igen**. Panelen är fäst vid kameran så att den är synlig oavsett var spelaren tittar när hälsan tar slut.
+Desktopläget skapar en centrerad `CanvasLayer` med texten **GAME OVER**, antal besegrade monster som **MONSTERS KILLED** och knappen **Play again (R)**. Quest använder i stället en enkel 3D-panel 1,2 meter framför `XRCamera3D`, med samma resultat och instruktionen **Press B to play again**. Panelen är fäst vid kameran så att den är synlig oavsett var spelaren tittar när hälsan tar slut.
 
 Resultatet hämtas från `GameState.monsters_killed` innan räknaren nollställs.
 
@@ -67,7 +67,7 @@ På desktop kan spelaren klicka knappen eller trycka R. På Quest används `by_b
 1. Starta med Godots vanliga Play-knapp och låt monstren sänka hälsan till noll.
 2. Kontrollera att Game over-panelen visar rätt antal besegrade monster.
 3. Kontrollera att monster och spawners stannar och att muspekaren syns.
-4. Klicka **Spela igen (R)** eller tryck R.
+4. Klicka **Play again (R)** eller tryck R.
 5. Kontrollera att hälsan är full, räknaren är noll och nya monster börjar dyka upp.
 
 Det automatiska testet `tests/phase48_game_over_test.gd` kontrollerar förlust, stopp och omstart i desktopläget.
@@ -84,4 +84,4 @@ Quest-visningen behöver också provas i headsetet:
 
 ## Nästa steg {#nasta-steg}
 
-Nu går det att spela en hel omgång. Nästa utvecklingssteg kan vara en andra vapentyp med annan skadetakt, följt av mer varierade möten. Behåll den enkla omstarten som säkerhetstest när de systemen byggs ut.
+Nu går det att spela en hel omgång. I [kapitel 18](18-environment.html) bygger vi en större, sliten stadsmiljö och ett trovärdigare arbetsbord. Därefter kan vi lägga till en andra vapentyp.

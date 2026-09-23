@@ -76,10 +76,10 @@ func _ready() -> void:
     if xr_interface and xr_interface.is_initialized():
         # Skicka denna viewports bild till headsetets båda ögon.
         get_viewport().use_xr = true
-        print("OpenXR är redo – VR-bilden är aktiverad.")
+        print("OpenXR is ready: VR display is active.")
     else:
         # På Mac kan detta bero på att projektet körs lokalt med F5.
-        push_warning("OpenXR är inte redo. Kör Android-exporten på Quest.")
+        push_warning("OpenXR is not ready. Run the Android export on Quest.")
 ```
 
 **Varför inget `initialize()`?** OpenXR startar tidigt i Godot 4.7. Det officiella exemplet kontrollerar därför `is_initialized()`. Lägg inte till flera olika XR-startscript i samma projekt. Godot beskriver också att OpenXR sköter sin egen bildtiming; videons manuella avstängning av VSync behövs inte i detta grundexempel. [Godot 4.7: startkod och bildtiming](https://docs.godotengine.org/en/4.7/tutorials/xr/setting_up_xr.html)

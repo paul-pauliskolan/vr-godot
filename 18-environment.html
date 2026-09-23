@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Texturera golv, väggar och tak, och bygg ett mer realistiskt arbetsbord."><meta name="theme-color" content="#f5f7fc"><title>Bygg en sliten stadsmiljö · VR med Godot</title><script src="js/theme.js"></script><link rel="stylesheet" href="css/style.css?v=20260921"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="js/search-index.js" defer></script><script src="js/app.js" defer></script></head>
+<body data-page="18-environment"><a class="skip-link" href="#main">Hoppa till innehållet</a>
+<header class="navbar"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> VR med Godot</a><form class="site-search" role="search"><label class="sr-only" for="site-query">Sök i hela guiden</label><input id="site-query" type="search" placeholder="Sök i guiden …" autocomplete="off"><button aria-label="Sök" type="submit">⌕</button></form><button class="icon-button" id="menu-toggle" aria-label="Öppna kapitelmenyn" aria-controls="chapter-dialog" aria-expanded="false">☰</button><button class="icon-button" id="theme-toggle" aria-label="Byt färgtema" aria-pressed="false">◐</button></header>
+<dialog id="chapter-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-heading"><h2 id="menu-heading">Alla kapitel</h2><button class="icon-button" data-close aria-label="Stäng kapitelmenyn">✕</button></div><a class="home-link" href="index.html">← Till startsidan</a><nav aria-label="Kapitel"><a class="chapter-link" href="01-start.html"><span class="chapter-number">01</span><span><strong>Börja här</strong><small>Installera Godot och förstå arbetsflödet innan du börjar bygga.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="02-forsta-scenen.html"><span class="chapter-number">02</span><span><strong>Din första VR-scen</strong><small>Bygg golv, ljus och en XR-kamera. Lägg till svenskkommenterad startkod.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="03-macos-quest.html"><span class="chapter-number">03</span><span><strong>Från Mac till Quest 3</strong><small>Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="04-spelaren.html"><span class="chapter-number">04</span><span><strong>Händer och rörelse</strong><small>Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="05-objekt.html"><span class="chapter-number">05</span><span><strong>Bord och greppbara objekt</strong><small>Skapa kuber du kan plocka upp och ett bord att ställa dem på.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="06-felsokning.html"><span class="chapter-number">06</span><span><strong>Felsök steg för steg</strong><small>Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="07-kallor.html"><span class="chapter-number">07</span><span><strong>Källor och versionskontroll</strong><small>Läs dokumentationen, jämförelserna och vad som ändrats från videon.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="08-spelprojekt.html"><span class="chapter-number">08</span><span><strong>Från XR-prototyp till spel</strong><small>Planera ett enkelt skjutspel och utveckla en liten, testbar funktion i taget.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="09-desktoplage.html"><span class="chapter-number">09</span><span><strong>Testa utan headset</strong><small>Använd ett valfritt desktopläge för snabba tester utan att ersätta XR-spelaren.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="10-pistol.html"><span class="chapter-number">10</span><span><strong>Bygg en enkel pistol</strong><small>Skapa en svart pistol av primitiva former och förbered den för XR-grepp och projektiler.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="11-projektiler.html"><span class="chapter-number">11</span><span><strong>Skjut realistiska projektiler</strong><small>Skjut snabba kulor, undvik tunnling och flytta fysiska mål med realistisk impuls.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="12-mal.html"><span class="chapter-number">12</span><span><strong>Bygg ett förstörbart mål</strong><small>Ge målet träffpoäng, tydlig träffrespons och ett återanvändbart skadegränssnitt.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="13-monster.html"><span class="chapter-number">13</span><span><strong>Bygg det första monstret</strong><small>Låt en kapsel följa spelaren, ta tre träffar och göra enkel kontaktskada.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="14-hud.html"><span class="chapter-number">14</span><span><strong>Visa hälsa och besegrade monster</strong><small>Bygg en healthbar och monsterräknare för både desktop och Quest.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="15-health-power-up.html"><span class="chapter-number">15</span><span><strong>Lägg till en hälsopower-up</strong><small>Skapa en grön power-up som läker spelaren och uppdaterar HUD:en.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="16-spawners.html"><span class="chapter-number">16</span><span><strong>Spawna monster och power-ups</strong><small>Skapa säkra monsterstarter och fyll på power-ups med tydliga maxgränser.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="17-game-over.html"><span class="chapter-number">17</span><span><strong>Förlust och omstart</strong><small>Visa resultatet när hälsan tar slut och låt spelaren starta en ny omgång.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="18-environment.html" aria-current="page"><span class="chapter-number">18</span><span><strong>Bygg en sliten stadsmiljö</strong><small>Texturera golv, väggar och tak, och bygg ett mer realistiskt arbetsbord.</small></span><span class="arrow" aria-hidden="true">↗</span></a></nav></dialog>
+<dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-heading"><h2 id="search-heading">Sök i guiden</h2><button class="icon-button" data-close aria-label="Stäng sökresultaten">✕</button></div><label for="dialog-query">Sökord</label><input id="dialog-query" type="search" placeholder="Till exempel USB eller grepp"><p id="search-count" class="muted" aria-live="polite"></p><div id="search-results"></div></dialog>
+<main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 18</span></div><header class="chapter-header"><p class="eyebrow">Fortsätt bygga · Kapitel 18</p><h1>Bygg en sliten stadsmiljö</h1><p class="subtitle">Texturera golv, väggar och tak, och bygg ett mer realistiskt arbetsbord.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-23</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
+<ul>
+<li><a href="#engelsk-speltext">Text i spelet: engelska</a></li>
+<li><a href="#texturkallor">Välj fria texturer</a></li>
+<li><a href="#arena">Bygg den större arenan</a></li>
+<li><a href="#arbetsbord">Bygg om bordet</a></li>
+<li><a href="#ljus">Ljus och främmande stämning</a></li>
+<li><a href="#testa-desktop">Testa i desktopläget</a></li>
+<li><a href="#testa-quest">Testa i Quest</a></li>
+<li><a href="#nasta-steg">Nästa steg</a></li>
+</ul>
+</div>
+</details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><div class="callout"><strong>Från grå prototyp till egen spelplats.</strong><p>Vi bygger ett övergivet urbant rum med spruckna ytor, rostigt tak, ett brukat arbetsbord och en svag främmande glöd. Miljön är inspirerad av stämningen i postapokalyptiska spel, men använder egna former och fristående CC0-texturer.</p></div>
+
+<h2 id="engelsk-speltext">Text i spelet: engelska</h2>
+<p>Manualen är fortsatt på svenska, men all text som spelaren ser i själva spelet ska vara på engelska. Det gäller desktopinstruktioner, HUD och Game over-panelen. Godots Output-meddelanden från våra spelskript är också på engelska, så att manualens förväntade text matchar projektet.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Var</th>
+<th>Text i spelet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Desktopinstruktioner</td>
+<td><code>Desktop: WASD/arrow keys = move · Space = jump · Ctrl/C = crouch · left click = fire · right click = pick up/drop</code></td>
+</tr>
+<tr>
+<td>HUD</td>
+<td><code>HEALTH</code>, <code>MONSTERS KILLED</code></td>
+</tr>
+<tr>
+<td>Förlustläge</td>
+<td><code>GAME OVER</code>, <code>Play again (R)</code>, <code>Press B to play again</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Detta ändrar inte språket i förklarande kommentarer eller i den svenska manualen. Det är en regel för spelargränssnittet.</p>
+<h2 id="texturkallor">Välj fria texturer</h2>
+<p>Vi använder fyra material från Poly Haven. Varje rad länkar direkt till texturens källsida, där filerna och upphovspersonen finns angivna:</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Yta i spelet</th>
+<th>Textur och källa</th>
+<th>Filer i projektet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Golv</td>
+<td><a href="https://polyhaven.com/a/cracked_concrete">Cracked Concrete</a></td>
+<td><code>cracked_concrete_*_1k.jpg</code></td>
+</tr>
+<tr>
+<td>Väggar</td>
+<td><a href="https://polyhaven.com/a/rebar_reinforced_concrete">Rebar Reinforced Concrete</a></td>
+<td><code>rebar_reinforced_concrete_*_1k.jpg</code></td>
+</tr>
+<tr>
+<td>Tak och rostiga metalldelar</td>
+<td><a href="https://polyhaven.com/a/rusty_metal_sheet">Rusty Metal Sheet</a></td>
+<td><code>rusty_metal_sheet_*_1k.jpg</code></td>
+</tr>
+<tr>
+<td>Bordsskiva och lådfront</td>
+<td><a href="https://polyhaven.com/a/weathered_planks">Weathered Planks</a></td>
+<td><code>weathered_planks_*_1k.jpg</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Alla fyra är publicerade under <a href="https://polyhaven.com/license">Poly Havens CC0-licens</a>. Projektet innehåller bara 1K-versionernas <code>diff</code> (färg), <code>nor_gl</code> (normal map för OpenGL-orientering) och <code>rough</code> (ytans strävhet). Det håller de tolv källbilderna på ungefär 7,4 MB. Högre upplösning behövs inte för den här första Quest-versionen.</p>
+<p>Lägg bilderna under <code>assets/textures/polyhaven/</code>. Använd <code>StandardMaterial3D</code> för varje yta: koppla <code>diff</code> till Albedo, aktivera Normal och koppla <code>nor_gl</code>, och koppla <code>rough</code> till Roughness. Återanvänd materialet på flera väggar i stället för att skapa nya kopior för varje vägg.</p>
+<h2 id="arena">Bygg den större arenan</h2>
+<p><code>Blueprints/urban_arena.tscn</code> samlar miljön i en egen scen:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>UrbanArena
+├── Ground             (12 × 12 m, sprucken betong)
+├── North/South/East/WestWall
+├── BrokenRoof         (två rostiga takhalvor)
+├── CrossBeams + Columns
+├── AlienGrowth        (självlysande former och ett svagt ljus)
+├── DistantCity        (mörka byggnadssiluetter)
+└── WorkbenchLight + CornerLight
+</code></pre></div>
+<p>Golvet, väggarna och takhalvorna är <code>StaticBody3D</code> med enkla <code>BoxShape3D</code>-kollisioner. Taket lämnar ett öppet parti i mitten, så att himlen syns och ljuset får en tydligare riktning. De avlägsna byggnaderna och de främmande formerna är enbart visuella, inte extra hinder i spelområdet.</p>
+<p>Placeringen av monster och power-ups från kapitel 16 ligger kvar. Ytorna är nu större än spawnpunkternas område, så monstren kan fortfarande dyka upp på golv och på säkert avstånd från spelaren.</p>
+<h2 id="arbetsbord">Bygg om bordet</h2>
+<p>Det gamla bordet var en enda grå låda. <code>Blueprints/workbench.tscn</code> består nu av en sliten träskiva, fyra rostiga metallben, fram- och bakre stag, en nedre hylla, en lådfront, handtag och små hörnplåtar. Bordsskivan och benen har egna kollisioner.</p>
+<p>Arbetsbordet står kvar framför spelaren. Pistolen och de greppbara testföremålen är placerade ovanför skivan, så den gamla interaktionen går att använda i den nya miljön. Håll ett tydligt grepputrymme runt pistolen när du lägger till fler dekorationer senare.</p>
+<h2 id="ljus">Ljus och främmande stämning</h2>
+<p>Miljön använder mörkare himmel, ett varmt ljus vid arbetsbordet, ett svalare hörnljus och en liten turkos ljuskälla vid den främmande tillväxten på väggen. De lysande formerna använder ett enkelt emissivt material. Vi använder inga texturer, modeller eller logotyper från <em>Half-Life: Alyx</em>; det är den ödsliga urbana känslan som inspirerar, inte dess skyddade bildmaterial.</p>
+<p>Håll antalet dynamiska ljus och skuggor lågt i Quest. De tre lokala ljusen kastar inte skuggor. Mät bildfrekvensen i headsetet innan du lägger till fler effekter.</p>
+<h2 id="testa-desktop">Testa i desktopläget</h2>
+<ol>
+<li>Starta spelet med Godots Play-knapp. Kontrollera att speltexten är på engelska.</li>
+<li>Gå runt: golv, väggar, tak och bord ska ha fungerande kollision.</li>
+<li>Plocka upp pistolen från den nya bordsskivan och skjut ett monster.</li>
+<li>Kontrollera att monster och power-ups fortfarande skapas på giltiga punkter.</li>
+<li>Låt hälsan ta slut och kontrollera att <code>GAME OVER</code> och <code>Play again (R)</code> visas.</li>
+</ol>
+<p>Det automatiska testet <code>tests/phase49_environment_test.gd</code> kontrollerar material och kollisioner för de viktigaste ytorna. Ett långt headless-test och Quest-export används också för teknisk kontroll, men inte för att bedöma den visuella känslan.</p>
+<h2 id="testa-quest">Testa i Quest</h2>
+<p>Det sista godkännandet måste göras i headsetet:</p>
+<ol>
+<li>Kontrollera att bordet har behaglig höjd och att pistolen fortfarande går lätt att greppa.</li>
+<li>Se efter att taköppningen, stadsformerna och ljusen känns tydliga utan att vara bländande.</li>
+<li>Gå längs väggarna och bekräfta att du inte fastnar i kollisioner.</li>
+<li>Bedöm om texturerna är tillräckligt skarpa och om bildfrekvensen känns stabil när fyra monster finns i scenen.</li>
+</ol>
+<div class="checkpoint" data-checklist="environment"><h3>Kontrollera miljön</h3><label><input type="checkbox"> All spelarsynlig text är på engelska.</label><label><input type="checkbox"> Golv, väggar, tak och bord har kollision.</label><label><input type="checkbox"> Pistolen kan greppas från arbetsbordet.</label><label><input type="checkbox"> Monster och power-ups fungerar i den större arenan.</label><label><input type="checkbox"> Ljuset och bordets höjd fungerar i Quest.</label><label><input type="checkbox"> Bildfrekvensen känns stabil i headsetet.</label></div>
+
+<h2 id="nasta-steg">Nästa steg</h2>
+<p>När miljön är godkänd i Quest kan nästa steg vara en andra vapentyp eller mer varierade monster. Vi bör inte lägga till fler visuella effekter förrän denna scen har testats för komfort och prestanda i headsetet.</p><nav class="page-nav" aria-label="Mellan kapitel"><a href="17-game-over.html"><small>← Föregående</small>Förlust och omstart</a><a href="index.html"><small>Tillbaka →</small>Alla kapitel</a></nav></article></div></main>
+<footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Uppdaterat 23 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>

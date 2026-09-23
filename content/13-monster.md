@@ -35,7 +35,7 @@ func take_damage(amount: int = 1) -> void:
 
 	current_health = maxi(current_health - amount, 0)
 	health_changed.emit(current_health, max_health)
-	print("Spelaren tog %d skada. Hälsa: %d/%d" % [amount, current_health, max_health])
+	print("Player took %d damage. Health: %d/%d" % [amount, current_health, max_health])
 
 	if current_health == 0:
 		defeated.emit()

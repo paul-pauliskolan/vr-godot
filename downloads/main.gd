@@ -11,7 +11,7 @@ func _ready() -> void:
     if xr_interface and xr_interface.is_initialized():
         # Skicka denna viewports bild till headsetets båda ögon.
         get_viewport().use_xr = true
-        print("OpenXR är redo – VR-bilden är aktiverad.")
+        print("OpenXR is ready: VR display is active.")
     else:
         # På Mac kan detta bero på att projektet körs lokalt med F5.
-        push_warning("OpenXR är inte redo. Kör Android-exporten på Quest.")
+        push_warning("OpenXR is not ready. Run the Android export on Quest.")
