@@ -10,6 +10,7 @@
 <li><a href="#texturkallor">Välj fria texturer</a></li>
 <li><a href="#arena">Bygg den större arenan</a></li>
 <li><a href="#arbetsbord">Bygg om bordet</a></li>
+<li><a href="#rensa-prototypobjekt">Rensa bort prototypobjekten</a></li>
 <li><a href="#ljus">Ljus och främmande stämning</a></li>
 <li><a href="#testa-desktop">Testa i desktopläget</a></li>
 <li><a href="#testa-quest">Testa i Quest</a></li>
@@ -93,7 +94,9 @@
 <p>Placeringen av monster och power-ups från kapitel 16 ligger kvar. Ytorna är nu större än spawnpunkternas område, så monstren kan fortfarande dyka upp på golv och på säkert avstånd från spelaren.</p>
 <h2 id="arbetsbord">Bygg om bordet</h2>
 <p>Det gamla bordet var en enda grå låda. <code>Blueprints/workbench.tscn</code> består nu av en sliten träskiva, fyra rostiga metallben, fram- och bakre stag, en nedre hylla, en lådfront, handtag och små hörnplåtar. Bordsskivan och benen har egna kollisioner.</p>
-<p>Arbetsbordet står kvar framför spelaren. Pistolen och de greppbara testföremålen är placerade ovanför skivan, så den gamla interaktionen går att använda i den nya miljön. Håll ett tydligt grepputrymme runt pistolen när du lägger till fler dekorationer senare.</p>
+<p>Arbetsbordet står kvar framför spelaren. Pistolen är placerad ovanför skivan, så greppinteraktionen går att använda i den nya miljön. Håll ett tydligt grepputrymme runt pistolen när du lägger till fler dekorationer senare.</p>
+<h2 id="rensa-prototypobjekt">Rensa bort prototypobjekten</h2>
+<p>När monster och miljö har tagit över testrollen behöver den platta målnoden <code>Target</code> och de tre turkosa <code>PickableObject</code>-kuberna inte längre stå i <code>Main.tscn</code>. Ta bort just dessa fyra <strong>instanser</strong> ur huvudscenen. Behåll <code>Blueprints/target.tscn</code> och <code>Blueprints/pickable_object.tscn</code> som övningsmaterial för de tidigare kapitlen. Golvet, arbetsbordet, pistolen, spawnerna och HUD:en ska vara kvar.</p>
 <h2 id="ljus">Ljus och främmande stämning</h2>
 <p>Miljön använder mörkare himmel, ett varmt ljus vid arbetsbordet, ett svalare hörnljus och en liten turkos ljuskälla vid den främmande tillväxten på väggen. De lysande formerna använder ett enkelt emissivt material. Vi använder inga texturer, modeller eller logotyper från <em>Half-Life: Alyx</em>; det är den ödsliga urbana känslan som inspirerar, inte dess skyddade bildmaterial.</p>
 <p>Håll antalet dynamiska ljus och skuggor lågt i Quest. De tre lokala ljusen kastar inte skuggor. Mät bildfrekvensen i headsetet innan du lägger till fler effekter.</p>
@@ -101,7 +104,7 @@
 <ol>
 <li>Starta spelet med Godots Play-knapp. Kontrollera att speltexten är på engelska.</li>
 <li>Gå runt: golv, väggar, tak och bord ska ha fungerande kollision.</li>
-<li>Plocka upp pistolen från den nya bordsskivan och skjut ett monster.</li>
+<li>Plocka upp pistolen från den nya bordsskivan och skjut ett monster. Kontrollera att måltavlan och de tre testkuberna inte längre finns i scenen.</li>
 <li>Kontrollera att monster och power-ups fortfarande skapas på giltiga punkter.</li>
 <li>Låt hälsan ta slut och kontrollera att <code>GAME OVER</code> och <code>Play again (R)</code> visas.</li>
 </ol>
@@ -117,5 +120,5 @@
 <div class="checkpoint" data-checklist="environment"><h3>Kontrollera miljön</h3><label><input type="checkbox"> All spelarsynlig text är på engelska.</label><label><input type="checkbox"> Golv, väggar, tak och bord har kollision.</label><label><input type="checkbox"> Pistolen kan greppas från arbetsbordet.</label><label><input type="checkbox"> Monster och power-ups fungerar i den större arenan.</label><label><input type="checkbox"> Ljuset och bordets höjd fungerar i Quest.</label><label><input type="checkbox"> Bildfrekvensen känns stabil i headsetet.</label></div>
 
 <h2 id="nasta-steg">Nästa steg</h2>
-<p>När miljön är godkänd i Quest kan nästa steg vara en andra vapentyp eller mer varierade monster. Vi bör inte lägga till fler visuella effekter förrän denna scen har testats för komfort och prestanda i headsetet.</p><nav class="page-nav" aria-label="Mellan kapitel"><a href="17-game-over.html"><small>← Föregående</small>Förlust och omstart</a><a href="index.html"><small>Tillbaka →</small>Alla kapitel</a></nav></article></div></main>
+<p>När miljön är godkänd i Quest kan vi ersätta den lila prototypkapseln med en animerad modell. Tre möjliga CC0-källor är <a href="https://quaternius.com/packs/zombieapocalypsekit.html">Zombie Apocalypse Kit</a> för en urban fiende, <a href="https://quaternius.com/packs/ultimatemonsters.html">Ultimate Monsters</a> för ett mer främmande väsen och <a href="https://quaternius.com/packs/scifiessentialskit.html">Sci-Fi Essentials Kit</a> för en mekanisk fiende. Alla tre kommer från Quaternius och respektive källsida anger CC0. Välj en enda modell först och behåll den nuvarande kollisionen och skadefunktionen när den visuella modellen byts ut. Kontrollera också polygonantal och animationer i Quest innan fler fiender läggs till.</p><nav class="page-nav" aria-label="Mellan kapitel"><a href="17-game-over.html"><small>← Föregående</small>Förlust och omstart</a><a href="index.html"><small>Tillbaka →</small>Alla kapitel</a></nav></article></div></main>
 <footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Uppdaterat 23 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>
