@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Hitta nycklar, överlev hoppande spindlar, hantera magasin och slå ditt rekord."><meta name="theme-color" content="#f5f7fc"><title>Två nycklar och vägen ut · VR med Godot</title><script src="js/theme.js"></script><link rel="stylesheet" href="css/style.css?v=20260921"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="js/search-index.js" defer></script><script src="js/app.js" defer></script></head>
+<body data-page="21-flyktbana"><a class="skip-link" href="#main">Hoppa till innehållet</a>
+<header class="navbar"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> VR med Godot</a><form class="site-search" role="search"><label class="sr-only" for="site-query">Sök i hela guiden</label><input id="site-query" type="search" placeholder="Sök i guiden …" autocomplete="off"><button aria-label="Sök" type="submit">⌕</button></form><button class="icon-button" id="menu-toggle" aria-label="Öppna kapitelmenyn" aria-controls="chapter-dialog" aria-expanded="false">☰</button><button class="icon-button" id="theme-toggle" aria-label="Byt färgtema" aria-pressed="false">◐</button></header>
+<dialog id="chapter-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-heading"><h2 id="menu-heading">Alla kapitel</h2><button class="icon-button" data-close aria-label="Stäng kapitelmenyn">✕</button></div><a class="home-link" href="index.html">← Till startsidan</a><nav aria-label="Kapitel"><a class="chapter-link" href="01-start.html"><span class="chapter-number">01</span><span><strong>Börja här</strong><small>Installera Godot och förstå arbetsflödet innan du börjar bygga.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="02-forsta-scenen.html"><span class="chapter-number">02</span><span><strong>Din första VR-scen</strong><small>Bygg golv, ljus och en XR-kamera. Lägg till svenskkommenterad startkod.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="03-macos-quest.html"><span class="chapter-number">03</span><span><strong>Från Mac till Quest 3</strong><small>Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="04-spelaren.html"><span class="chapter-number">04</span><span><strong>Händer och rörelse</strong><small>Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="05-objekt.html"><span class="chapter-number">05</span><span><strong>Bord och greppbara objekt</strong><small>Skapa kuber du kan plocka upp och ett bord att ställa dem på.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="06-felsokning.html"><span class="chapter-number">06</span><span><strong>Felsök steg för steg</strong><small>Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="07-kallor.html"><span class="chapter-number">07</span><span><strong>Källor och versionskontroll</strong><small>Läs dokumentationen, jämförelserna och vad som ändrats från videon.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="08-spelprojekt.html"><span class="chapter-number">08</span><span><strong>Från XR-prototyp till spel</strong><small>Planera ett enkelt skjutspel och utveckla en liten, testbar funktion i taget.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="09-desktoplage.html"><span class="chapter-number">09</span><span><strong>Testa utan headset</strong><small>Använd ett valfritt desktopläge för snabba tester utan att ersätta XR-spelaren.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="10-pistol.html"><span class="chapter-number">10</span><span><strong>Bygg en enkel pistol</strong><small>Skapa en svart pistol av primitiva former och förbered den för XR-grepp och projektiler.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="11-projektiler.html"><span class="chapter-number">11</span><span><strong>Skjut realistiska projektiler</strong><small>Skjut snabba kulor, undvik tunnling och flytta fysiska mål med realistisk impuls.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="12-mal.html"><span class="chapter-number">12</span><span><strong>Bygg ett förstörbart mål</strong><small>Ge målet träffpoäng, tydlig träffrespons och ett återanvändbart skadegränssnitt.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="13-monster.html"><span class="chapter-number">13</span><span><strong>Bygg det första monstret</strong><small>Låt en kapsel följa spelaren, ta tre träffar och göra enkel kontaktskada.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="14-hud.html"><span class="chapter-number">14</span><span><strong>Visa hälsa och besegrade monster</strong><small>Bygg en healthbar och monsterräknare för både desktop och Quest.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="15-health-power-up.html"><span class="chapter-number">15</span><span><strong>Lägg till en hälsopower-up</strong><small>Skapa en grön power-up som läker spelaren och uppdaterar HUD:en.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="16-spawners.html"><span class="chapter-number">16</span><span><strong>Spawna monster och power-ups</strong><small>Skapa säkra monsterstarter och fyll på power-ups med tydliga maxgränser.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="17-game-over.html"><span class="chapter-number">17</span><span><strong>Förlust och omstart</strong><small>Visa resultatet när hälsan tar slut och låt spelaren starta en ny omgång.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="18-environment.html"><span class="chapter-number">18</span><span><strong>Bygg en sliten stadsmiljö</strong><small>Texturera golv, väggar och tak, och bygg ett mer realistiskt arbetsbord.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="19-riktiga-monster.html"><span class="chapter-number">19</span><span><strong>Riktiga monster och större bana</strong><small>Importera två animerade monster och bygg en bana där fienderna döljs bakom väggar.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="20-startmeny-ljud.html"><span class="chapter-number">20</span><span><strong>Startmeny och ljudinställningar</strong><small>Starta omgången själv, välj SFX och Music och använd inspelat skottljud.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="21-flyktbana.html" aria-current="page"><span class="chapter-number">21</span><span><strong>Två nycklar och vägen ut</strong><small>Hitta nycklar, överlev hoppande spindlar, hantera magasin och slå ditt rekord.</small></span><span class="arrow" aria-hidden="true">↗</span></a></nav></dialog>
+<dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-heading"><h2 id="search-heading">Sök i guiden</h2><button class="icon-button" data-close aria-label="Stäng sökresultaten">✕</button></div><label for="dialog-query">Sökord</label><input id="dialog-query" type="search" placeholder="Till exempel USB eller grepp"><p id="search-count" class="muted" aria-live="polite"></p><div id="search-results"></div></dialog>
+<main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 21</span></div><header class="chapter-header"><p class="eyebrow">Fortsätt bygga · Kapitel 21</p><h1>Två nycklar och vägen ut</h1><p class="subtitle">Hitta nycklar, överlev hoppande spindlar, hantera magasin och slå ditt rekord.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-24</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
+<ul>
+<li><a href="#spelordning">Spelordning och nivåns delar</a></li>
+<li><a href="#nya-modeller">Nya modeller till sökandet och dörrarna</a></li>
+<li><a href="#spider">Spider av br-n518</a></li>
+<li><a href="#resurser">Hälsokit och magasin</a></li>
+<li><a href="#resultat">HUD, poäng och sparat rekord</a></li>
+<li><a href="#kontroller">Kontroller i detta kapitel</a></li>
+<li><a href="#testa">Verifiera först på desktop, sedan i Quest</a></li>
+</ul>
+</div>
+</details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><div class="callout"><strong>Från överlevnadstest till en spelbar flykt.</strong><p>Nu finns två nycklar, två låsta dörrar och en utgång till dagsljus. Spelaren måste leta, överleva och hantera ammunition. Spelet visar tid, besegrade monster, poäng och sparat rekord när flykten lyckas.</p></div>
+
+<h2 id="spelordning">Spelordning och nivåns delar</h2>
+<p>Starta med <strong>Start game</strong> på desktop eller höger <strong>B</strong> i Quest. Monstren börjar inte spawnas förrän omgången startar. Bordet och pistolen står kvar i första området. Där finns även den första nyckeln, dold under en greppbar hink. <strong>Greppa och lyft hinken; gå inte upp på den.</strong> En gyllene nyckel med ljusring och texten <strong>KEY 1</strong> visas direkt när hinken lyfts i Quest, eller när den flyttats/tippats i desktopläget. Nyckeln förblir synlig i minst två sekunder innan den kan plockas upp genom att du går nära den. När HUD:en visar <strong>KEYS 1/2</strong> kan du närma dig <strong>DOOR 1</strong>, som öppnas automatiskt.</p>
+<p>Det andra området innehåller ytterligare en hink och <strong>KEY 2</strong>. Efter <strong>DOOR 2</strong> öppnas en större utomhusgård med kvällshimmel, varmare ljus, en stenlagd väg och grönska mellan ruinerna. Följ vägen till den upplysta portalen <strong>YOU MADE IT OUT / SAFE ZONE</strong> för att avsluta omgången. Dörrar går inte att passera utan rätt nyckel och monster kan inte navigera genom den första låsta porten. Utegården har sammanhängande golv och kolliderande sidoväggar; skulle spelaren ändå hamna under banan flyttas den tillbaka till senaste säkra plats.</p>
+<p>I projektet ligger detta i <code>Main.tscn</code>: <code>Bucket1</code>, <code>Key1</code>, <code>Door1</code>, <code>Bucket2</code>, <code>Key2</code>, <code>Door2</code>, <code>ExitZone</code> och tre <code>AmmoCache</code>-instanser. <code>hidden_key.gd</code> visar nyckeln vid XR-grepp eller när hinken flyttats minst 0,38 meter eller tippats ungefär 32 grader. En kort väntan hindrar nyckeln från att försvinna samma ögonblick som den visas. <code>bucket_behavior.gd</code> gör att hinkarna inte kan kasta spelaren uppåt genom fysisk kollision, men de går fortfarande att plocka upp. <code>locked_door.gd</code> kontrollerar rätt nyckel och <strong>svänger dörrbladet på ett sidogångjärn</strong> under drygt en sekund. Kollisionen följer dörrbladet; det är inte en panel som försvinner. När första dörren är öppen är passagen faktiskt fri: dörrkollisionen ligger åt sidan och innerväggen står längre bort. <code>urban_arena.gd</code> uppdaterar fiendernas enkla vägval när första porten öppnats. Den äldre övningens mål och kuber finns kvar i de tidigare kapitlen; de ingår inte i den färdiga flyktbanan.</p>
+<h2 id="nya-modeller">Nya modeller till sökandet och dörrarna</h2>
+<p>De tre nya visuella modellerna är nedladdade, anpassade och ligger som GLB-filer i <code>assets/escape_props/</code>. Källsidorna anger <strong>CC0</strong>:</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Del</th>
+<th>Källa</th>
+<th>Så används den</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rostig hink</td>
+<td><a href="https://opengameart.org/content/bucket-3">Bucket 3 av plaggy</a></td>
+<td>Modell med rostig yta ovanpå en greppbar fysikkropp. Du kan lyfta eller tippa den.</td>
+</tr>
+<tr>
+<td>Nyckel</td>
+<td><a href="https://opengameart.org/content/key-low-poly">Key - low poly av codeinfernogames</a></td>
+<td>Guldtonad 3D-modell som visas när hinken flyttas.</td>
+</tr>
+<tr>
+<td>Dörr</td>
+<td><a href="https://opengameart.org/content/door-1">Door av NotionHD</a></td>
+<td>3D-dörr med handtag, sidogångjärn och ett separat kolliderande dörrblad. Dörrbladet får <a href="https://polyhaven.com/a/rusty_metal_sheet">Rusty Metal Sheet från Poly Haven</a> som rostig CC0-textur.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Skriptet <code>tools/prepare_escape_props.py</code> visar konverteringen från källfilerna. Enkla kollisionsformer behålls separat från modellernas geometri så att grepp och gångvägar blir stabila i Quest.</p>
+<h2 id="spider">Spider av br-n518</h2>
+<p>Den tidigare större fienden är ersatt av <a href="https://opengameart.org/content/spider-2">Spider av br-n518 på OpenGameArt</a>. Källsidan anger <strong>CC0</strong>. Den importerade <code>assets/monsters/spider.glb</code> har idle-, gång- och attackklipp. Källfilen har inget färdigt hopp. <code>simple_monster.gd</code> ger därför spindeln ett eget fysikbaserat språng när spelaren är ungefär 0,8–2,8 meter bort: kort förvarning, attackanimation, fart framåt och uppåt, gravitation och fyra sekunders nedkylning. Den kan skadas med samma <code>take_damage()</code> som Horror Game Monster och besegras efter tre träffar. Bara en spindel åt gången skapas för att hålla Quest-belastningen rimlig.</p>
+<h2 id="resurser">Hälsokit och magasin</h2>
+<p>Den gamla gröna geometriska power-upen visar nu en lågpoly-<a href="https://opengameart.org/content/first-aid-kit-3d">First Aid Kit av GGBotNet</a>, också märkt <strong>CC0</strong> på källsidan. Modellen ligger som <code>assets/medkit.glb</code> i <code>health_power_up.tscn</code>. Funktionen är densamma: gå in i objektet för att läka, om du saknar hälsa. Fler kit kan dyka upp från spawnern.</p>
+<p>Pistolen startar med <strong>åtta patroner</strong>. Varje skott drar en patron och tom pistol kan inte skjuta. Tre ammunitionsgömmor i nivån ger varsitt reservmagasin med åtta patroner. Magasin behöver alltså hittas; de skapas inte gratis av omladdningsknappen. HUD:en visar <strong>AMMO</strong> och antal reservmagasin. Åtta patroner är ett medvetet spelval för att göra sökandet viktigt, inte en regel för alla riktiga pistoler.</p>
+<h3 id="satt-i-magasin">Så sätter du i magasinet i Quest</h3>
+<ol>
+<li><strong>Håll pistolen i höger hand.</strong> Om den är tom står <strong>EMPTY - PRESS B TO EJECT</strong> vid vapnet. Tryck <strong>B på höger kontroll</strong> medan pistolen är i handen. Det gamla magasinet faller ut och en turkos markering med texten <strong>INSERT MAG HERE</strong> syns <strong>under pistolgreppet</strong>.</li>
+<li><strong>Hitta ammunition i banan.</strong> Gå in i ett förråd märkt <strong>8 ROUNDS</strong>. Då läggs ett reservmagasin till i din inventering, och ett fysiskt magasin visas vid <strong>vänster höft</strong> med skylten <strong>SPARE MAG</strong>. Saknas den skylten har du inget reservmagasin ännu.</li>
+<li><strong>Ta magasinet med vänster hands greppknapp och fortsätt hålla det.</strong> För vänster hand till den turkosa markeringen under pistolgreppet. Du behöver inte trycka avtryckaren eller passa in det millimeterexakt: när magasinet är inom cirka 23 cm från uttaget snäpper det i automatiskt och markeringen slocknar.</li>
+<li>Kontrollera att handledens <strong>AMMO</strong> visar patroner och skjut igen. Ett utmatat magasin som hade patroner kvar behåller dem om du plockar upp det från marken och sätter tillbaka det.</li>
+</ol>
+<p>På desktop plockar du upp pistolen med högerklick och trycker <strong>R</strong> för att förbruka ett hittat reservmagasin och ladda åtta patroner. Omladdningen är förenklad där eftersom du inte har två VR-händer.</p>
+<h2 id="resultat">HUD, poäng och sparat rekord</h2>
+<p>Quest-spelaren får ett verktyg på vänster handled som visar hälsobar, ammunition, reservmagasin, nycklar och besegrade monster. Desktop-HUD:en visar samma information. När du når utgången visas <strong>TIME</strong>, <strong>MONSTERS KILLED</strong>, <strong>SCORE</strong> och <strong>BEST</strong>. Snabbare flykt ger högre grundpoäng; monster ger 100 poäng vardera upp till 20 monster. Formeln i <code>game_state.gd</code> är <code>round(6000 / (1 + sekunder / 120)) + min(monster, 20) * 100</code>. Rekordet sparas lokalt i Godots <code>user://highscore.cfg</code> och visas även i nästa omgångs startmeny. Det är ett <strong>lokalt rekord på samma enhet</strong>, inte en nätbaserad topplista.</p>
+<h2 id="kontroller">Kontroller i detta kapitel</h2>
+<p>All synlig speltext är på engelska, även om den här manualen är på svenska. Startskärmen har SFX och Music <strong>ON</strong> som standard.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Funktion</th>
+<th>Desktop</th>
+<th>Quest 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Starta omgång</td>
+<td>Klicka <strong>Start game</strong></td>
+<td>Höger <strong>B</strong></td>
+</tr>
+<tr>
+<td>Rörelse och sprint</td>
+<td><strong>WASD</strong>/piltangenter, håll <strong>Shift</strong></td>
+<td>Vänster styrspak, håll dess klick för sprint</td>
+</tr>
+<tr>
+<td>Hoppa och huka</td>
+<td><strong>Space</strong>, <strong>Ctrl/C</strong></td>
+<td>Höger <strong>A</strong>, höger styrspaks klick</td>
+</tr>
+<tr>
+<td>Plocka upp/släpp</td>
+<td>Högerklick</td>
+<td>Handens greppknapp</td>
+</tr>
+<tr>
+<td>Skjut</td>
+<td>Vänsterklick med hållen pistol</td>
+<td>Avtryckaren på handen som håller pistolen</td>
+</tr>
+<tr>
+<td>Magasin</td>
+<td><strong>R</strong> laddar med ett hittat reservmagasin</td>
+<td>Höger <strong>B</strong> matar ut; ta reservmagasin vid vänster höft och sätt i pistolen</td>
+</tr>
+<tr>
+<td>Starta om efter vinst/förlust</td>
+<td><strong>R</strong> eller knappen på skärmen</td>
+<td>Höger <strong>B</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Höger <strong>B</strong> används alltså i olika lägen: start i menyn, magasinutmatning under spelet och omstart efter resultatet. <strong>A</strong> är redan upptagen av hopp, och höger styrspaks klick av huka. Därför används inte de knapparna för magasin.</p>
+<h2 id="testa">Verifiera först på desktop, sedan i Quest</h2>
+<ol>
+<li>Starta spelet och se att inget monster skapas före <strong>Start game</strong>. Kontrollera att SFX och Music börjar på <strong>ON</strong>.</li>
+<li>Skjut åtta gånger och bekräfta att pistolen slutar avfyra. Hitta ett magasin och ladda om. På Quest: prova också att mata ut ett halvfullt magasin och sätta i det igen.</li>
+<li>Greppa och lyft första hinken. Se att den lysande <strong>KEY 1</strong> faktiskt syns innan den samlas in. Gå nära och kontrollera <strong>KEYS 1/2</strong> på HUD:en. Att gå på hinken ska inte ge ett högt hopp. Kontrollera att dörren <strong>svänger på gångjärnet</strong> och att du inte kan gå genom den innan den öppnats. Gå sedan rakt genom öppningen. Med <strong>1/2 nycklar</strong> kan du gå vidare till andra området, men inte genom den andra låsta dörren. Gör likadant med nästa nyckel och dörr.</li>
+<li>Låt en spindel komma nära. Bedöm om förvarning, hoppavstånd och träffyta känns rätt i headsetet. Monstret ska inte dyka upp direkt intill spelaren vid start.</li>
+<li>Ta skada, plocka upp hälsokitet och kontrollera vänster handled/desktop-HUD. Gå hela vägen ut längs den upplysta vägen. Försök gå mot gårdens ytterkanter: väggarna ska stoppa dig. Läs tid, kills, score och best vid portalen. Starta en ny omgång och kontrollera att rekordet finns kvar.</li>
+</ol>
+<p><code>tests/phase54_escape_test.gd</code> testar att nycklarna förblir synliga en stund efter avslöjandet, att hinkarna inte kolliderar med spelaren, dörrsving, <strong>fri fysisk passage genom den första öppna dörren</strong>, utomhusgränser, fallräddning, ammunition, poäng och sparning automatiskt. Det är inte ett bevis för att fysiskt grepp, magasinsinsättning, visuellt läsbar HUD eller prestanda känns bra i Quest. De momenten måste speltestas i headsetet innan kapitlet är helt godkänt.</p>
+<div class="checkpoint" data-checklist="escape-level"><h3>Kontrollera kapitel 21</h3><label><input type="checkbox"> Båda 3D-nycklarna hittas under greppbara hinkmodeller och öppnar rätt svängdörr.</label><label><input type="checkbox"> Spindeln går och hoppar, kan skjutas och blir inte synlig direkt vid start.</label><label><input type="checkbox"> Åtta skott, ammunitionsgömmor och magasinets fyra laddningssteg fungerar.</label><label><input type="checkbox"> Hälsokit och vänster handleds HUD fungerar i Quest.</label><label><input type="checkbox"> Utegården har inga öppna fallkanter och utgången visar ett sparat rekord.</label></div><nav class="page-nav" aria-label="Mellan kapitel"><a href="20-startmeny-ljud.html"><small>← Föregående</small>Startmeny och ljudinställningar</a><a href="index.html"><small>Tillbaka →</small>Alla kapitel</a></nav></article></div></main>
+<footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Uppdaterat 24 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>

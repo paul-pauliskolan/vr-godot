@@ -1,15 +1,13 @@
-<div class="callout"><strong>Två riktiga monster, en gemensam spelmekanik.</strong><p>Här ersätter vi den lila kapselns synliga form med Horror Game Monster och Giant Mutant. Skada, kontaktskada och HUD-räknare återanvänder samma system. Samtidigt växer arenan till 24 × 24 meter med väggar mellan spelaren och fiendernas startpunkter.</p></div>
+<div class="callout"><strong>Två riktiga monster, en gemensam spelmekanik.</strong><p>Här ersätter vi den lila kapselns synliga form med Horror Game Monster och Spider av br-n518. Skada, kontaktskada och HUD-räknare återanvänder samma system. Samtidigt växer arenan till 24 × 24 meter med väggar mellan spelaren och fiendernas startpunkter.</p></div>
 
 ## Hämta modellerna och kontrollera licensen {#kallor}
 
 | Modell | Källsida och licens | Filer som används |
 | --- | --- | --- |
 | Horror Game Monster | [OpenGameArt: 3D Horror Game Monster](https://opengameart.org/content/3d-horror-game-monster), CC0 enligt källsidan. | `Poses.zip` innehåller `Idle.fbx`, `Walk.fbx` och `Run.fbx`. `Colors.zip` innehåller bland annat den svarta färgtexturen. |
-| Giant Mutant | [OpenGameArt: Giant Mutant](https://opengameart.org/content/giant-mutant), CC0 enligt källsidan. | `giant_mutant.zip` innehåller en `.glb`-modell med idle-, löp-, slag- och dödsanimationer. |
+| Spider av br-n518 | [OpenGameArt: Spider](https://opengameart.org/content/spider-2), CC0 enligt källsidan. | Blender-modell med textur samt idle-, gång- och attackanimation. Själva hoppet görs i GDScript. |
 
-**Licensförtydligande för Giant Mutant:** Upphovspersonen bekräftar i en kommentar på källsidan att animationerna gjordes med Mixamo. [Adobes Mixamo-FAQ](https://helpx.adobe.com/creative-cloud/faq/mixamo-faq.html) tillåter royaltyfri användning i spel, men säger inte att själva animationerna är CC0. Betrakta därför inte den kompletta animerade GLB-filen som fritt omlicensierbar under CC0, trots CC0-märkningen på modellsidan.
-
-Originalarkiven behöver inte ligga i Godot-projektet. Projektet innehåller färdiga, konverterade filer i `assets/monsters/`: `horror_monster.glb` och `giant_mutant.glb`. Konverteringsskriptet `tools/prepare_monster_models.py` visar hur FBX-klippen från Horror Game Monster slås samman i Blender och hur Giant Mutants geometri förenklas för ett första Quest-test. Horror-modellen har **Idle**, **Walk** och **Run** i den importerade spelversionen. Källsidan nämner fler rörelser, men vi påstår inte att ett separat attackklipp finns i de filer vi faktiskt använder.
+Originalarkiven behöver inte ligga i Godot-projektet. Projektet innehåller färdiga, konverterade filer i `assets/monsters/`: `horror_monster.glb` och `spider.glb`. Skripten `tools/prepare_monster_models.py` och `tools/prepare_spider.py` visar hur modellerna blir Godot-klara. Horror-modellen har **Idle**, **Walk** och **Run** i spelversionen. Spider har **IDLE**, **WALK** och **ATTACK**. Källmodellen har ingen färdig hoppanimation; vi skapar ett fysikbaserat hopp i spelet.
 
 ## Byt endast det synliga monstret {#modellbyte}
 
@@ -19,7 +17,7 @@ Originalarkiven behöver inte ligga i Godot-projektet. Projektet innehåller fä
 SimpleMonster (CharacterBody3D)
 ├── Visual
 │   ├── HorrorVisual  (horror_monster.glb)
-│   └── GiantVisual   (giant_mutant.glb)
+│   └── SpiderVisual  (spider.glb)
 ├── CollisionShape3D
 ├── HeadHitbox       (Area3D med egen sfär)
 ├── ContactArea
@@ -27,9 +25,9 @@ SimpleMonster (CharacterBody3D)
 └── ContactDamageTimer
 ```
 
-`simple_monster.gd` visar en modell åt gången. Horror-modellen använder **Idle** när den står still och **Walk** när den rör sig. Giant Mutant använder **idle**, **Giant Run** och **Death**. Den senare har fem träffpoäng, gör två poäng kontaktskada och rör sig lite långsammare; Horror behåller tre träffpoäng och en poäng kontaktskada. Båda använder `take_damage()` från kapitel 12 och 13. Vid träff läggs en kort röd materialöverlagring på modellens mesh. Vapnet och projektilen behöver inte veta vilken modell som syns.
+`simple_monster.gd` visar en modell åt gången. Båda fienderna har tre träffpoäng och gör en poäng kontaktskada. De använder `take_damage()` från kapitel 12 och 13. Vid träff läggs en kort röd materialöverlagring på modellens mesh. Vapnet och projektilen behöver inte veta vilken modell som syns. Spindeln går mot spelaren och, när den är nära nog, spelar den attackanimationen och hoppar sedan mot spelarens aktuella position. En kort förvarning och en nedkylning mellan hoppen gör attacken möjlig att läsa och undvika.
 
-Giant-modellen roteras och skalas i scenen så att den står på golvet i rimlig spelstorlek. Den konverterade versionen har förenklad geometri. I `monster_spawner.gd` blir ungefär var tredje fiende en Giant, men aldrig fler än en Giant samtidigt. Det minskar belastningen i headsetet.
+Spindeln har en lägre kroppskollision än Horror-monstret. I `monster_spawner.gd` blir ungefär var tredje fiende en Spider, men aldrig fler än en samtidigt. Det minskar belastningen i headsetet.
 
 ## Låt skotten träffa huvudet {#huvudtraff}
 
@@ -71,12 +69,12 @@ På desktop frigör `Esc` muspekaren. Denna tabell beskriver projektets faktiska
 ## Testa i Godot och Quest {#testa}
 
 1. Starta spelet i desktopläget. Du ska se bordet och pistolen, men inte monstren direkt genom väggarna.
-2. Gå mot en öppning och vänta in fienderna. Kontrollera att Horror Game Monster går runt väggen med gånganimation och att Giant Mutant använder löpanimation.
-3. Skjut båda typerna, även i Horror-monstrets huvud. Kontrollera röd träffblinkning, tre respektive fem träffpoäng och att räknaren `MONSTERS KILLED` ökar när de dör. Hörs skottljudet vid varje godkänt skott?
+2. Gå mot en öppning och vänta in fienderna. Kontrollera att Horror Game Monster går runt väggen och att Spider går och hoppar mot dig när den kommer nära.
+3. Skjut båda typerna, även i Horror-monstrets huvud. Kontrollera röd träffblinkning, tre träffpoäng vardera och att räknaren `MONSTERS KILLED` ökar när de dör. Hörs skottljudet vid varje godkänt skott?
 4. Gå, spring och hoppa. Kontrollera fotsteg och hoppljud samt att stegen går snabbare vid sprint.
-5. Kontrollera att en Giant i taget skapas och att gröna power-ups ligger på användbara platser.
+5. Kontrollera att högst en Spider i taget skapas och att hälsopower-ups ligger på användbara platser.
 6. Kör därefter Android-versionen i Quest. Läs den engelska kontrollguiden, prova vänster styrspaks klick för sprint och höger för huka. Kontrollera huvudträff, ljudnivå, material, skala, animation, kollision och bildfrekvens.
 
-Det automatiska testet `tests/phase51_monsters_arena_test.gd` verifierar bland annat modeller, spawnpunkter, vägval och ett skott i Horror-monstrets huvud. `tests/phase52_controls_audio_test.gd` kontrollerar att de syntetiserade ljuden innehåller signal och att desktopspelaren har sprint och ljudspelare. Testerna ersätter **inte** den visuella, ljudmässiga och prestandamässiga kontrollen i ett riktigt headset. Om Quest känns tungt: börja med färre levande monster eller ytterligare förenklad Giant-geometri innan du lägger till effekter.
+Det automatiska testet `tests/phase51_monsters_arena_test.gd` verifierar bland annat modeller, spawnpunkter, vägval och ett skott i Horror-monstrets huvud. `tests/phase52_controls_audio_test.gd` kontrollerar att de syntetiserade ljuden innehåller signal och att desktopspelaren har sprint och ljudspelare. Testerna ersätter **inte** den visuella, ljudmässiga och prestandamässiga kontrollen i ett riktigt headset. Om Quest känns tungt: börja med färre levande monster innan du lägger till fler effekter.
 
-<div class="checkpoint" data-checklist="real-monsters"><h3>Kontrollera kapitel 19</h3><label><input type="checkbox"> Horror Game Monster och Giant Mutant syns och animeras.</label><label><input type="checkbox"> Båda kan skadas och besegras, även med ett skott i huvudet.</label><label><input type="checkbox"> Fienderna syns inte direkt från startpunkten och hittar runt väggarna.</label><label><input type="checkbox"> Skott, spelarsteg och hopp hörs utan att monstren avslöjas för tidigt.</label><label><input type="checkbox"> Vänster styrspaks klick sprintar, höger klick hukar och kontrollguiden stämmer.</label><label><input type="checkbox"> Skala, material, ljudnivå och bildfrekvens har kontrollerats i Quest.</label></div>
+<div class="checkpoint" data-checklist="real-monsters"><h3>Kontrollera kapitel 19</h3><label><input type="checkbox"> Horror Game Monster och Spider syns och animeras.</label><label><input type="checkbox"> Båda kan skadas och besegras, även med ett skott i huvudet.</label><label><input type="checkbox"> Fienderna syns inte direkt från startpunkten och hittar runt väggarna.</label><label><input type="checkbox"> Spindeln förvarnar och hoppar när den kommer nära.</label><label><input type="checkbox"> Skott, spelarsteg och hopp hörs utan att monstren avslöjas för tidigt.</label><label><input type="checkbox"> Skala, material, ljudnivå och bildfrekvens har kontrollerats i Quest.</label></div>

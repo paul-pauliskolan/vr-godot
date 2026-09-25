@@ -85,4 +85,4 @@ Det sista godkännandet måste göras i headsetet:
 
 ## Nästa steg {#nasta-steg}
 
-I [kapitel 19](19-riktiga-monster.html) lägger vi till de två valda animerade modellerna **Horror Game Monster** och **Giant Mutant**. Där byggs också banan ut med fler väggar som skymmer fienderna från startpunkten. Ändra inte de tidigare kapitlens provscener när du följer detta steg.
+I [kapitel 19](19-riktiga-monster.html) lägger vi till de två animerade modellerna **Horror Game Monster** och **Spider**. Där byggs också banan ut med fler väggar som skymmer fienderna från startpunkten. Ändra inte de tidigare kapitlens provscener när du följer detta steg.
