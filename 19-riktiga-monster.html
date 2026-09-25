@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Importera två animerade monster och bygg en bana där fienderna döljs bakom väggar."><meta name="theme-color" content="#f5f7fc"><title>Riktiga monster och större bana · VR med Godot</title><script src="js/theme.js"></script><link rel="stylesheet" href="css/style.css?v=20260921"><link rel="icon" href="favicon.svg" type="image/svg+xml"><script src="js/search-index.js" defer></script><script src="js/app.js" defer></script></head>
+<body data-page="19-riktiga-monster"><a class="skip-link" href="#main">Hoppa till innehållet</a>
+<header class="navbar"><a class="logo" href="index.html"><span aria-hidden="true">◉</span> VR med Godot</a><form class="site-search" role="search"><label class="sr-only" for="site-query">Sök i hela guiden</label><input id="site-query" type="search" placeholder="Sök i guiden …" autocomplete="off"><button aria-label="Sök" type="submit">⌕</button></form><button class="icon-button" id="menu-toggle" aria-label="Öppna kapitelmenyn" aria-controls="chapter-dialog" aria-expanded="false">☰</button><button class="icon-button" id="theme-toggle" aria-label="Byt färgtema" aria-pressed="false">◐</button></header>
+<dialog id="chapter-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-heading"><h2 id="menu-heading">Alla kapitel</h2><button class="icon-button" data-close aria-label="Stäng kapitelmenyn">✕</button></div><a class="home-link" href="index.html">← Till startsidan</a><nav aria-label="Kapitel"><a class="chapter-link" href="01-start.html"><span class="chapter-number">01</span><span><strong>Börja här</strong><small>Installera Godot och förstå arbetsflödet innan du börjar bygga.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="02-forsta-scenen.html"><span class="chapter-number">02</span><span><strong>Din första VR-scen</strong><small>Bygg golv, ljus och en XR-kamera. Lägg till svenskkommenterad startkod.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="03-macos-quest.html"><span class="chapter-number">03</span><span><strong>Från Mac till Quest 3</strong><small>Hela installationen för M-chip: Java, SDK, USB och första VR-testet.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="04-spelaren.html"><span class="chapter-number">04</span><span><strong>Händer och rörelse</strong><small>Koppla kontrollerna, visa händer och rör dig i världen med XR Tools.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="05-objekt.html"><span class="chapter-number">05</span><span><strong>Bord och greppbara objekt</strong><small>Skapa kuber du kan plocka upp och ett bord att ställa dem på.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="06-felsokning.html"><span class="chapter-number">06</span><span><strong>Felsök steg för steg</strong><small>Hitta felet i export, ADB, OpenXR, resurser eller skärmspegling.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="07-kallor.html"><span class="chapter-number">07</span><span><strong>Källor och versionskontroll</strong><small>Läs dokumentationen, jämförelserna och vad som ändrats från videon.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="08-spelprojekt.html"><span class="chapter-number">08</span><span><strong>Från XR-prototyp till spel</strong><small>Planera ett enkelt skjutspel och utveckla en liten, testbar funktion i taget.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="09-desktoplage.html"><span class="chapter-number">09</span><span><strong>Testa utan headset</strong><small>Använd ett valfritt desktopläge för snabba tester utan att ersätta XR-spelaren.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="10-pistol.html"><span class="chapter-number">10</span><span><strong>Bygg en enkel pistol</strong><small>Skapa en svart pistol av primitiva former och förbered den för XR-grepp och projektiler.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="11-projektiler.html"><span class="chapter-number">11</span><span><strong>Skjut realistiska projektiler</strong><small>Skjut snabba kulor, undvik tunnling och flytta fysiska mål med realistisk impuls.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="12-mal.html"><span class="chapter-number">12</span><span><strong>Bygg ett förstörbart mål</strong><small>Ge målet träffpoäng, tydlig träffrespons och ett återanvändbart skadegränssnitt.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="13-monster.html"><span class="chapter-number">13</span><span><strong>Bygg det första monstret</strong><small>Låt en kapsel följa spelaren, ta tre träffar och göra enkel kontaktskada.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="14-hud.html"><span class="chapter-number">14</span><span><strong>Visa hälsa och besegrade monster</strong><small>Bygg en healthbar och monsterräknare för både desktop och Quest.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="15-health-power-up.html"><span class="chapter-number">15</span><span><strong>Lägg till en hälsopower-up</strong><small>Skapa en grön power-up som läker spelaren och uppdaterar HUD:en.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="16-spawners.html"><span class="chapter-number">16</span><span><strong>Spawna monster och power-ups</strong><small>Skapa säkra monsterstarter och fyll på power-ups med tydliga maxgränser.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="17-game-over.html"><span class="chapter-number">17</span><span><strong>Förlust och omstart</strong><small>Visa resultatet när hälsan tar slut och låt spelaren starta en ny omgång.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="18-environment.html"><span class="chapter-number">18</span><span><strong>Bygg en sliten stadsmiljö</strong><small>Texturera golv, väggar och tak, och bygg ett mer realistiskt arbetsbord.</small></span><span class="arrow" aria-hidden="true">↗</span></a><a class="chapter-link" href="19-riktiga-monster.html" aria-current="page"><span class="chapter-number">19</span><span><strong>Riktiga monster och större bana</strong><small>Importera två animerade monster och bygg en bana där fienderna döljs bakom väggar.</small></span><span class="arrow" aria-hidden="true">↗</span></a></nav></dialog>
+<dialog id="search-dialog" aria-labelledby="search-heading"><div class="dialog-heading"><h2 id="search-heading">Sök i guiden</h2><button class="icon-button" data-close aria-label="Stäng sökresultaten">✕</button></div><label for="dialog-query">Sökord</label><input id="dialog-query" type="search" placeholder="Till exempel USB eller grepp"><p id="search-count" class="muted" aria-live="polite"></p><div id="search-results"></div></dialog>
+<main id="main" tabindex="-1" class="container"><div class="breadcrumb"><a href="index.html">Översikt</a><span>/</span><span>Kapitel 19</span></div><header class="chapter-header"><p class="eyebrow">Fortsätt bygga · Kapitel 19</p><h1>Riktiga monster och större bana</h1><p class="subtitle">Importera två animerade monster och bygg en bana där fienderna döljs bakom väggar.</p><div class="metadata"><span>Godot 4.7</span><span>Quest 3</span><span>Granskat 2026-09-23</span></div></header><div class="reading-layout"><aside class="toc-panel"><details class="page-toc" open><summary>I det här kapitlet</summary><div class="toc">
+<ul>
+<li><a href="#kallor">Hämta modellerna och kontrollera licensen</a></li>
+<li><a href="#modellbyte">Byt endast det synliga monstret</a></li>
+<li><a href="#huvudtraff">Låt skotten träffa huvudet</a></li>
+<li><a href="#storre-bana">Bygg en bana som döljer fienderna</a></li>
+<li><a href="#ljud">Lägg till ljud utan att avslöja monstren</a></li>
+<li><a href="#kontroller">Sprint och engelsk kontrollguide</a></li>
+<li><a href="#testa">Testa i Godot och Quest</a></li>
+</ul>
+</div>
+</details><button class="print-button" type="button">Skriv ut kapitlet</button></aside><article class="prose"><div class="callout"><strong>Två riktiga monster, en gemensam spelmekanik.</strong><p>Här ersätter vi den lila kapselns synliga form med Horror Game Monster och Giant Mutant. Skada, kontaktskada och HUD-räknare återanvänder samma system. Samtidigt växer arenan till 24 × 24 meter med väggar mellan spelaren och fiendernas startpunkter.</p></div>
+
+<h2 id="kallor">Hämta modellerna och kontrollera licensen</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Modell</th>
+<th>Källsida och licens</th>
+<th>Filer som används</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Horror Game Monster</td>
+<td><a href="https://opengameart.org/content/3d-horror-game-monster">OpenGameArt: 3D Horror Game Monster</a>, CC0 enligt källsidan.</td>
+<td><code>Poses.zip</code> innehåller <code>Idle.fbx</code>, <code>Walk.fbx</code> och <code>Run.fbx</code>. <code>Colors.zip</code> innehåller bland annat den svarta färgtexturen.</td>
+</tr>
+<tr>
+<td>Giant Mutant</td>
+<td><a href="https://opengameart.org/content/giant-mutant">OpenGameArt: Giant Mutant</a>, CC0 enligt källsidan.</td>
+<td><code>giant_mutant.zip</code> innehåller en <code>.glb</code>-modell med idle-, löp-, slag- och dödsanimationer.</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Licensförtydligande för Giant Mutant:</strong> Upphovspersonen bekräftar i en kommentar på källsidan att animationerna gjordes med Mixamo. <a href="https://helpx.adobe.com/creative-cloud/faq/mixamo-faq.html">Adobes Mixamo-FAQ</a> tillåter royaltyfri användning i spel, men säger inte att själva animationerna är CC0. Betrakta därför inte den kompletta animerade GLB-filen som fritt omlicensierbar under CC0, trots CC0-märkningen på modellsidan.</p>
+<p>Originalarkiven behöver inte ligga i Godot-projektet. Projektet innehåller färdiga, konverterade filer i <code>assets/monsters/</code>: <code>horror_monster.glb</code> och <code>giant_mutant.glb</code>. Konverteringsskriptet <code>tools/prepare_monster_models.py</code> visar hur FBX-klippen från Horror Game Monster slås samman i Blender och hur Giant Mutants geometri förenklas för ett första Quest-test. Horror-modellen har <strong>Idle</strong>, <strong>Walk</strong> och <strong>Run</strong> i den importerade spelversionen. Källsidan nämner fler rörelser, men vi påstår inte att ett separat attackklipp finns i de filer vi faktiskt använder.</p>
+<h2 id="modellbyte">Byt endast det synliga monstret</h2>
+<p>Öppna <code>Blueprints/simple_monster.tscn</code>. Roten är fortfarande <code>CharacterBody3D</code> med samma <code>CollisionShape3D</code>, <code>ContactArea</code> och timrar. Under en ny <code>Visual</code>-nod finns två instanser:</p>
+<div class="code-block"><div class="code-toolbar"><span>text</span><button class="copy-button" type="button">Kopiera</button></div><pre tabindex="0"><code>SimpleMonster (CharacterBody3D)
+├── Visual
+│   ├── HorrorVisual  (horror_monster.glb)
+│   └── GiantVisual   (giant_mutant.glb)
+├── CollisionShape3D
+├── HeadHitbox       (Area3D med egen sfär)
+├── ContactArea
+├── HitFlashTimer
+└── ContactDamageTimer
+</code></pre></div>
+<p><code>simple_monster.gd</code> visar en modell åt gången. Horror-modellen använder <strong>Idle</strong> när den står still och <strong>Walk</strong> när den rör sig. Giant Mutant använder <strong>idle</strong>, <strong>Giant Run</strong> och <strong>Death</strong>. Den senare har fem träffpoäng, gör två poäng kontaktskada och rör sig lite långsammare; Horror behåller tre träffpoäng och en poäng kontaktskada. Båda använder <code>take_damage()</code> från kapitel 12 och 13. Vid träff läggs en kort röd materialöverlagring på modellens mesh. Vapnet och projektilen behöver inte veta vilken modell som syns.</p>
+<p>Giant-modellen roteras och skalas i scenen så att den står på golvet i rimlig spelstorlek. Den konverterade versionen har förenklad geometri. I <code>monster_spawner.gd</code> blir ungefär var tredje fiende en Giant, men aldrig fler än en Giant samtidigt. Det minskar belastningen i headsetet.</p>
+<h2 id="huvudtraff">Låt skotten träffa huvudet</h2>
+<p>Den gamla kapseln var 1,40 meter hög, medan Horror-modellens synliga geometri når ungefär 1,87 meter. Ett skott mot huvudet kunde därför passera över kroppens träffyta. <code>HeadHitbox</code> är en separat <code>Area3D</code> med en sfär kring huvudets höjd. Den ligger på ett eget fysiklager (21), och projektilens svepta stråltest inkluderar nu både kroppar och den träffbara ytan. <code>monster_head_hitbox.gd</code> skickar skadan vidare till förälderns <code>take_damage()</code>. Vapnet behöver fortfarande inte veta vilken del av monstret det träffade. När monstret dör stängs även huvudytan av.</p>
+<p>Prova att sikta just över kroppskapselns övre kant. Det automatiska testet skjuter en riktig projektil på cirka 1,75 meters höjd och verifierar att Horror-monstrets hälsa minskar. I Quest behöver du också bedöma om sfären visuellt följer huvudet under animationerna; justera dess höjd eller radie om den känns för generös eller snäv.</p>
+<h2 id="storre-bana">Bygg en bana som döljer fienderna</h2>
+<p><code>Blueprints/urban_arena.tscn</code> har nu ett <strong>24 × 24 meter</strong> stort golv. Ytterväggarna och de två takhalvorna har vuxit med golvet. Under <code>InteriorWalls</code> finns fyra nya kolliderande väggar: <code>NorthDivider</code>, <code>SouthDivider</code>, <code>WestAlley</code> och <code>EastAlley</code>. De två långa väggarna skymmer monster som skapas norr och söder om spelaren. Öppningarna ligger på motsatta sidor, så fienderna måste ta sig runt väggen för att komma fram. Arbetsbordet och pistolen står kvar vid spelarens startpunkt.</p>
+<p>Monsterpunkterna i <code>monster_spawner.tscn</code> ligger nu ungefär åtta meter från mitten, och <code>minimum_player_distance</code> är sex meter. Varje punkt är skymd av en innervägg från startpunkten. Power-up-punkterna är också utspridda i den större banan.</p>
+<p>Monstren gick tidigare rakt mot spelaren. Det skulle få dem att fastna mot de nya väggarna. Därför bygger <code>urban_arena.gd</code> ett enkelt platt <code>AStarGrid2D</code>-rutnät som märker väggarnas positioner som blockerade. Monstren frågar efter nästa fria steg med jämna mellanrum och fortsätter sedan mot spelaren runt hörnen. Detta är avsiktligt enklare än avancerad 3D-navigation: banan är plan och hindren är fasta.</p>
+<h2 id="ljud">Lägg till ljud utan att avslöja monstren</h2>
+<p><code>game_audio.gd</code> skapar tre korta ljud direkt i spelet: skott, fotsteg och hopp. Inga externa ljudfiler eller extra ljudlicenser behövs. <code>ShotAudio</code> är en <code>AudioStreamPlayer3D</code> vid pistolens mynning och spelas bara när ett skott faktiskt avfyras. Desktop- och XR-spelaren har varsin fotstegs- och hoppspelare. Fotstegen kommer tätare vid sprint och tystnar när spelaren står still eller är i luften.</p>
+<p>Monstren får <strong>inga kontinuerliga gång-, löp- eller andningsljud</strong> i detta steg. Annars skulle de lätt avslöja sin position bakom de nya väggarna. Ljud för närkontakt eller träff kan övervägas senare, efter ett speltest där överraskningen och tydligheten bedöms i headsetet.</p>
+<h2 id="kontroller">Sprint och engelsk kontrollguide</h2>
+<p>XR Tools har en färdig <code>MovementSprint</code> som nu sitter direkt under <code>XROrigin3D</code>. Den använder <strong>vänster styrspaks klick</strong> (<code>primary_click</code> på vänster hand) medan knappen hålls nere. Höger styrspaks klick är fortfarande kopplat till huka. I desktopläget hålls <strong>Shift</strong> nere för sprint. Ett startmeddelande visar rätt knappar på engelska i respektive läge; det försvinner automatiskt efter 10 sekunder på desktop respektive 12 sekunder i Quest.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="Tabell, kan rullas i sidled"><table>
+<thead>
+<tr>
+<th>Funktion</th>
+<th>Desktop</th>
+<th>Quest 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gå och titta</td>
+<td><code>WASD</code>/piltangenter och mus</td>
+<td>Vänster styrspak och huvudrörelse</td>
+</tr>
+<tr>
+<td>Spring</td>
+<td>Håll <code>Shift</code></td>
+<td>Håll vänster styrspaks klick</td>
+</tr>
+<tr>
+<td>Vänd</td>
+<td>Mus</td>
+<td>Höger styrspak</td>
+</tr>
+<tr>
+<td>Hoppa</td>
+<td><code>Space</code></td>
+<td>Höger <code>A</code></td>
+</tr>
+<tr>
+<td>Huka</td>
+<td><code>Ctrl</code> eller <code>C</code></td>
+<td>Klicka höger styrspak för att växla</td>
+</tr>
+<tr>
+<td>Plocka upp/släpp</td>
+<td>Högerklick</td>
+<td>Greppknapp på handen</td>
+</tr>
+<tr>
+<td>Skjut med hållet vapen</td>
+<td>Vänsterklick</td>
+<td>Avtryckaren på handen som håller vapnet</td>
+</tr>
+<tr>
+<td>Starta om efter förlust</td>
+<td><code>R</code></td>
+<td>Höger <code>B</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>På desktop frigör <code>Esc</code> muspekaren. Denna tabell beskriver projektets faktiska bindningar, inte alla knappar som finns i XR Tools.</p>
+<h2 id="testa">Testa i Godot och Quest</h2>
+<ol>
+<li>Starta spelet i desktopläget. Du ska se bordet och pistolen, men inte monstren direkt genom väggarna.</li>
+<li>Gå mot en öppning och vänta in fienderna. Kontrollera att Horror Game Monster går runt väggen med gånganimation och att Giant Mutant använder löpanimation.</li>
+<li>Skjut båda typerna, även i Horror-monstrets huvud. Kontrollera röd träffblinkning, tre respektive fem träffpoäng och att räknaren <code>MONSTERS KILLED</code> ökar när de dör. Hörs skottljudet vid varje godkänt skott?</li>
+<li>Gå, spring och hoppa. Kontrollera fotsteg och hoppljud samt att stegen går snabbare vid sprint.</li>
+<li>Kontrollera att en Giant i taget skapas och att gröna power-ups ligger på användbara platser.</li>
+<li>Kör därefter Android-versionen i Quest. Läs den engelska kontrollguiden, prova vänster styrspaks klick för sprint och höger för huka. Kontrollera huvudträff, ljudnivå, material, skala, animation, kollision och bildfrekvens.</li>
+</ol>
+<p>Det automatiska testet <code>tests/phase51_monsters_arena_test.gd</code> verifierar bland annat modeller, spawnpunkter, vägval och ett skott i Horror-monstrets huvud. <code>tests/phase52_controls_audio_test.gd</code> kontrollerar att de syntetiserade ljuden innehåller signal och att desktopspelaren har sprint och ljudspelare. Testerna ersätter <strong>inte</strong> den visuella, ljudmässiga och prestandamässiga kontrollen i ett riktigt headset. Om Quest känns tungt: börja med färre levande monster eller ytterligare förenklad Giant-geometri innan du lägger till effekter.</p>
+<div class="checkpoint" data-checklist="real-monsters"><h3>Kontrollera kapitel 19</h3><label><input type="checkbox"> Horror Game Monster och Giant Mutant syns och animeras.</label><label><input type="checkbox"> Båda kan skadas och besegras, även med ett skott i huvudet.</label><label><input type="checkbox"> Fienderna syns inte direkt från startpunkten och hittar runt väggarna.</label><label><input type="checkbox"> Skott, spelarsteg och hopp hörs utan att monstren avslöjas för tidigt.</label><label><input type="checkbox"> Vänster styrspaks klick sprintar, höger klick hukar och kontrollguiden stämmer.</label><label><input type="checkbox"> Skala, material, ljudnivå och bildfrekvens har kontrollerats i Quest.</label></div><nav class="page-nav" aria-label="Mellan kapitel"><a href="18-environment.html"><small>← Föregående</small>Bygg en sliten stadsmiljö</a><a href="index.html"><small>Tillbaka →</small>Alla kapitel</a></nav></article></div></main>
+<footer><p>VR med Godot · Godot 4.7 / Meta Quest 3</p><p>Uppdaterat 23 september 2026 · <a href="07-kallor.html">Källor och versionsinformation</a> · <a href="https://www.youtube.com/watch?v=gbTUNg99lrg">Videon bakom kursen</a></p><p class="fine">Utformat för att läsa bredvid Godot. Checklistor och tema sparas i din webbläsare.</p></footer><div id="toast" role="status" aria-live="polite"></div></body></html>

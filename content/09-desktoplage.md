@@ -144,14 +144,14 @@ Ett riktigt headset behövs fortfarande för att bedöma:
 2. Öppna projektet i Godot.
 3. Starta huvudscenen med <kbd>F6</kbd> eller hela projektet med <kbd>F5</kbd>.
 4. Kontrollera att Output visar `No active OpenXR headset: starting desktop player.`
-5. Gå runt med WASD och musen och kontrollera att spelaren stannar mot väggarna och arbetsbordet.
-6. Rikta siktet mot pistolen på bordet och högerklicka för att plocka upp och släppa den.
-7. Plocka upp pistolen, rikta siktet mot ett monster eller en vägg och vänsterklicka. Kulan ska gå mot siktets punkt.
+5. Gå runt med WASD och musen och kontrollera att spelaren stannar mot hindret.
+6. Rikta siktet mot ett greppbart föremål och högerklicka för att plocka upp och släppa det.
+7. Plocka upp pistolen, rikta siktet mot en kub och vänsterklicka. Kulan ska gå mot siktets punkt.
 8. Tryck på mellanslag för att hoppa och håll Ctrl eller C för att huka.
 
 Android/Quest-exporten aktiverar OpenXR och väljer XR-spelaren automatiskt. Du behöver inte ändra huvudscenen eller projektinställningen mellan testen.
 
-<div class="checkpoint" data-checklist="desktoplage"><h3>Kontrollera desktopläget</h3><label><input type="checkbox"> Spelet startar utan ett anslutet headset.</label><label><input type="checkbox"> WASD eller piltangenter flyttar spelaren.</label><label><input type="checkbox"> Musen styr kameran och ett hållet vapen följer med.</label><label><input type="checkbox"> Golvet, väggarna och bordet stoppar spelaren.</label><label><input type="checkbox"> Pistolen kan plockas upp och släppas med högerklick.</label><label><input type="checkbox"> En kula från den hållna pistolen går mot siktets punkt.</label><label><input type="checkbox"> Mellanslag får spelaren att hoppa.</label><label><input type="checkbox"> Ctrl eller C sänker både kameran och kollisionskapseln.</label><label><input type="checkbox"> XR-spelaren startar fortfarande när OpenXR är aktivt.</label></div>
+<div class="checkpoint" data-checklist="desktoplage"><h3>Kontrollera desktopläget</h3><label><input type="checkbox"> Spelet startar utan ett anslutet headset.</label><label><input type="checkbox"> WASD eller piltangenter flyttar spelaren.</label><label><input type="checkbox"> Musen styr kameran och ett hållet vapen följer med.</label><label><input type="checkbox"> Golvet och hindret stoppar spelaren.</label><label><input type="checkbox"> Ett greppbart föremål kan plockas upp och släppas med högerklick.</label><label><input type="checkbox"> En kula från den hållna pistolen går mot siktets punkt.</label><label><input type="checkbox"> Mellanslag får spelaren att hoppa.</label><label><input type="checkbox"> Ctrl eller C sänker både kameran och kollisionskapseln.</label><label><input type="checkbox"> XR-spelaren startar fortfarande när OpenXR är aktivt.</label></div>
 
 ## Regeln för fortsatt utveckling {#regel-framat}
 

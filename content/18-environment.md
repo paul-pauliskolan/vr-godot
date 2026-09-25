@@ -54,7 +54,7 @@ Arbetsbordet står kvar framför spelaren. Pistolen är placerad ovanför skivan
 
 ## Rensa bort prototypobjekten {#rensa-prototypobjekt}
 
-När monster och miljö har tagit över testrollen behöver den platta målnoden `Target` och de tre turkosa `PickableObject`-kuberna inte längre stå i `Main.tscn`. Ta bort just dessa fyra **instanser** ur huvudscenen. Behåll `Blueprints/target.tscn` och `Blueprints/pickable_object.tscn` som övningsmaterial för de tidigare kapitlen. Golvet, arbetsbordet, pistolen, spawnerna och HUD:en ska vara kvar.
+Fram till kapitel 18 står den platta målnoden `Target` och de tre turkosa `PickableObject`-kuberna kvar som testobjekt i huvudscenen. Följ de tidigare kapitlens instruktioner med dem på plats. Först **i detta kapitel**, när monster och miljö har tagit över testrollen, tar du bort just dessa fyra **instanser** ur `Main.tscn`. Behåll `Blueprints/target.tscn` och `Blueprints/pickable_object.tscn` som övningsmaterial. Golvet, arbetsbordet, pistolen, spawnerna och HUD:en ska vara kvar.
 
 ## Ljus och främmande stämning {#ljus}
 
@@ -85,4 +85,4 @@ Det sista godkännandet måste göras i headsetet:
 
 ## Nästa steg {#nasta-steg}
 
-När miljön är godkänd i Quest kan vi ersätta den lila prototypkapseln med en animerad modell. Tre möjliga CC0-källor är [Zombie Apocalypse Kit](https://quaternius.com/packs/zombieapocalypsekit.html) för en urban fiende, [Ultimate Monsters](https://quaternius.com/packs/ultimatemonsters.html) för ett mer främmande väsen och [Sci-Fi Essentials Kit](https://quaternius.com/packs/scifiessentialskit.html) för en mekanisk fiende. Alla tre kommer från Quaternius och respektive källsida anger CC0. Välj en enda modell först och behåll den nuvarande kollisionen och skadefunktionen när den visuella modellen byts ut. Kontrollera också polygonantal och animationer i Quest innan fler fiender läggs till.
+I [kapitel 19](19-riktiga-monster.html) lägger vi till de två valda animerade modellerna **Horror Game Monster** och **Giant Mutant**. Där byggs också banan ut med fler väggar som skymmer fienderna från startpunkten. Ändra inte de tidigare kapitlens provscener när du följer detta steg.
