@@ -30,11 +30,13 @@ console.log(heal(80, 40, 100)); // 100, inte 120
 }
 </code></pre>
 <p><code>continue</code> hoppar över resten av <strong>denna</strong> iteration, inte hela loopen. Det är viktigt när ett dött monster fortfarande väntar på att tas bort från scenen.</p>
-<h2>Övning i din kopia</h2>
-<ol>
-<li>Öppna <code>src/rules.js</code> och hitta <code>RULES.maxHealth</code>, <code>RULES.magazineSize</code> och <code>RULES.minimumSpawnDistance</code>.</li>
-<li>Ändra bara ett värde, exempelvis gånghastigheten, i din egen kopia. Spara och se effekten i spelet.</li>
-<li>Återställ värdet. Kör <code>npm test</code>; de befintliga testerna ska fortfarande passera.</li>
-<li>Skriv tre egna <code>console.log</code>-anrop i labbets <code>main.js</code> och kontrollera Console.</li>
-</ol>
+<h2>Prova direkt, utan installation</h2>
+<p>Öppna en webbsida i din vanliga webbläsare. Öppna utvecklarverktygen med <code>F12</code> eller <code>⌥⌘I</code> på Mac, välj fliken <strong>Console</strong> och skriv <code>2 + 3</code>. Tryck Enter. Du ska få <code>5</code>. Konsolen är ett tillfälligt övningsutrymme: det du skriver där ändrar inte spelets filer.</p>
+<p>Skriv sedan in kodraderna nedan, en i taget. Om webbläsaren varnar för att klistra in kod i konsolen, skriv raderna själv. Klistra aldrig in kod från en okänd källa.</p>
+<pre><code class="language-js">let health = 80;
+health = Math.min(100, health + 40);
+console.log(health);
+</code></pre>
+<p>Svaret ska bli <code>100</code>. Byt startvärdet till <code>20</code> och kör raderna igen. Om konsolen säger att <code>health</code> redan finns, ladda om sidan innan du provar igen. Förutsäg svaret innan du trycker Enter.</p>
+<p>När du har installerat projektet i kapitel 2 kan du öppna <code>src/rules.js</code> och hitta <code>RULES.maxHealth</code>, <code>RULES.magazineSize</code> och <code>RULES.minimumSpawnDistance</code>. Ändra ett värde i <strong>din egen kopia</strong>, observera effekten och återställ sedan värdet. Kör <code>npm test</code> för att kontrollera att spelreglerna fortfarande håller.</p>
 <p><strong>Klart när:</strong> du kan förklara skillnaden mellan <code>state.keys[0]</code> och <code>state.keys[1]</code>, och varför en funktion som bara räknar ut ett tal är lättare att testa än en som också flyttar 3D-objekt.</p><footer><a href="index.html">← Föregående</a><a href="01-projekt.html">Nästa →</a></footer></main></div></body></html>
