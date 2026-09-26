@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>6. Hinkar, nycklar och dörrar · Alien Escape WebXR</title><link rel="stylesheet" href="style.css"></head>
+<body><header><a class="brand" href="index.html">Alien Escape · webbkurs</a><a class="play" href="../">▶ Spela webbversionen</a></header>
+<div class="layout"><nav aria-label="Kapitel"><a href="index.html">Alien Escape i Three.js, WebGPU och WebXR</a><a href="01-projekt.html">1. Projekt, WebGPU och WebXR</a><a href="02-miljo.html">2. Miljö och kollisioner</a><a href="03-spelare.html">3. Desktopspelare, XR-kontroller och HUD</a><a href="04-vapen.html">4. Vapen, magasin och ljud</a><a href="05-monster.html">5. Monster och spawner</a><a href="06-nycklar.html">6. Hinkar, nycklar och dörrar</a><a href="07-slutspel.html">7. Medkit, utgång och highscore</a><a href="08-testning.html">8. Testa på desktop och Meta Quest</a></nav><main><h1>6. Hinkar, nycklar och dörrar</h1>
+<h2>Målet</h2>
+<p>Låt spelaren hitta två nycklar under hinkar, låsa upp två rustika metalldörrar och faktiskt kunna passera genom öppningarna. <a href="source/source/main.js">Öppna <code>main.js</code></a>.</p>
+<p>Första hinken finns nära startplatsen. Den andra finns i banans bakre del, efter den första dörren. När spelaren trycker E på desktop eller grip i VR flyttas hinken åt sidan. Nyckeln visas då ovanför golvet med ett guldljus och en markör. Tryck E/grip en gång till för att ta nyckeln, eller gå riktigt nära efter den korta visningsfördröjningen. Att gå på hinken ska inte kasta upp spelaren i luften.</p>
+<p><code>canOpenDoor()</code> i <a href="source/source/rules.js">reglerna</a> kräver motsvarande nyckel. Dörrbladet sitter under en <code>hinge</code>-grupp som roterar runt vänster kant. Samtidigt slutar dörröppningen blockera förflyttning och monster-pathfinding.</p>
+<h2>CC0-modeller</h2>
+<ul>
+<li><a href="https://opengameart.org/content/bucket-3">Bucket 3</a> av plaggy</li>
+<li><a href="https://opengameart.org/content/key-low-poly">Key – low poly</a> av codeinfernogames</li>
+<li><a href="https://opengameart.org/content/door-1">Door</a> av NotionHD</li>
+<li>Dörrmiljö och metall: <a href="https://polyhaven.com/a/rusty_metal_sheet">Rusty Metal Sheet</a></li>
+</ul>
+<h2>Testa</h2>
+<p>Prova både utan och med nyckel vid varje dörr. Dörren ska bara öppnas med sin egen nyckel. Efter öppning ska passagen vara fri; öppna dörrbladet ska inte fungera som en osynlig vägg.</p><footer><a href="05-monster.html">← Föregående</a><a href="07-slutspel.html">Nästa →</a></footer></main></div></body></html>

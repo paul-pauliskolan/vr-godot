@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>7. Medkit, utgång och highscore · Alien Escape WebXR</title><link rel="stylesheet" href="style.css"></head>
+<body><header><a class="brand" href="index.html">Alien Escape · webbkurs</a><a class="play" href="../">▶ Spela webbversionen</a></header>
+<div class="layout"><nav aria-label="Kapitel"><a href="index.html">Alien Escape i Three.js, WebGPU och WebXR</a><a href="01-projekt.html">1. Projekt, WebGPU och WebXR</a><a href="02-miljo.html">2. Miljö och kollisioner</a><a href="03-spelare.html">3. Desktopspelare, XR-kontroller och HUD</a><a href="04-vapen.html">4. Vapen, magasin och ljud</a><a href="05-monster.html">5. Monster och spawner</a><a href="06-nycklar.html">6. Hinkar, nycklar och dörrar</a><a href="07-slutspel.html">7. Medkit, utgång och highscore</a><a href="08-testning.html">8. Testa på desktop och Meta Quest</a></nav><main><h1>7. Medkit, utgång och highscore</h1>
+<h2>Målet</h2>
+<p>En genomförd omgång ska ha ett tydligt slut och en anledning att spela igen. Spelaren når dagsljuset efter dörr två och får tid, antal dödade monster, poäng och rekord. <a href="source/source/main.js">Öppna <code>main.js</code></a> och <a href="source/source/rules.js">reglerna</a>.</p>
+<p>Medkit återställer högst 40 hälsa och kan inte öka hälsan över 100. Gå in i medkitet för att plocka upp det automatiskt; vid full hälsa ligger det kvar och HUD visar <code>Health full</code>. Tre finns i banan vid start; fler kan dyka upp under spelomgången. Modellen kommer från <a href="https://opengameart.org/content/first-aid-kit-3d">First Aid Kit 3D</a>, CC0.</p>
+<p>Poängen följer Godot-versionens formel:</p>
+<pre><code class="language-js">Math.round(6000 / (1 + seconds / 120)) + Math.min(kills, 20) * 100
+</code></pre>
+<p>Kortare tid ger fler baspoäng. Högst tjugo kills ger bonus. Bästa poängen sparas i <code>localStorage</code>, alltså lokalt i den webbläsare och profil där spelet körs. Quest Browser och Mac-webbläsaren får var sitt rekord; de synkroniseras inte automatiskt.</p>
+<h2>Testa</h2>
+<ul>
+<li>Ta ett medkit vid full hälsa: det ska inte förbrukas.</li>
+<li>Gå ut efter att båda dörrarna öppnats: segerskärmen ska visa tid, kills och poäng.</li>
+<li>Spela igen och kontrollera att rekordet finns kvar efter sidomladdning.</li>
+<li>Kontrollera att yttergården har golv och begränsande väggar hela vägen fram till slutpunkten.</li>
+</ul><footer><a href="06-nycklar.html">← Föregående</a><a href="08-testning.html">Nästa →</a></footer></main></div></body></html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>8. Testa på desktop och Meta Quest · Alien Escape WebXR</title><link rel="stylesheet" href="style.css"></head>
+<body><header><a class="brand" href="index.html">Alien Escape · webbkurs</a><a class="play" href="../">▶ Spela webbversionen</a></header>
+<div class="layout"><nav aria-label="Kapitel"><a href="index.html">Alien Escape i Three.js, WebGPU och WebXR</a><a href="01-projekt.html">1. Projekt, WebGPU och WebXR</a><a href="02-miljo.html">2. Miljö och kollisioner</a><a href="03-spelare.html">3. Desktopspelare, XR-kontroller och HUD</a><a href="04-vapen.html">4. Vapen, magasin och ljud</a><a href="05-monster.html">5. Monster och spawner</a><a href="06-nycklar.html">6. Hinkar, nycklar och dörrar</a><a href="07-slutspel.html">7. Medkit, utgång och highscore</a><a href="08-testning.html">8. Testa på desktop och Meta Quest</a></nav><main><h1>8. Testa på desktop och Meta Quest</h1>
+<h2>Desktop först</h2>
+<p>Kör från mappen <code>web-threejs</code>:</p>
+<pre><code class="language-sh">npm install
+npm test
+npm run dev
+</code></pre>
+<p>Öppna <code>http://localhost:4323/</code> på Macen och spela en hel omgång. Kör även <code>npm run build</code> inför publicering. <code>npm test</code> kontrollerar åtta skott, två nycklar, säkert spawn-avstånd och poängformeln; det ersätter inte speltest.</p>
+<h2>Quest över USB med ADB reverse</h2>
+<p>Om ADB finns installerat och Quest 3 är ansluten samt har godkänt USB-debugging:</p>
+<pre><code class="language-sh">adb devices
+adb reverse tcp:4323 tcp:4323
+</code></pre>
+<p>Öppna sedan <strong>Quest Browser i headsetet</strong> och skriv <code>http://localhost:4323/</code>. Det är headsetets localhost som skickas till Macens Vite-server. Tryck <strong>Enter VR</strong> på sidan. Om knappen saknas, kontrollera först att <code>adb devices</code> visar headsetet och att <code>adb reverse --list</code> visar port 4323.</p>
+<p>För spel utan USB-kabel behöver appen publiceras på en HTTPS-adress. En vanlig lokal IP-adress med HTTP ger inte WebXR-rättigheter. En produktionsbyggnad fås med <code>npm run build</code> och ligger i <code>web-threejs/dist/</code>. På den befintliga Godot-sajten är den publicerad under <code>/threejs/</code>; med ADB reverse av port 4322 kan du därför i stället öppna <code>http://localhost:4322/threejs/</code> i Quest Browser.</p>
+<h2>Checklista i headsetet</h2>
+<ul>
+<li>Starta med höger trigger. Läs instruktionerna i VR-panelen.</li>
+<li>Gå, sprinta och sväng. Huka fysiskt i headsetet; på desktop testar du C/Ctrl. Kontrollera att vänster handled visar hälsa och ammunition.</li>
+<li>Skjut åtta skott. Plocka magasin, kasta ut och sätt i nytt.</li>
+<li>Flytta första hinken med E/grip, se den lysande nyckeln, plocka upp den och passera första dörren.</li>
+<li>Låt spindeln hoppa. Kontrollera att monster och väggar inte blockerar på fel sätt.</li>
+<li>Ta skada och gå in i ett medkit: hälsan ska öka automatiskt. Vid full hälsa ska medkitet ligga kvar.</li>
+<li>Hitta andra nyckeln, öppna sista dörren och nå utgången. Kontrollera poäng och nästa omgång.</li>
+</ul>
+<h2>Om WebGPU visas som WebGL2</h2>
+<p>Det är avsiktligt på Quest när WebGPU-bindningen för immersive WebXR inte finns. Samma spelkod körs då på WebGL2-backend. På en desktopwebbläsare med WebGPU visas WebGPU i statusraden. Se <a href="https://threejs.org/docs/pages/WebGPURenderer.html">Three.js WebGPURenderer</a> och <a href="https://developers.meta.com/horizon/documentation/web/webxr-overview/">Meta WebXR-dokumentationen</a>.</p><footer><a href="07-slutspel.html">← Föregående</a><span></span></footer></main></div></body></html>

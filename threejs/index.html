@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b141a" />
+    <title>Alien Escape — Three.js / WebGPU / WebXR</title>
+    <script type="module" crossorigin src="/threejs/assets/index-C4Sp-_Fr.js"></script>
+    <link rel="stylesheet" crossorigin href="/threejs/assets/index-CLtI8aWw.css">
+  </head>
+  <body>
+    <div id="game"></div>
+    <header class="topbar"><a href="./course/index.html">Course · Three.js / WebGPU / WebXR</a><span id="renderer-label">Starting renderer…</span></header>
+    <div id="hud" class="hud" hidden>
+      <div class="hud-top"><span id="health-label">HEALTH 100</span><span id="key-label">KEYS 0/2</span><span id="kill-label">KILLS 0</span></div>
+      <div class="health-track"><div id="health-fill"></div></div>
+      <div class="hud-bottom"><span id="ammo-label">8 / 0 magazines</span><span id="time-label">00:00</span><span id="hint-label"></span></div>
+      <div class="crosshair">+</div>
+    </div>
+    <div id="notice" class="notice" aria-live="polite"></div>
+    <main id="menu" class="menu">
+      <div class="menu-card">
+        <p class="eyebrow">A parallel browser edition</p>
+        <h1>Alien Escape</h1>
+        <p>Find two keys beneath the buckets. Open both doors, survive the monsters and reach daylight.</p>
+        <div class="settings"><label><input id="sfx-toggle" type="checkbox" checked /> SFX</label><label><input id="music-toggle" type="checkbox" checked /> Music</label></div>
+        <button id="start-button" type="button">Start game</button>
+        <div class="controls"><div><strong>Desktop</strong><p>WASD move · Mouse aim · Left click fire · E lift bucket/take key · Shift sprint · C or Ctrl crouch · Space jump · R reload · G eject · Walk into medkits to heal</p></div><div><strong>Quest</strong><p>Enter VR, then trigger to start · Left stick move/press sprint · Right stick turn/press eject · Trigger fire · Grip lift bucket/take key · Physically crouch · Walk into medkits to heal · Left grip picks up magazine at left hip</p></div></div>
+        <p class="small">Best score: <span id="best-score">0</span>. Sound begins after you press Start. VR requires HTTPS or a secure localhost connection.</p>
+      </div>
+    </main>
+  </body>
+</html>

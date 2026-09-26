@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2. Miljö och kollisioner · Alien Escape WebXR</title><link rel="stylesheet" href="style.css"></head>
+<body><header><a class="brand" href="index.html">Alien Escape · webbkurs</a><a class="play" href="../">▶ Spela webbversionen</a></header>
+<div class="layout"><nav aria-label="Kapitel"><a href="index.html">Alien Escape i Three.js, WebGPU och WebXR</a><a href="01-projekt.html">1. Projekt, WebGPU och WebXR</a><a href="02-miljo.html">2. Miljö och kollisioner</a><a href="03-spelare.html">3. Desktopspelare, XR-kontroller och HUD</a><a href="04-vapen.html">4. Vapen, magasin och ljud</a><a href="05-monster.html">5. Monster och spawner</a><a href="06-nycklar.html">6. Hinkar, nycklar och dörrar</a><a href="07-slutspel.html">7. Medkit, utgång och highscore</a><a href="08-testning.html">8. Testa på desktop och Meta Quest</a></nav><main><h1>2. Miljö och kollisioner</h1>
+<h2>Målet</h2>
+<p>Återskapa Godot-banans struktur: inomhusdel med väggar och passager, två grindöppningar och en avgränsad utomhusdel. Golvet fortsätter utanför sista dörren så spelaren inte faller ur världen. <a href="source/source/level.js">Öppna <code>level.js</code></a>.</p>
+<p><code>buildLevel()</code> skapar golv, väggar, trasigt tak, arbetsbänk, ljus, alien-glöd, träd, stenlagd väg och utgångsbåge. En enkel lista med rektangulära hinder används av både spelaren och monster.</p>
+<pre><code class="language-js">if (!blocked(rig.position.x + dx, rig.position.z, radius, obstacles, state.doors)) {
+  rig.position.x += dx;
+}
+</code></pre>
+<p>X och Z prövas var för sig. Det gör att spelaren glider längs väggar i stället för att fastna vid sneda rörelser. Stängda dörrar räknas som hinder; upplåsta dörrar slutar blockera öppningen.</p>
+<h2>Övning</h2>
+<p>Ändra längden på en av avdelande väggarna i <code>buildLevel()</code>. Kontrollera att monstret väljer en omväg och att spelaren inte kan gå igenom väggen. Den första nyckeln ska fortfarande gå att nå från startplatsen.</p>
+<h2>Återanvända CC0-texturer</h2>
+<ul>
+<li>Golv: <a href="https://polyhaven.com/a/cracked_concrete">Cracked Concrete</a></li>
+<li>Väggar: <a href="https://polyhaven.com/a/rebar_reinforced_concrete">Rebar Reinforced Concrete</a></li>
+<li>Metall/tak/dörrkänsla: <a href="https://polyhaven.com/a/rusty_metal_sheet">Rusty Metal Sheet</a></li>
+</ul>
+<p>De kommer från <a href="https://polyhaven.com/license">Poly Haven, CC0</a>. Webbversionen packar med 1K-varianter, inte fullstora originalfiler.</p><footer><a href="01-projekt.html">← Föregående</a><a href="03-spelare.html">Nästa →</a></footer></main></div></body></html>

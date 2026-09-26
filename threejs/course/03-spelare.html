@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3. Desktopspelare, XR-kontroller och HUD · Alien Escape WebXR</title><link rel="stylesheet" href="style.css"></head>
+<body><header><a class="brand" href="index.html">Alien Escape · webbkurs</a><a class="play" href="../">▶ Spela webbversionen</a></header>
+<div class="layout"><nav aria-label="Kapitel"><a href="index.html">Alien Escape i Three.js, WebGPU och WebXR</a><a href="01-projekt.html">1. Projekt, WebGPU och WebXR</a><a href="02-miljo.html">2. Miljö och kollisioner</a><a href="03-spelare.html">3. Desktopspelare, XR-kontroller och HUD</a><a href="04-vapen.html">4. Vapen, magasin och ljud</a><a href="05-monster.html">5. Monster och spawner</a><a href="06-nycklar.html">6. Hinkar, nycklar och dörrar</a><a href="07-slutspel.html">7. Medkit, utgång och highscore</a><a href="08-testning.html">8. Testa på desktop och Meta Quest</a></nav><main><h1>3. Desktopspelare, XR-kontroller och HUD</h1>
+<h2>Målet</h2>
+<p>Ha <strong>en</strong> spelstatus men två inmatningssätt. På desktop används WASD, mus, Shift, Space, E och <code>C</code>/<code>Ctrl</code> för att huka. I Quest styr vänster spak förflyttning, höger spak ger stegvis svängning, vänster spak nedtryckt ger sprint, trigger skjuter och grip interagerar. Huka fysiskt i headsetet; WebXR följer huvudets höjd. <a href="source/source/main.js">Öppna <code>main.js</code></a>.</p>
+<p><code>rig</code> är spelarens rot. Kameran sitter i riggen. När ett XR-headset tar över ger WebXR kamerans huvudposition och riktning, medan riggen fortfarande används för förflyttning i världen. De fysiska kontrollerna kopplas via <code>renderer.xr.getController()</code> och identifieras med <code>inputSource.handedness</code>.</p>
+<h2>HUD</h2>
+<p>Desktop-HUD visar hälsa, nycklar, dödade monster, ammunition, magasin och tid. I VR ritas samma data på en canvas-textur som fästs vid vänster kontroll — ett enkelt handledsverktyg. Startinformationen visas på en 3D-panel i VR, eftersom HTML-startmenyn inte syns inne i en immersive WebXR-session.</p>
+<h2>Testa</h2>
+<ul>
+<li>Desktop: kontrollera att Shift ökar hastigheten, Space ger ett litet hopp och C eller Ctrl sänker kameran och hastigheten.</li>
+<li>Quest: kontrollera att vänster spak flyttar i huvudets riktning, att höger spak svänger och att handleds-HUD går att läsa.</li>
+<li>Läs knappinformationen i startmenyn. Texten i själva spelet ska vara på engelska i båda lägena.</li>
+</ul><footer><a href="02-miljo.html">← Föregående</a><a href="04-vapen.html">Nästa →</a></footer></main></div></body></html>

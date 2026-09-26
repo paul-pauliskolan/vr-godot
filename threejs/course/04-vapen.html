@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>4. Vapen, magasin och ljud · Alien Escape WebXR</title><link rel="stylesheet" href="style.css"></head>
+<body><header><a class="brand" href="index.html">Alien Escape · webbkurs</a><a class="play" href="../">▶ Spela webbversionen</a></header>
+<div class="layout"><nav aria-label="Kapitel"><a href="index.html">Alien Escape i Three.js, WebGPU och WebXR</a><a href="01-projekt.html">1. Projekt, WebGPU och WebXR</a><a href="02-miljo.html">2. Miljö och kollisioner</a><a href="03-spelare.html">3. Desktopspelare, XR-kontroller och HUD</a><a href="04-vapen.html">4. Vapen, magasin och ljud</a><a href="05-monster.html">5. Monster och spawner</a><a href="06-nycklar.html">6. Hinkar, nycklar och dörrar</a><a href="07-slutspel.html">7. Medkit, utgång och highscore</a><a href="08-testning.html">8. Testa på desktop och Meta Quest</a></nav><main><h1>4. Vapen, magasin och ljud</h1>
+<h2>Målet</h2>
+<p>Pistolen har åtta skott per magasin. Ett träffat monster anropar samma skadelogik oavsett om det är Horror Game Monster eller Spider. Skottet använder ett riktigt inspelat pistolskott, inte ett syntetiskt pip. <a href="source/source/main.js">Öppna <code>main.js</code></a> och <a href="source/source/rules.js">reglerna</a>.</p>
+<h2>Desktop</h2>
+<ul>
+<li>Vänster musknapp skjuter.</li>
+<li><code>G</code> kastar ut det aktuella magasinet. <code>R</code> sätter i ett nytt från förrådet.</li>
+<li><code>E</code> plockar upp magasin som ligger på banan. Ett fullständigt magasin ger åtta skott.</li>
+</ul>
+<h2>Quest</h2>
+<ul>
+<li>Höger trigger skjuter. Tryck ned höger spak för att kasta ut magasinet.</li>
+<li>Plocka upp ett banmagasin med grip. När pistolen är utan magasin: för vänster hand till vänster höft och tryck grip för att ta ett reservmagasin; för det till pistolgreppet och tryck grip igen, eller låt det komma mycket nära så att det snäpper på plats.</li>
+<li>Pistolmodellen är fäst vid höger kontroll i denna första webbversion. Den kan inte byta hand ännu.</li>
+</ul>
+<h2>Ljud</h2>
+<p>Skottet är ett klipp från <a href="https://opengameart.org/content/gunshot-sounds">Gunshot Sounds</a>, CC0. Bakgrundsslingan är <a href="https://opengameart.org/content/lost-in-a-bad-place-horror-ambience-loop">Lost in a bad place</a>, CC0. Monsterlätena skapas i Web Audio och panoreras åt den sida monstret finns; spelarens steg och hopp har enkla syntetiska ljud. SFX och Music går att slå av/på på startskärmen och är på som standard. Ljud spelas först efter en användarhandling enligt webbläsarens regler.</p>
+<h2>Testa</h2>
+<p>Skjut åtta gånger. Det nionde trycket ska inte avfyra något. Plocka upp ett magasin, ladda om och prova igen. Kontrollera att SFX av verkligen tystar skotten och att Music av stoppar musiken.</p><footer><a href="03-spelare.html">← Föregående</a><a href="05-monster.html">Nästa →</a></footer></main></div></body></html>

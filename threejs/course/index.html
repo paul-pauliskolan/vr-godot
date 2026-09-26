@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Alien Escape i Three.js, WebGPU och WebXR · Alien Escape WebXR</title><link rel="stylesheet" href="style.css"></head>
+<body><header><a class="brand" href="index.html">Alien Escape · webbkurs</a><a class="play" href="../">▶ Spela webbversionen</a></header>
+<div class="layout"><nav aria-label="Kapitel"><a href="index.html">Alien Escape i Three.js, WebGPU och WebXR</a><a href="01-projekt.html">1. Projekt, WebGPU och WebXR</a><a href="02-miljo.html">2. Miljö och kollisioner</a><a href="03-spelare.html">3. Desktopspelare, XR-kontroller och HUD</a><a href="04-vapen.html">4. Vapen, magasin och ljud</a><a href="05-monster.html">5. Monster och spawner</a><a href="06-nycklar.html">6. Hinkar, nycklar och dörrar</a><a href="07-slutspel.html">7. Medkit, utgång och highscore</a><a href="08-testning.html">8. Testa på desktop och Meta Quest</a></nav><main><h1>Alien Escape i Three.js, WebGPU och WebXR</h1>
+<p>Detta är en <strong>parallell kurs</strong> till Godot-kursen, inte en ersättning. <a href="http://127.0.0.1:4322/">Godot-sajten</a> och Godot-spelet är kvar. Här bygger vi samma flyktspel för webbläsare: desktop med mus och tangentbord, och Meta Quest via WebXR.</p>
+<p>I webbversionen finns den större anläggningen, de två nycklarna under hinkarna, rustika metalldörrar, Horror Game Monster, Spider med hopp, pistol med åtta skott, magasin, medkit, hälsa, tid, kill count, highscore och den ljusare utgången. 3D-modeller, texturer och skottljud är kopior av de CC0-filer som Godot-projektet använder. Spelets text är på engelska; kursen är på svenska.</p>
+<h2>Spela och lär</h2>
+<ul>
+<li><a href="../">Starta webbversionen</a> och prova desktopkontrollerna först.</li>
+<li>Läs kapitlen i ordning och öppna de faktiska källfilerna via länkarna.</li>
+<li>Bygg eller ändra bara i <code>web-threejs/</code>. Originalprojektets <code>Blueprints/</code>, <code>Main.tscn</code> och gamla kurskapitel ska inte skrivas över.</li>
+<li>När desktop fungerar: starta över HTTPS eller Quest-lokalhost, öppna sidan i Quest Browser och välj <strong>Enter VR</strong>.</li>
+</ul>
+<h2>Kurskapitel</h2>
+<ol>
+<li><a href="01-projekt.html">Projekt, WebGPU och WebXR</a></li>
+<li><a href="02-miljo.html">Miljö och kollisioner</a></li>
+<li><a href="03-spelare.html">Desktopspelare, XR-kontroller och HUD</a></li>
+<li><a href="04-vapen.html">Vapen, magasin och ljud</a></li>
+<li><a href="05-monster.html">Monster och spawner</a></li>
+<li><a href="06-nycklar.html">Hinkar, nycklar och dörrar</a></li>
+<li><a href="07-slutspel.html">Medkit, utgång och highscore</a></li>
+<li><a href="08-testning.html">Testa på desktop och Quest</a></li>
+</ol>
+<h2>Projektstruktur</h2>
+<pre><code class="language-text">xr-game/                       befintligt Godot-spel — orört
+└─ web-threejs/                ny fristående webbversion
+   ├─ src/main.js              spel-loop, inmatning, objekt och UI
+   ├─ src/level.js             bana, modeller och kollisioner
+   ├─ src/rules.js             poäng och gemensamma spelregler
+   ├─ public/assets/           kopior av återanvända CC0-assets
+   └─ course/content/          den här kursens källtexter
+</code></pre>
+<h2>Viktig skillnad mot Godot</h2>
+<p>Webbversionen använder lättviktig egen kollisions- och interaktionskod, inte Godots fysikmotor. Hinkar flyttas åt sidan med en interaktion, monstret följer ett rutnät och skotten träffar direkt längs siktlinjen. Samma spelmål och objekt finns, men simuleringen är inte byte-för-byte identisk. Förstahandsversionen är byggd för att vara spelbar och pedagogisk; mer avancerad fysik kan läggas till i ett senare kapitel.</p><footer><span></span><a href="01-projekt.html">Nästa →</a></footer></main></div></body></html>

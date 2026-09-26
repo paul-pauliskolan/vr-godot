@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>5. Monster och spawner · Alien Escape WebXR</title><link rel="stylesheet" href="style.css"></head>
+<body><header><a class="brand" href="index.html">Alien Escape · webbkurs</a><a class="play" href="../">▶ Spela webbversionen</a></header>
+<div class="layout"><nav aria-label="Kapitel"><a href="index.html">Alien Escape i Three.js, WebGPU och WebXR</a><a href="01-projekt.html">1. Projekt, WebGPU och WebXR</a><a href="02-miljo.html">2. Miljö och kollisioner</a><a href="03-spelare.html">3. Desktopspelare, XR-kontroller och HUD</a><a href="04-vapen.html">4. Vapen, magasin och ljud</a><a href="05-monster.html">5. Monster och spawner</a><a href="06-nycklar.html">6. Hinkar, nycklar och dörrar</a><a href="07-slutspel.html">7. Medkit, utgång och highscore</a><a href="08-testning.html">8. Testa på desktop och Meta Quest</a></nav><main><h1>5. Monster och spawner</h1>
+<h2>Målet</h2>
+<p>Använd samma CC0-monster som i Godot: <a href="https://opengameart.org/content/3d-horror-game-monster">3D Horror Game Monster</a> och <a href="https://opengameart.org/content/spider-2">Spider av br-n518</a>. GLB-filerna läses in med Three.js <code>GLTFLoader</code>. Båda har tre träffpoäng. Spindeln tar sats nära spelaren och gör ett kodstyrt hopp. <a href="source/source/main.js">Öppna <code>main.js</code></a> och <a href="source/source/level.js"><code>level.js</code></a>.</p>
+<p><code>spawnMonster()</code> väljer bara en spawnpunkt som är minst sex meter från spelaren. Max fyra monster är samtidigt aktiva. Nya försök sker var sjätte sekund. <code>nextPathStep()</code> söker en väg genom ett rutnät så monster tar sig runt väggarna i stället för att gå rakt igenom dem.</p>
+<pre><code class="language-js">if (distanceToPlayer &gt;= RULES.minimumSpawnDistance &amp;&amp; monstersAlive &lt; RULES.maxMonsters) {
+  spawnMonster();
+}
+</code></pre>
+<p>Skottet testar siktlinjen mot väggar och dörrar före monstret. En vägg ska alltså kunna skydda både spelare och monster. När hälsan når noll räknas en kill och monstret tas bort.</p>
+<h2>Testa</h2>
+<ul>
+<li>Starta om spelet flera gånger: inget monster ska stå direkt intill startplatsen.</li>
+<li>Håll en vägg mellan dig och monstret: skottet ska inte träffa genom väggen.</li>
+<li>Låt spindeln komma nära: den ska hoppa mot dig, inte teleportera.</li>
+<li>Träffa varje monster tre gånger och kontrollera kill-räknaren.</li>
+</ul>
+<p>Modellerna är CC0 enligt respektive OpenGameArt-sida. Horror Game Monsters FBX-konverterade skelett får fel skala i Three.js, så webbversionen visar originalmodellens bind-pose-mesh och ger den en liten kodstyrd rörelse. Spindelns GLB-animationer används direkt. De tidigare kuberna och övningsmålet finns kvar i Godot-kursens tidiga kapitel men ingår inte i den färdiga flyktbanan.</p><footer><a href="04-vapen.html">← Föregående</a><a href="06-nycklar.html">Nästa →</a></footer></main></div></body></html>
