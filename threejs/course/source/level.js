@@ -147,7 +147,7 @@ export function nextPathStep(from, to, obstacles, doors) {
   let found = null;
   for (let i = 0; i < queue.length && i < 2100; i++) {
     const [x, z] = queue[i];
-    if (Math.abs(x - goal[0]) <= 1 && Math.abs(z - goal[1]) <= 1) { found = [x, z]; break; }
+    if (x === goal[0] && z === goal[1]) { found = [x, z]; break; }
     for (const [dx, dz] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
       const nx = x + dx, nz = z + dz, id = key(nx, nz);
       if (!seen.has(id) && !blocked(nx * cell, nz * cell, 0.42, obstacles, doors)) {

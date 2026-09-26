@@ -29,7 +29,7 @@ const looseMagazines = [];
 const medkits = [];
 const doors = [];
 const controllers = [];
-const spawnPositions = [[-8, -8.5], [8, -8.5], [-8, -6.7], [6, -6.7], [0, -8.5]];
+const spawnPositions = [[8.4, .5], [-8.4, -.5], [-8, -8.5], [8, -8.5], [-8, -6.7], [6, -6.7], [0, -8.5]];
 let renderer;
 let spawnClock = 0;
 let powerClock = 0;
@@ -388,7 +388,11 @@ async function spawnMonster() {
     return distance >= RULES.minimumSpawnDistance && !monsters.some((monster) => !monster.dead && Math.hypot(x - monster.anchor.position.x, z - monster.anchor.position.z) < 1.2);
   });
   if (!valid.length) return;
-  const [x, z] = valid[Math.floor(Math.random() * valid.length)];
+  // The first horror starts behind nearby cover: safely hidden, but close
+  // enough to appear before the faster spider takes over the encounter.
+  const [x, z] = spawnCount === 0 && valid.some(([px, pz]) => px === 8.4 && pz === .5)
+    ? [8.4, .5]
+    : valid[Math.floor(Math.random() * valid.length)];
   const kind = monsterKindForSpawn(spawnCount++, monsters.some((m) => !m.dead && m.kind === 'spider'));
   const anchor = modelAt(modelPaths[kind], kind === 'spider' ? .7 : 1.85, [x, 0, z], kind === 'spider' ? 0x604b3e : 0x83756a);
   const monster = { anchor, kind, health: RULES.monsterHealth, dead: false, waypoint: null, pathTimer: 0, attackTimer: 0, jumpTimer: 2, leap: 0, flash: 0, mixer: null, soundTimer: 2 + Math.random() * 3 };

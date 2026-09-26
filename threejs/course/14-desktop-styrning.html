@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>8. Desktopstyrning steg för steg · Alien Escape WebXR</title><script src="theme.js?v=20260926"></script><link rel="stylesheet" href="style.css?v=20260926"></head>
+<body><header class="topbar"><a class="brand" href="../../index.html">◉ VR-kurser</a><div class="topbar-actions"><a class="play" href="../">▶ Spela webbversionen</a><button id="theme-toggle" type="button" aria-label="Byt färgtema" aria-pressed="false">◐</button></div></header>
+<div class="layout"><nav class="chapter-nav" aria-label="Kapitel"><a href="index.html">Kursöversikt</a><a href="09-javascript-grunder.html">1. JavaScript-grunder för spelet</a><a href="01-projekt.html">2. Kom igång med Three.js, WebGPU och WebXR</a><a href="10-tredimensionellt-rum.html">3. Förstå 3D-rummet och scenhierarkin</a><a href="11-rendering-webgpu.html">4. Renderingsloopen, WebGPU och WebXR</a><a href="12-texturer-modeller.html">5. Texturer, modeller och licenser</a><a href="02-miljo.html">6. Miljö och kollisioner</a><a href="13-kollisioner.html">7. Kollisioner utan en fysikmotor</a><a href="14-desktop-styrning.html">8. Desktopstyrning steg för steg</a><a href="03-spelare.html">9. Desktopspelare, XR-kontroller och HUD</a><a href="15-vr-styrning.html">10. VR-styrning och WebXR-kontroller</a><a href="16-interaktioner.html">11. Interaktioner: hink, nyckel och medkit</a><a href="06-nycklar.html">12. Hinkar, nycklar och dörrar</a><a href="04-vapen.html">13. Vapen, magasin och ljud</a><a href="17-vapen-traffar.html">14. Vapen, skott och träffkontroll</a><a href="05-monster.html">15. Monster och spawner</a><a href="18-monster-ai.html">16. Monster, spawn och vägval</a><a href="19-granssnitt-ljud.html">17. HUD, startmeny och ljud</a><a href="07-slutspel.html">18. Medkit, utgång och highscore</a><a href="20-spelomgang-poang.html">19. Spelomgång, vinst och highscore</a><a href="08-testning.html">20. Testa på desktop och Meta Quest</a><a href="21-publicering-felsokning.html">21. Felsök, bygg och dela webbversionen</a></nav><main class="chapter-content"><h1>8. Desktopstyrning steg för steg</h1>
+<h2>Målet</h2>
+<p>Bygga och förstå styrningen på dator innan du försöker felsöka VR. Desktopläget är snabbare att testa och använder samma spelstatus och kollisionskod som Quest-läget. Läs <code>bindInputs()</code>, <code>updateMovement()</code> och <code>movePlayer()</code> i <a href="source/main.js"><code>main.js</code></a>.</p>
+<h2>Tangenter: nedtryckt eller enstaka tryck</h2>
+<p>Spelet lägger till tangentens <code>event.code</code> vid <code>keydown</code> och tar bort den vid <code>keyup</code>. <code>keysDown</code> är en <code>Set</code>, alltså en samling utan dubletter. Rörelse kontrolleras varje bildruta med <code>keysDown.has('KeyW')</code> och liknande. En interaktion som <code>E</code> utförs däremot en gång när tangenttrycket kommer.</p>
+<pre><code class="language-js">document.addEventListener('keydown', (event) =&gt; keysDown.add(event.code));
+document.addEventListener('keyup', (event) =&gt; keysDown.delete(event.code));
+</code></pre>
+<p><code>event.code</code> beskriver den fysiska tangenten, medan <code>event.key</code> beskriver tecknet. Det gör <code>KeyW</code> användbart för rörelse även om användaren har ett annat tangentbordslayout. <code>event.repeat</code> hindrar att vissa engångshändelser upprepas okontrollerat.</p>
+<h2>Rörelse i spelarens riktning</h2>
+<p>WASD ger först en vektor i spelarens lokala plan. Den normaliseras när två tangenter hålls nere så att diagonal gång inte blir snabbare. Sedan vrids vektorn med riggens Y-rotation. Slutligen multipliceras den med hastighet och <code>dt</code>, och <code>movePlayer()</code> testar kollisioner.</p>
+<p>På desktop sänker <code>C</code> eller <code>Ctrl</code> kameran från ungefär 1,65 till 1,0 meter och minskar hastigheten. <code>Shift</code> använder sprintfarten. <code>Space</code> ger ett kort hopp genom en vertikal hastighet som minskar av gravitation i uppdateringsloopen. Själva riggen står kvar på golvplanet; kamerans höjd visar hoppet.</p>
+<h2>Mus och pekarlås</h2>
+<p>När spelet startar begär det <code>pointer lock</code>. Då får musrörelserna sikta utan att pekaren lämnar spelrutan. <code>mousemove</code> ändrar riggens yaw (vänster/höger) och kamerans pitch (upp/ned). Pitch begränsas för att spelaren inte ska kunna vända kameran upp och ned. Tryck Escape för att lämna pekarlåset. Klicka i spelet igen för att återta det.</p>
+<h2>Gör själv</h2>
+<ol>
+<li>Starta spelet på desktop. Testa W, A, S och D var för sig och diagonalt.</li>
+<li>Jämför normal gång, Shift-sprint och C-hukning. Kontrollera att en vägg stoppar alla tre.</li>
+<li>Ändra sprintfarten till ett orimligt högt värde i din kopia och se varför stora steg kan göra enkel kollision mindre pålitlig. Återställ värdet.</li>
+<li>Titta i <code>bindInputs()</code> och skriv upp vilka kommandon som bara körs vid ett knapptryck: <code>E</code>, <code>R</code>, <code>G</code> och hopp.</li>
+</ol>
+<p><strong>Klart när:</strong> du kan förklara varför rörelse hanteras varje bildruta men en magasinutkastning hanteras vid ett enstaka knapptryck.</p><footer><a href="13-kollisioner.html">← Föregående</a><a href="03-spelare.html">Nästa →</a></footer></main></div></body></html>

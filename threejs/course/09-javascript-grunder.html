@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>1. JavaScript-grunder för spelet · Alien Escape WebXR</title><script src="theme.js?v=20260926"></script><link rel="stylesheet" href="style.css?v=20260926"></head>
+<body><header class="topbar"><a class="brand" href="../../index.html">◉ VR-kurser</a><div class="topbar-actions"><a class="play" href="../">▶ Spela webbversionen</a><button id="theme-toggle" type="button" aria-label="Byt färgtema" aria-pressed="false">◐</button></div></header>
+<div class="layout"><nav class="chapter-nav" aria-label="Kapitel"><a href="index.html">Kursöversikt</a><a href="09-javascript-grunder.html">1. JavaScript-grunder för spelet</a><a href="01-projekt.html">2. Kom igång med Three.js, WebGPU och WebXR</a><a href="10-tredimensionellt-rum.html">3. Förstå 3D-rummet och scenhierarkin</a><a href="11-rendering-webgpu.html">4. Renderingsloopen, WebGPU och WebXR</a><a href="12-texturer-modeller.html">5. Texturer, modeller och licenser</a><a href="02-miljo.html">6. Miljö och kollisioner</a><a href="13-kollisioner.html">7. Kollisioner utan en fysikmotor</a><a href="14-desktop-styrning.html">8. Desktopstyrning steg för steg</a><a href="03-spelare.html">9. Desktopspelare, XR-kontroller och HUD</a><a href="15-vr-styrning.html">10. VR-styrning och WebXR-kontroller</a><a href="16-interaktioner.html">11. Interaktioner: hink, nyckel och medkit</a><a href="06-nycklar.html">12. Hinkar, nycklar och dörrar</a><a href="04-vapen.html">13. Vapen, magasin och ljud</a><a href="17-vapen-traffar.html">14. Vapen, skott och träffkontroll</a><a href="05-monster.html">15. Monster och spawner</a><a href="18-monster-ai.html">16. Monster, spawn och vägval</a><a href="19-granssnitt-ljud.html">17. HUD, startmeny och ljud</a><a href="07-slutspel.html">18. Medkit, utgång och highscore</a><a href="20-spelomgang-poang.html">19. Spelomgång, vinst och highscore</a><a href="08-testning.html">20. Testa på desktop och Meta Quest</a><a href="21-publicering-felsokning.html">21. Felsök, bygg och dela webbversionen</a></nav><main class="chapter-content"><h1>1. JavaScript-grunder för spelet</h1>
+<h2>Målet</h2>
+<p>Förstå tillräckligt mycket JavaScript för att kunna ändra spelet själv. Det här kapitlet kräver inte Godot eller tidigare Three.js-kunskaper. Öppna <a href="source/rules.js"><code>rules.js</code></a> bredvid texten: den är kortare och lättare att läsa än hela <code>main.js</code>.</p>
+<h2>Värden, variabler och objekt</h2>
+<p><code>const</code> betyder att variabelnamnet inte pekas om. Innehållet i ett objekt kan ändå ändras. <code>let</code> används när själva variabeln behöver ett nytt värde. Ett objekt består av namngivna egenskaper; en array är en numrerad lista.</p>
+<pre><code class="language-js">const player = { health: 100, keys: [false, false] };
+player.health = 88;       // tillåtet: egenskapen ändras
+player.keys[0] = true;    // den första nyckeln hittades
+let elapsed = 0;
+elapsed += 0.016;         // ungefär en bildruta vid 60 FPS
+</code></pre>
+<p>Index börjar på <strong>0</strong>, inte 1. Därför använder dörr 1 <code>state.keys[0]</code> och dörr 2 <code>state.keys[1]</code>. I spelet finns motsvarande <code>state.keys[number - 1]</code>.</p>
+<h2>Funktioner och returvärden</h2>
+<p>En funktion tar in data, gör ett avgränsat arbete och kan lämna tillbaka ett värde. <code>restoredHealth(current, max, amount)</code> räknar ut hälsan efter ett medkit. Den ändrar inte spelvärlden, vilket gör den lätt att testa.</p>
+<pre><code class="language-js">function heal(current, amount, maximum) {
+  return Math.min(maximum, current + amount);
+}
+console.log(heal(80, 40, 100)); // 100, inte 120
+</code></pre>
+<p><code>Math.min</code> väljer det minsta talet. <code>console.log</code> skriver i webbläsarens konsol. Prova tre värden: 20, 80 och 100. Fundera på resultatet före körning.</p>
+<h2>Villkor och listor</h2>
+<p><code>if</code> kör kod bara när villkoret är sant. <code>for...of</code> går igenom en lista. Spelet använder sådana loopar för monster, medkit och magasin.</p>
+<pre><code class="language-js">for (const monster of monsters) {
+  if (monster.dead) continue;
+  // Bara levande monster uppdateras.
+}
+</code></pre>
+<p><code>continue</code> hoppar över resten av <strong>denna</strong> iteration, inte hela loopen. Det är viktigt när ett dött monster fortfarande väntar på att tas bort från scenen.</p>
+<h2>Övning i din kopia</h2>
+<ol>
+<li>Öppna <code>src/rules.js</code> och hitta <code>RULES.maxHealth</code>, <code>RULES.magazineSize</code> och <code>RULES.minimumSpawnDistance</code>.</li>
+<li>Ändra bara ett värde, exempelvis gånghastigheten, i din egen kopia. Spara och se effekten i spelet.</li>
+<li>Återställ värdet. Kör <code>npm test</code>; de befintliga testerna ska fortfarande passera.</li>
+<li>Skriv tre egna <code>console.log</code>-anrop i labbets <code>main.js</code> och kontrollera Console.</li>
+</ol>
+<p><strong>Klart när:</strong> du kan förklara skillnaden mellan <code>state.keys[0]</code> och <code>state.keys[1]</code>, och varför en funktion som bara räknar ut ett tal är lättare att testa än en som också flyttar 3D-objekt.</p><footer><a href="index.html">← Föregående</a><a href="01-projekt.html">Nästa →</a></footer></main></div></body></html>

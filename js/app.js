@@ -4,8 +4,8 @@ const save = (key, value) => { try { localStorage.setItem(key, JSON.stringify(va
 const toast = message => { const box = document.querySelector('#toast'); box.textContent = message; clearTimeout(toast.timer); toast.timer = setTimeout(() => box.textContent = '', 3000); };
 const menu = document.querySelector('#chapter-dialog');
 const menuButton = document.querySelector('#menu-toggle');
-menuButton.addEventListener('click', () => { menu.showModal(); menuButton.setAttribute('aria-expanded', 'true'); });
-menu.addEventListener('close', () => menuButton.setAttribute('aria-expanded', 'false'));
+menuButton?.addEventListener('click', () => { menu.showModal(); menuButton.setAttribute('aria-expanded', 'true'); });
+menu?.addEventListener('close', () => menuButton.setAttribute('aria-expanded', 'false'));
 document.querySelectorAll('dialog').forEach(dialog => {
   dialog.querySelector('[data-close]').addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', event => { if (event.target === dialog) { const r = dialog.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close(); } });
@@ -56,8 +56,8 @@ function search(query) {
     link.append(chapter,title,snippet); link.addEventListener('click', () => searchDialog.close()); results.append(link);
   });
 }
-document.querySelector('.site-search').addEventListener('submit', event => { event.preventDefault(); queryInput.value = document.querySelector('#site-query').value; search(queryInput.value); searchDialog.showModal(); queryInput.focus(); });
-queryInput.addEventListener('input', () => search(queryInput.value));
+document.querySelector('.site-search')?.addEventListener('submit', event => { event.preventDefault(); queryInput.value = document.querySelector('#site-query').value; search(queryInput.value); searchDialog.showModal(); queryInput.focus(); });
+queryInput?.addEventListener('input', () => search(queryInput.value));
 const filter = document.querySelector('#symptom-filter');
 if (filter) {
  const table = document.querySelector('#symptom-table');

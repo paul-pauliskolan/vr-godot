@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3. Förstå 3D-rummet och scenhierarkin · Alien Escape WebXR</title><script src="theme.js?v=20260926"></script><link rel="stylesheet" href="style.css?v=20260926"></head>
+<body><header class="topbar"><a class="brand" href="../../index.html">◉ VR-kurser</a><div class="topbar-actions"><a class="play" href="../">▶ Spela webbversionen</a><button id="theme-toggle" type="button" aria-label="Byt färgtema" aria-pressed="false">◐</button></div></header>
+<div class="layout"><nav class="chapter-nav" aria-label="Kapitel"><a href="index.html">Kursöversikt</a><a href="09-javascript-grunder.html">1. JavaScript-grunder för spelet</a><a href="01-projekt.html">2. Kom igång med Three.js, WebGPU och WebXR</a><a href="10-tredimensionellt-rum.html">3. Förstå 3D-rummet och scenhierarkin</a><a href="11-rendering-webgpu.html">4. Renderingsloopen, WebGPU och WebXR</a><a href="12-texturer-modeller.html">5. Texturer, modeller och licenser</a><a href="02-miljo.html">6. Miljö och kollisioner</a><a href="13-kollisioner.html">7. Kollisioner utan en fysikmotor</a><a href="14-desktop-styrning.html">8. Desktopstyrning steg för steg</a><a href="03-spelare.html">9. Desktopspelare, XR-kontroller och HUD</a><a href="15-vr-styrning.html">10. VR-styrning och WebXR-kontroller</a><a href="16-interaktioner.html">11. Interaktioner: hink, nyckel och medkit</a><a href="06-nycklar.html">12. Hinkar, nycklar och dörrar</a><a href="04-vapen.html">13. Vapen, magasin och ljud</a><a href="17-vapen-traffar.html">14. Vapen, skott och träffkontroll</a><a href="05-monster.html">15. Monster och spawner</a><a href="18-monster-ai.html">16. Monster, spawn och vägval</a><a href="19-granssnitt-ljud.html">17. HUD, startmeny och ljud</a><a href="07-slutspel.html">18. Medkit, utgång och highscore</a><a href="20-spelomgang-poang.html">19. Spelomgång, vinst och highscore</a><a href="08-testning.html">20. Testa på desktop och Meta Quest</a><a href="21-publicering-felsokning.html">21. Felsök, bygg och dela webbversionen</a></nav><main class="chapter-content"><h1>3. Förstå 3D-rummet och scenhierarkin</h1>
+<h2>Målet</h2>
+<p>Kunna placera saker utan att gissa. Three.js använder X i sidled, Y uppåt och Z framåt/bakåt i vår bana. I <a href="source/level.js"><code>level.js</code></a> byggs den fysiska miljön; i <a href="source/main.js"><code>main.js</code></a> skapas spelaren och objekten.</p>
+<h2>Koordinater och meter</h2>
+<p><code>position.set(x, y, z)</code> flyttar ett objekt. Startpunkten är ungefär <code>(0, 0, 0)</code>. En kamerahöjd på <code>1.65</code> motsvarar ögonhöjd. Ett golv på <code>y = -0.08</code> med tjockleken <code>0.16</code> får ovansidan på <code>y = 0</code>.</p>
+<pre><code class="language-js">const cube = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshStandardMaterial({ color: 0x70d8b0 })
+);
+cube.position.set(2, 0.5, -3);
+scene.add(cube);
+</code></pre>
+<p>Kubens mitt ligger på Y = 0,5 och dess nedre kant på Y = 0. Det är därför den ser ut att stå på golvet. Om du placerar mitten på Y = 0 sjunker halva kuben ner.</p>
+<h2>Förälder och barn</h2>
+<p>I spelet ligger kameran inuti gruppen <code>rig</code>. När <code>rig</code> flyttas följer kameran med. Pistolen är i sin tur barn till kameran på desktop, så den stannar i spelarens synfält. I VR är pistolen i stället barn till den högra kontrollen.</p>
+<pre><code class="language-text">scene
+└── rig                 spelarens position i världen
+    ├── camera          ögonens höjd och riktning
+    │   └── desktopPistol
+    └── XR-controller   handens position i VR
+        └── xrPistol
+</code></pre>
+<p>Ett barns <code>position</code> är <strong>lokal</strong> i förhållande till sin förälder. Om du behöver den verkliga positionen i scenen använder du <code>getWorldPosition(...)</code>. Det är precis vad magasininföringen gör när avståndet mellan handen och pistolen mäts.</p>
+<h2>Rotation och riktning</h2>
+<p>Three.js räknar rotation i <strong>radianer</strong>. Ett halvt varv är <code>Math.PI</code>, ett kvarts varv <code>Math.PI / 2</code>. Vi roterar spelarriggen kring Y för att svänga horisontellt, medan kamerans X-rotation används för att titta upp och ned på desktop. Om både rigg och kamera vrids slumpmässigt kan kontrollerna kännas omvända.</p>
+<h2>Gör själv</h2>
+<ol>
+<li>Placera en andra kub i din labbscen på <code>(2, 0.5, -3)</code> och en tredje på <code>(-2, 0.5, -3)</code>.</li>
+<li>Flytta kameran till <code>(0, 1.65, 5)</code>. Förutsäg vilken kub som syns till vänster.</li>
+<li>Lägg två kuber i en <code>THREE.Group</code>, flytta gruppen en meter åt höger och notera att båda följer med.</li>
+<li>Öppna <code>makeDoor()</code> i <code>main.js</code>. Hitta <code>hinge</code>-gruppen och förklara varför dörrbladet läggs i den, i stället för att rotera kring sitt eget centrum.</li>
+</ol>
+<p><strong>Klart när:</strong> du kan rita en enkel trädstruktur för scenen och skilja på lokal position och världsposition.</p><footer><a href="01-projekt.html">← Föregående</a><a href="11-rendering-webgpu.html">Nästa →</a></footer></main></div></body></html>

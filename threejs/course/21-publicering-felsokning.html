@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>21. Felsök, bygg och dela webbversionen · Alien Escape WebXR</title><script src="theme.js?v=20260926"></script><link rel="stylesheet" href="style.css?v=20260926"></head>
+<body><header class="topbar"><a class="brand" href="../../index.html">◉ VR-kurser</a><div class="topbar-actions"><a class="play" href="../">▶ Spela webbversionen</a><button id="theme-toggle" type="button" aria-label="Byt färgtema" aria-pressed="false">◐</button></div></header>
+<div class="layout"><nav class="chapter-nav" aria-label="Kapitel"><a href="index.html">Kursöversikt</a><a href="09-javascript-grunder.html">1. JavaScript-grunder för spelet</a><a href="01-projekt.html">2. Kom igång med Three.js, WebGPU och WebXR</a><a href="10-tredimensionellt-rum.html">3. Förstå 3D-rummet och scenhierarkin</a><a href="11-rendering-webgpu.html">4. Renderingsloopen, WebGPU och WebXR</a><a href="12-texturer-modeller.html">5. Texturer, modeller och licenser</a><a href="02-miljo.html">6. Miljö och kollisioner</a><a href="13-kollisioner.html">7. Kollisioner utan en fysikmotor</a><a href="14-desktop-styrning.html">8. Desktopstyrning steg för steg</a><a href="03-spelare.html">9. Desktopspelare, XR-kontroller och HUD</a><a href="15-vr-styrning.html">10. VR-styrning och WebXR-kontroller</a><a href="16-interaktioner.html">11. Interaktioner: hink, nyckel och medkit</a><a href="06-nycklar.html">12. Hinkar, nycklar och dörrar</a><a href="04-vapen.html">13. Vapen, magasin och ljud</a><a href="17-vapen-traffar.html">14. Vapen, skott och träffkontroll</a><a href="05-monster.html">15. Monster och spawner</a><a href="18-monster-ai.html">16. Monster, spawn och vägval</a><a href="19-granssnitt-ljud.html">17. HUD, startmeny och ljud</a><a href="07-slutspel.html">18. Medkit, utgång och highscore</a><a href="20-spelomgang-poang.html">19. Spelomgång, vinst och highscore</a><a href="08-testning.html">20. Testa på desktop och Meta Quest</a><a href="21-publicering-felsokning.html">21. Felsök, bygg och dela webbversionen</a></nav><main class="chapter-content"><h1>21. Felsök, bygg och dela webbversionen</h1>
+<h2>Målet</h2>
+<p>Kunna avgöra om ett problem ligger i JavaScript, assetfiler, webbservern, WebGPU eller Quest/WebXR – och bygga en version som går att publicera. Du behöver inte ha ett headset för den första delen.</p>
+<h2>Följ en enkel felsökningsordning</h2>
+<ol>
+<li><strong>Sidan öppnas inte:</strong> kontrollera att <code>npm run dev</code> fortfarande körs och att adressen använder rätt port, normalt 4323.</li>
+<li><strong>Tom sida:</strong> öppna webbläsarens Console. Läs det <strong>första</strong> röda felet och fil/linjenummer. Ett senare fel kan vara en följd av det första.</li>
+<li><strong>Modell eller textur saknas:</strong> öppna Network-panelen, filtrera på filnamnet och leta efter 404. Kontrollera versaler, mapp och <code>assetUrl(...)</code>.</li>
+<li><strong>Spelet syns men går inte att styra:</strong> klicka i spelrutan för pekarlås, kontrollera om startmenyn är öppen och prova WASD innan VR.</li>
+<li><strong>Enter VR saknas:</strong> kontrollera <code>navigator.xr</code>-stödet, säker kontext (HTTPS eller localhost) och att sidan verkligen öppnats i Quest Browser.</li>
+<li><strong>Quest når inte Macens server:</strong> kör <code>adb devices</code> och <code>adb reverse --list</code>; en vanlig lokal HTTP-adress via Macens IP ger inte automatiskt WebXR-rättigheter.</li>
+</ol>
+<p>Ändra bara en sak åt gången. Skriv upp: vad du förväntade dig, vad som faktiskt hände, exakt feltext och vilka steg som återskapar problemet. Det gör felsökningen mycket snabbare än att prova slumpmässiga kodändringar.</p>
+<h2>Kör automatiska och manuella tester</h2>
+<p>I mappen <code>web-threejs/</code>:</p>
+<pre><code class="language-sh">npm test
+npm run build
+</code></pre>
+<p>Testerna kontrollerar bland annat åttaskottsmagasin, dörrregler, spawn-avstånd, monsterblandning, medkit och poäng. De garanterar inte att en modell ser rätt ut eller att knapparna fungerar i Quest. Gör därför även ett helt speltest på desktop enligt <a href="08-testning.html">kapitel 20</a>, och ett separat headsettest om du har tillgång till Quest.</p>
+<h2>Förstå byggmappen</h2>
+<p>Vite lägger den färdiga webbversionen i <code>dist/</code>. Den mappen innehåller HTML, JavaScript, CSS, kurs och kopierade publika assets. En produktionsserver måste servera filerna över HTTPS för vanlig WebXR på en extern adress. När appen ligger under en undermapp måste Vites <code>base</code> stämma med den sökvägen; annars kan JavaScript och texturer ge 404 trots att <code>index.html</code> öppnas.</p>
+<p>Den lokala webbplatsen för det här projektet är <code>/Users/paul/Pauls kurssidor/vr-godot/</code>. Godot-kursen och webbkursen är separata. Ändra inte Godot-projektets scener när du publicerar webbkursens filer.</p>
+<h2>Slutkontroll</h2>
+<ul>
+<li>Gemensamma startsidan länkar till båda fristående kurserna.</li>
+<li>Webbkursens kapitel, källkodslänkar och spelknapp fungerar utan 404.</li>
+<li>Desktopversionen kan spelas från start till slut utan att falla ur världen.</li>
+<li>Om Quest används: VR startar, kontrollerna stämmer med instruktionerna och texten går att läsa i headsetet.</li>
+<li>Nya assetfiler har dokumenterad källa och licens.</li>
+</ul>
+<p><strong>Klart när:</strong> du kan leverera en byggd webbversion, återskapa ett fel med tydliga steg och avgöra om felet finns i filerna, servern, webbläsaren eller headsetet.</p><footer><a href="08-testning.html">← Föregående</a><span></span></footer></main></div></body></html>

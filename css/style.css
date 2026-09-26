@@ -9,3 +9,5 @@ html[data-theme=dark]{color-scheme:dark;--bg:#101526;--bg-end:#151b30;--surface:
 /* Keep long resource names and Swedish compound words inside narrow columns. */
 .prose,.chapter-header,.page-toc,.chapter-link{overflow-wrap:anywhere}
 .chapter-number{flex:0 0 2.2ch;text-align:right;font-variant-numeric:tabular-nums}.chapter-link>span:nth-child(2){min-width:0;flex:1}.arrow{flex-shrink:0}
+.course-intro{margin-bottom:24px}.course-intro h1{max-width:18ch}.course-intro .subtitle{margin-bottom:0}.course-choices{margin:0 0 24px}.course-choices .panel{display:flex;flex-direction:column;align-items:flex-start}.course-choices .panel p:not(.eyebrow){flex:1}.course-choices .panel a{margin-top:8px}.chapter-overview h2{margin-bottom:22px}
+body[data-page=index] .navbar .logo{margin-right:auto}

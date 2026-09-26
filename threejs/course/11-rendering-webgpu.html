@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>4. Renderingsloopen, WebGPU och WebXR · Alien Escape WebXR</title><script src="theme.js?v=20260926"></script><link rel="stylesheet" href="style.css?v=20260926"></head>
+<body><header class="topbar"><a class="brand" href="../../index.html">◉ VR-kurser</a><div class="topbar-actions"><a class="play" href="../">▶ Spela webbversionen</a><button id="theme-toggle" type="button" aria-label="Byt färgtema" aria-pressed="false">◐</button></div></header>
+<div class="layout"><nav class="chapter-nav" aria-label="Kapitel"><a href="index.html">Kursöversikt</a><a href="09-javascript-grunder.html">1. JavaScript-grunder för spelet</a><a href="01-projekt.html">2. Kom igång med Three.js, WebGPU och WebXR</a><a href="10-tredimensionellt-rum.html">3. Förstå 3D-rummet och scenhierarkin</a><a href="11-rendering-webgpu.html">4. Renderingsloopen, WebGPU och WebXR</a><a href="12-texturer-modeller.html">5. Texturer, modeller och licenser</a><a href="02-miljo.html">6. Miljö och kollisioner</a><a href="13-kollisioner.html">7. Kollisioner utan en fysikmotor</a><a href="14-desktop-styrning.html">8. Desktopstyrning steg för steg</a><a href="03-spelare.html">9. Desktopspelare, XR-kontroller och HUD</a><a href="15-vr-styrning.html">10. VR-styrning och WebXR-kontroller</a><a href="16-interaktioner.html">11. Interaktioner: hink, nyckel och medkit</a><a href="06-nycklar.html">12. Hinkar, nycklar och dörrar</a><a href="04-vapen.html">13. Vapen, magasin och ljud</a><a href="17-vapen-traffar.html">14. Vapen, skott och träffkontroll</a><a href="05-monster.html">15. Monster och spawner</a><a href="18-monster-ai.html">16. Monster, spawn och vägval</a><a href="19-granssnitt-ljud.html">17. HUD, startmeny och ljud</a><a href="07-slutspel.html">18. Medkit, utgång och highscore</a><a href="20-spelomgang-poang.html">19. Spelomgång, vinst och highscore</a><a href="08-testning.html">20. Testa på desktop och Meta Quest</a><a href="21-publicering-felsokning.html">21. Felsök, bygg och dela webbversionen</a></nav><main class="chapter-content"><h1>4. Renderingsloopen, WebGPU och WebXR</h1>
+<h2>Målet</h2>
+<p>Förstå varför 3D-världen uppdateras många gånger per sekund och varför WebGPU och WebXR är olika tekniker. Du kan göra allt i kapitlet på desktop; headsetet är valfritt.</p>
+<h2>Från objekt till bild</h2>
+<p>Scenen innehåller objekt, kameran väljer perspektiv och renderaren ritar resultatet. Anropet <code>renderer.render(scene, camera)</code> ger en stillbild. För rörelse behövs en loop. Three.js <code>setAnimationLoop()</code> fungerar både med vanlig skärm och när WebXR styr bildrutorna i ett headset.</p>
+<pre><code class="language-js">renderer.setAnimationLoop(tick);
+
+function tick() {
+  // Beräkna rörelse och interaktioner.
+  renderer.render(scene, camera);
+}
+</code></pre>
+<p>Det färdiga spelet räknar ut <code>dt</code>: sekunderna sedan föregående bildruta. Hastighet multipliceras med <code>dt</code>, så rörelsen inte blir dubbelt snabb på en skärm med dubbelt så hög bildfrekvens. Spelet begränsar ett mycket stort <code>dt</code> efter en paus för att undvika stora hopp.</p>
+<h2>Vilken teknik gör vad?</h2>
+<ul>
+<li><strong>Three.js</strong> ger scener, kameror, material, modeller och 3D-hjälpklasser.</li>
+<li><strong>WebGPU</strong> är ett modernt sätt för webbläsaren att använda grafikkortet. Det är inte samma sak som WebXR.</li>
+<li><strong>WebGL2</strong> är ett alternativt grafikgränssnitt när WebGPU eller dess XR-koppling inte fungerar.</li>
+<li><strong>WebXR</strong> ger headsetets vy och kontrollerna. Det kräver en säker kontext och stöd i webbläsaren.</li>
+</ul>
+<p>I spelets <code>boot()</code> försöker <code>WebGPURenderer</code> starta. Vid initieringsfel skapas den med <code>forceWebGL: true</code>. I Quest väljer koden WebGL2 om <code>XRGPUBinding</code> inte finns. Läs statusraden i spelet i stället för att anta att samma backend används överallt.</p>
+<h2>Upplösning och färger</h2>
+<p><code>renderer.setSize(innerWidth, innerHeight)</code> matchar webbläsarfönstret. <code>renderer.setPixelRatio(...)</code> påverkar hur många pixlar som ritas; högre värde är skarpare men dyrare. <code>outputColorSpace = THREE.SRGBColorSpace</code> gör att färger och texturer behandlas på ett förväntat sätt. Vid fönsterstorleksändring måste även <code>camera.aspect</code> och <code>camera.updateProjectionMatrix()</code> uppdateras.</p>
+<h2>Övning</h2>
+<ol>
+<li>I labbscenen: ersätt konstant kubrotation per ruta med rotation baserad på <code>dt</code> och jämför på en snabb och en långsam dator.</li>
+<li>Ändra webbläsarfönstrets storlek. Om bilden sträcks, lägg till kod för <code>resize</code> enligt spelets <code>bindInputs()</code>.</li>
+<li>I spelet: läs statusraden för WebGPU/WebGL2 och WebXR. Skriv ner vad <strong>din</strong> webbläsare visar. En annan dator kan visa något annat.</li>
+</ol>
+<p><strong>Klart när:</strong> du kan beskriva varför en renderingsloop behövs, varför <code>dt</code> används och varför ett WebXR-spel kan ritas med WebGL2.</p><footer><a href="10-tredimensionellt-rum.html">← Föregående</a><a href="12-texturer-modeller.html">Nästa →</a></footer></main></div></body></html>

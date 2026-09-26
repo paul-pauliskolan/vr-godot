@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>14. Vapen, skott och träffkontroll · Alien Escape WebXR</title><script src="theme.js?v=20260926"></script><link rel="stylesheet" href="style.css?v=20260926"></head>
+<body><header class="topbar"><a class="brand" href="../../index.html">◉ VR-kurser</a><div class="topbar-actions"><a class="play" href="../">▶ Spela webbversionen</a><button id="theme-toggle" type="button" aria-label="Byt färgtema" aria-pressed="false">◐</button></div></header>
+<div class="layout"><nav class="chapter-nav" aria-label="Kapitel"><a href="index.html">Kursöversikt</a><a href="09-javascript-grunder.html">1. JavaScript-grunder för spelet</a><a href="01-projekt.html">2. Kom igång med Three.js, WebGPU och WebXR</a><a href="10-tredimensionellt-rum.html">3. Förstå 3D-rummet och scenhierarkin</a><a href="11-rendering-webgpu.html">4. Renderingsloopen, WebGPU och WebXR</a><a href="12-texturer-modeller.html">5. Texturer, modeller och licenser</a><a href="02-miljo.html">6. Miljö och kollisioner</a><a href="13-kollisioner.html">7. Kollisioner utan en fysikmotor</a><a href="14-desktop-styrning.html">8. Desktopstyrning steg för steg</a><a href="03-spelare.html">9. Desktopspelare, XR-kontroller och HUD</a><a href="15-vr-styrning.html">10. VR-styrning och WebXR-kontroller</a><a href="16-interaktioner.html">11. Interaktioner: hink, nyckel och medkit</a><a href="06-nycklar.html">12. Hinkar, nycklar och dörrar</a><a href="04-vapen.html">13. Vapen, magasin och ljud</a><a href="17-vapen-traffar.html">14. Vapen, skott och träffkontroll</a><a href="05-monster.html">15. Monster och spawner</a><a href="18-monster-ai.html">16. Monster, spawn och vägval</a><a href="19-granssnitt-ljud.html">17. HUD, startmeny och ljud</a><a href="07-slutspel.html">18. Medkit, utgång och highscore</a><a href="20-spelomgang-poang.html">19. Spelomgång, vinst och highscore</a><a href="08-testning.html">20. Testa på desktop och Meta Quest</a><a href="21-publicering-felsokning.html">21. Felsök, bygg och dela webbversionen</a></nav><main class="chapter-content"><h1>14. Vapen, skott och träffkontroll</h1>
+<h2>Målet</h2>
+<p>Förstå hur ett skott går från spelarens knapp till skada på ett monster, och varför en vägg måste testas före monstret. Läs <code>makePistol()</code>, <code>fire()</code> och <code>damageMonster()</code> i <a href="source/main.js"><code>main.js</code></a>.</p>
+<h2>Bygg pistolen av enkla former</h2>
+<p>Pistolen består av små <code>BoxGeometry</code>-delar i en <code>THREE.Group</code>. Ett osynligt <code>Object3D</code> markerar mynningen. Samma konstruktion används på desktop och VR, men grupperna har olika föräldrar: kameran respektive höger kontroll. Det gör att du kan fokusera på skjutlogiken utan att först lära dig importera ett detaljerat vapen.</p>
+<h2>Ammunition är spelstatus</h2>
+<p><code>RULES.magazineSize</code> är 8. <code>state.ammo</code> är återstående skott i det insatta magasinet, <code>state.hasMagazine</code> talar om ifall ett sitter i och <code>state.magazines</code> räknar reservmagasin. <code>fire()</code> stoppar skott när rundan inte pågår, vapnet är tomt eller senaste skottet kom för nyss. Vid ett giltigt skott minskar ammunitionen med ett och HUD uppdateras.</p>
+<p>På desktop kastar <code>G</code> ut magasinet och <code>R</code> laddar från reserverna. I VR trycks höger spak ned för utkastning; ett reservmagasin hämtas vid vänster höft med grip och förs till pistolgreppet. Detta är <strong>spelinteraktion</strong>, inte en fullständig fysisk vapensimulering.</p>
+<h2>Siktlinje och skydd</h2>
+<p>Spelet använder en <code>Raycaster</code> från mynningen i skjutriktningen. Närmaste träff mot en vägg eller stängd dörr sätter längsta tillåtna avstånd. Sedan jämförs levande monsters centrum med denna sträcka. Om monstret ligger bakom väggen ska det inte ta skada. Träffområdet är en förenklad radie kring kroppen, inte en detaljrik hitbox för varje kroppsdel.</p>
+<pre><code class="language-js">raycaster.set(shotOrigin, shotDirection);
+raycaster.far = 30;
+const wallDistance = raycaster.intersectObjects(walls, false)[0]?.distance ?? 30;
+</code></pre>
+<p><code>?.</code> betyder att koden klarar att inget objekt träffas. <code>?? 30</code> använder 30 meter som reserv. Den korta synliga strålen är en träffeffekt; den bestämmer inte skadan.</p>
+<h2>Testa och ändra</h2>
+<ol>
+<li>Skjut åtta gånger. Försök skjuta en nionde gång och kontrollera att ammunitionen inte blir negativ.</li>
+<li>Skjut på ett monster genom en vägg och sedan utan vägg. Bara det fria skottet ska skada.</li>
+<li>Testa <code>G</code> följt av <code>R</code> med och utan reservmagasin.</li>
+<li>Ändra i din kopia träffradien för spindeln något och se hur lätt den är att träffa. Återställ efter testet.</li>
+</ol>
+<p><strong>Klart när:</strong> du kan följa kedjan knapp → ammo → siktlinje → träff → monsterhälsa och peka ut var en vägg avbryter skottet.</p><footer><a href="04-vapen.html">← Föregående</a><a href="05-monster.html">Nästa →</a></footer></main></div></body></html>

@@ -1,22 +1,40 @@
 <!doctype html>
 <html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>2. Miljö och kollisioner · Alien Escape WebXR</title><link rel="stylesheet" href="style.css"></head>
-<body><header><a class="brand" href="index.html">Alien Escape · webbkurs</a><a class="play" href="../">▶ Spela webbversionen</a></header>
-<div class="layout"><nav aria-label="Kapitel"><a href="index.html">Alien Escape i Three.js, WebGPU och WebXR</a><a href="01-projekt.html">1. Projekt, WebGPU och WebXR</a><a href="02-miljo.html">2. Miljö och kollisioner</a><a href="03-spelare.html">3. Desktopspelare, XR-kontroller och HUD</a><a href="04-vapen.html">4. Vapen, magasin och ljud</a><a href="05-monster.html">5. Monster och spawner</a><a href="06-nycklar.html">6. Hinkar, nycklar och dörrar</a><a href="07-slutspel.html">7. Medkit, utgång och highscore</a><a href="08-testning.html">8. Testa på desktop och Meta Quest</a></nav><main><h1>2. Miljö och kollisioner</h1>
+<title>6. Miljö och kollisioner · Alien Escape WebXR</title><script src="theme.js?v=20260926"></script><link rel="stylesheet" href="style.css?v=20260926"></head>
+<body><header class="topbar"><a class="brand" href="../../index.html">◉ VR-kurser</a><div class="topbar-actions"><a class="play" href="../">▶ Spela webbversionen</a><button id="theme-toggle" type="button" aria-label="Byt färgtema" aria-pressed="false">◐</button></div></header>
+<div class="layout"><nav class="chapter-nav" aria-label="Kapitel"><a href="index.html">Kursöversikt</a><a href="09-javascript-grunder.html">1. JavaScript-grunder för spelet</a><a href="01-projekt.html">2. Kom igång med Three.js, WebGPU och WebXR</a><a href="10-tredimensionellt-rum.html">3. Förstå 3D-rummet och scenhierarkin</a><a href="11-rendering-webgpu.html">4. Renderingsloopen, WebGPU och WebXR</a><a href="12-texturer-modeller.html">5. Texturer, modeller och licenser</a><a href="02-miljo.html">6. Miljö och kollisioner</a><a href="13-kollisioner.html">7. Kollisioner utan en fysikmotor</a><a href="14-desktop-styrning.html">8. Desktopstyrning steg för steg</a><a href="03-spelare.html">9. Desktopspelare, XR-kontroller och HUD</a><a href="15-vr-styrning.html">10. VR-styrning och WebXR-kontroller</a><a href="16-interaktioner.html">11. Interaktioner: hink, nyckel och medkit</a><a href="06-nycklar.html">12. Hinkar, nycklar och dörrar</a><a href="04-vapen.html">13. Vapen, magasin och ljud</a><a href="17-vapen-traffar.html">14. Vapen, skott och träffkontroll</a><a href="05-monster.html">15. Monster och spawner</a><a href="18-monster-ai.html">16. Monster, spawn och vägval</a><a href="19-granssnitt-ljud.html">17. HUD, startmeny och ljud</a><a href="07-slutspel.html">18. Medkit, utgång och highscore</a><a href="20-spelomgang-poang.html">19. Spelomgång, vinst och highscore</a><a href="08-testning.html">20. Testa på desktop och Meta Quest</a><a href="21-publicering-felsokning.html">21. Felsök, bygg och dela webbversionen</a></nav><main class="chapter-content"><h1>6. Miljö och kollisioner</h1>
 <h2>Målet</h2>
-<p>Återskapa Godot-banans struktur: inomhusdel med väggar och passager, två grindöppningar och en avgränsad utomhusdel. Golvet fortsätter utanför sista dörren så spelaren inte faller ur världen. <a href="source/source/level.js">Öppna <code>level.js</code></a>.</p>
-<p><code>buildLevel()</code> skapar golv, väggar, trasigt tak, arbetsbänk, ljus, alien-glöd, träd, stenlagd väg och utgångsbåge. En enkel lista med rektangulära hinder används av både spelaren och monster.</p>
+<p>Bygg en läsbar bana: inomhusdel med väggar och passager, två dörröppningar och en avgränsad utomhusdel. Golvet fortsätter utanför sista dörren så spelaren inte faller ur världen. Du behöver inte känna till Godot-banan. <a href="source/level.js">Öppna <code>level.js</code></a>.</p>
+<h2>Börja med en enda golvplatta</h2>
+<p>I labbscenen från kapitel 2 kan du lägga till en <code>BoxGeometry(10, 0.16, 10)</code> med mitten på Y = -0.08. Då blir ovansidan på Y = 0. Lägg en liten kub med mitten på Y = 0.5 så att den står på golvet. En <code>BoxGeometry</code> använder måtten bredd (X), höjd (Y), djup (Z). Pröva att ändra varje mått för sig; den här lilla övningen gör den större banan lättare att läsa.</p>
+<pre><code class="language-js">const floor = new THREE.Mesh(
+  new THREE.BoxGeometry(10, 0.16, 10),
+  new THREE.MeshStandardMaterial({ color: 0x777d7b })
+);
+floor.position.y = -0.08;
+scene.add(floor);
+</code></pre>
+<p>I det färdiga spelet använder <code>buildLevel(scene)</code> samma princip men fler boxar och texturer. Y är alltid höjd. X och Z beskriver kartan ovanifrån. En vägg med höjden 3,4 placeras med mitten på Y = 1,7 för att börja vid golvet.</p>
+<p><code>buildLevel()</code> skapar golv, väggar, trasigt tak, arbetsbänk, ljus, alien-glöd, träd, stenlagd väg och utgångsbåge. Varje <code>addWall(...)</code> skapar både en synlig mesh och en rektangel i <code>obstacles</code>. Det är viktigt: en vägg som bara syns men inte finns i hinderlistan går att passera, medan ett hinder utan mesh känns som en osynlig vägg. Samma hinderlista används av spelaren och monstrens vägval.</p>
 <pre><code class="language-js">if (!blocked(rig.position.x + dx, rig.position.z, radius, obstacles, state.doors)) {
   rig.position.x += dx;
 }
 </code></pre>
-<p>X och Z prövas var för sig. Det gör att spelaren glider längs väggar i stället för att fastna vid sneda rörelser. Stängda dörrar räknas som hinder; upplåsta dörrar slutar blockera öppningen.</p>
+<p>X och Z prövas var för sig. Det gör att spelaren glider längs väggar i stället för att fastna vid sneda rörelser. Stängda dörrar räknas som hinder; upplåsta dörrar slutar blockera öppningen. Se <a href="13-kollisioner.html">kapitel 7</a> för en långsammare genomgång av kollisionsmatematiken.</p>
+<h2>Bygg en bana som går att förstå</h2>
+<p>Rita gärna banan uppifrån på papper. Markera startpunkt, två hinkar, två dörrar och utgång. I början ska en vägg skymma monstret. Spelaren ska kunna hitta den första hinken utan att gå genom en låst dörr. Den andra hinken ska ligga efter första dörren, annars förlorar nyckelordningen sin mening.</p>
+<p>Det färdiga spelet har även ytterväggar och ett andra golv under utomhusdelen. Den synliga "DAYLIGHT"-bågen är målet, men själva vinstvillkoret kontrolleras i spelkoden. En ljus miljö är alltså inte ensam tillräcklig för att avsluta omgången.</p>
 <h2>Övning</h2>
-<p>Ändra längden på en av avdelande väggarna i <code>buildLevel()</code>. Kontrollera att monstret väljer en omväg och att spelaren inte kan gå igenom väggen. Den första nyckeln ska fortfarande gå att nå från startplatsen.</p>
+<ol>
+<li>Ändra längden på en av de avdelande väggarna i <strong>din kopia</strong> av <code>buildLevel()</code>.</li>
+<li>Kontrollera att spelaren inte kan gå igenom väggen och att monster väljer en omväg.</li>
+<li>Kontrollera att första nyckeln fortfarande kan nås från startplatsen. Om inte: återställ väggen eller flytta öppningen.</li>
+<li>Följ utgången och kontrollera att det finns golv hela vägen. Skriv upp vilken <code>box(...)</code> som gör utomhusgolvet.</li>
+</ol>
 <h2>Återanvända CC0-texturer</h2>
 <ul>
 <li>Golv: <a href="https://polyhaven.com/a/cracked_concrete">Cracked Concrete</a></li>
 <li>Väggar: <a href="https://polyhaven.com/a/rebar_reinforced_concrete">Rebar Reinforced Concrete</a></li>
 <li>Metall/tak/dörrkänsla: <a href="https://polyhaven.com/a/rusty_metal_sheet">Rusty Metal Sheet</a></li>
 </ul>
-<p>De kommer från <a href="https://polyhaven.com/license">Poly Haven, CC0</a>. Webbversionen packar med 1K-varianter, inte fullstora originalfiler.</p><footer><a href="01-projekt.html">← Föregående</a><a href="03-spelare.html">Nästa →</a></footer></main></div></body></html>
+<p>De kommer från <a href="https://polyhaven.com/license">Poly Haven, CC0</a>. Webbversionen packar med 1K-varianter, inte fullstora originalfiler.</p><footer><a href="12-texturer-modeller.html">← Föregående</a><a href="13-kollisioner.html">Nästa →</a></footer></main></div></body></html>

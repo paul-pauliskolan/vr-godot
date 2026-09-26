@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="sv"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>19. Spelomgång, vinst och highscore · Alien Escape WebXR</title><script src="theme.js?v=20260926"></script><link rel="stylesheet" href="style.css?v=20260926"></head>
+<body><header class="topbar"><a class="brand" href="../../index.html">◉ VR-kurser</a><div class="topbar-actions"><a class="play" href="../">▶ Spela webbversionen</a><button id="theme-toggle" type="button" aria-label="Byt färgtema" aria-pressed="false">◐</button></div></header>
+<div class="layout"><nav class="chapter-nav" aria-label="Kapitel"><a href="index.html">Kursöversikt</a><a href="09-javascript-grunder.html">1. JavaScript-grunder för spelet</a><a href="01-projekt.html">2. Kom igång med Three.js, WebGPU och WebXR</a><a href="10-tredimensionellt-rum.html">3. Förstå 3D-rummet och scenhierarkin</a><a href="11-rendering-webgpu.html">4. Renderingsloopen, WebGPU och WebXR</a><a href="12-texturer-modeller.html">5. Texturer, modeller och licenser</a><a href="02-miljo.html">6. Miljö och kollisioner</a><a href="13-kollisioner.html">7. Kollisioner utan en fysikmotor</a><a href="14-desktop-styrning.html">8. Desktopstyrning steg för steg</a><a href="03-spelare.html">9. Desktopspelare, XR-kontroller och HUD</a><a href="15-vr-styrning.html">10. VR-styrning och WebXR-kontroller</a><a href="16-interaktioner.html">11. Interaktioner: hink, nyckel och medkit</a><a href="06-nycklar.html">12. Hinkar, nycklar och dörrar</a><a href="04-vapen.html">13. Vapen, magasin och ljud</a><a href="17-vapen-traffar.html">14. Vapen, skott och träffkontroll</a><a href="05-monster.html">15. Monster och spawner</a><a href="18-monster-ai.html">16. Monster, spawn och vägval</a><a href="19-granssnitt-ljud.html">17. HUD, startmeny och ljud</a><a href="07-slutspel.html">18. Medkit, utgång och highscore</a><a href="20-spelomgang-poang.html">19. Spelomgång, vinst och highscore</a><a href="08-testning.html">20. Testa på desktop och Meta Quest</a><a href="21-publicering-felsokning.html">21. Felsök, bygg och dela webbversionen</a></nav><main class="chapter-content"><h1>19. Spelomgång, vinst och highscore</h1>
+<h2>Målet</h2>
+<p>Se hela spelet som en tydlig tillståndskedja: startmeny → aktiv omgång → vinst eller förlust → ny omgång. Läs <code>createState()</code> och <code>scoreFor()</code> i <a href="source/rules.js"><code>rules.js</code></a>, samt <code>startRun()</code> och <code>endRun()</code> i <a href="source/main.js"><code>main.js</code></a>.</p>
+<h2>En samlad spelstatus</h2>
+<p><code>createState(bestScore)</code> ger en ny uppsättning fält: hälsa 100, åtta skott, två oupptäckta nycklar, två stängda dörrar, noll kills och noll tid. <code>started</code>, <code>won</code> och <code>gameOver</code> avgör vilka funktioner som får agera. Ett skott ska exempelvis inte förbruka ammunition på startmenyn eller efter att spelaren vunnit.</p>
+<p>Vid omstart tas gamla monster, hinkar, magasin och medkit bort innan nya skapas. Dörrarnas animation nollställs och spelaren flyttas tillbaka. Bästa poängen behålls. Om du glömmer att rensa en lista kan gamla osynliga objekt fortsätta påverka nästa omgång.</p>
+<h2>Vinstvillkoret</h2>
+<p>Den andra dörren måste vara öppen och spelaren måste nå dagsljusområdet längst bort. Först då anropas <code>endRun(true)</code>. Vid hälsa 0 anropas <code>endRun(false)</code>. Vinstskärmen visar tid, antal besegrade monster, poäng och bästa poäng. Förlustskärmen visar överlevnadstid och kills men ger ingen ny highscore.</p>
+<h2>Poängformeln</h2>
+<pre><code class="language-js">Math.round(6000 / (1 + seconds / 120)) + Math.min(kills, 20) * 100
+</code></pre>
+<p>Kortare tid ger en högre baspoäng. Varje kill ger 100 bonuspoäng upp till 20 kills. Exempel: efter 120 sekunder och 3 kills blir basen 3000 och bonusen 300, alltså 3300. Formeln ligger i en ren funktion som kan testas utan att starta 3D-motorn.</p>
+<p><code>localStorage</code> sparar rekordet i just den webbläsaren. Det är inte ett konto och synkroniseras inte automatiskt mellan Mac och Quest. Om lagring är blockerad ska spelet ändå vara spelbart; rekordet kan då försvinna mellan omgångar.</p>
+<h2>Testa</h2>
+<ol>
+<li>Tryck Start, vänta tio sekunder, avsluta en omgång och kontrollera att tiden är rimlig.</li>
+<li>Starta en ny omgång och kontrollera att nycklar, dörrar och kills är nollställda.</li>
+<li>Räkna poängen för 120 sekunder och 3 kills själv och jämför med <code>scoreFor(120, 3)</code>.</li>
+<li>Ladda om sidan och kontrollera att bästa poängen finns kvar i samma webbläsare.</li>
+</ol>
+<p><strong>Klart när:</strong> du kan skilja på tillstånd som återställs varje omgång och data som sparas mellan omgångar.</p><footer><a href="07-slutspel.html">← Föregående</a><a href="08-testning.html">Nästa →</a></footer></main></div></body></html>
