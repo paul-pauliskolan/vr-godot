@@ -73,10 +73,9 @@ export function animateHorrorGait(model, phase, strength) {
 }
 
 export function monsterFacingYaw(kind, direction) {
-  // The horror mesh looks along +Z, while the spider's forward axis is -Z.
-  return kind === 'horror'
-    ? Math.atan2(direction.x, direction.z)
-    : Math.atan2(-direction.x, -direction.z);
+  // Both imported monsters face +Z in the game; turning the spider by 180°
+  // makes it appear to run backwards even though its path is correct.
+  return Math.atan2(direction.x, direction.z);
 }
 
 function material(url, color, repeatX = 1, repeatY = 1) {
