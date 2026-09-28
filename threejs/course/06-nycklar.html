@@ -12,6 +12,25 @@
 <p>Testa varje pil i kedjan innan du bygger nästa. Om dörren öppnar sig när nyckeln bara syns, har synlighet och spelstatus blandats ihop.</p>
 <p>Första hinken finns nära startplatsen. Den andra finns i banans bakre del, efter den första dörren. När spelaren trycker E på desktop eller grip i VR flyttas hinken åt sidan. Nyckeln visas då ovanför golvet med ett guldljus och en markör. Tryck E/grip en gång till för att ta nyckeln, eller gå riktigt nära efter den korta visningsfördröjningen. Att gå på hinken ska inte kasta upp spelaren i luften.</p>
 <p><code>canOpenDoor()</code> i <a href="source/rules.js">reglerna</a> kräver motsvarande nyckel och en pågående omgång. Öppningen är ungefär två meter bred, medan den nedladdade dörrmodellen är ungefär en meter bred. Spelet använder därför <strong>två dörrblad</strong> som möts i mitten. Vart och ett har en egen <code>hinge</code>-grupp och roterar åt motsatt håll. <code>DOOR_WIDTH</code> styr också den stängda dörrens kollision; en väggbit över dörrbladen fyller resten upp till taket. När dörren låses upp slutar öppningen blockera förflyttning och monster-pathfinding. Den synliga dörranimationen och kollisionsregeln är två separata system som måste säga samma sak.</p>
+<h2>Bygg dörren så den passar öppningen</h2>
+<ol>
+<li>Öppna <a href="source/level.js"><code>level.js</code></a>. De två väggdelarna slutar vid X = −1 och börjar vid X = 1: öppningen är alltså ungefär 2 meter. <code>DOOR_WIDTH</code> är 2,08 meter så bladens ytterkanter går in lite i väggarna. <code>DOOR_HEIGHT</code> är 2,7 meter. En smal väggbit, en <em>lintel</em>, fyller utrymmet ovanför bladen upp till respektive väggs överkant.</li>
+<li>Öppna <code>makeDoor()</code> i <a href="source/main.js"><code>main.js</code></a>. Skapa två <code>hinge</code>-grupper vid öppningens vänstra och högra kant. Varje dörrmodell ligger som barn till sin grupp, med halva bladets bredd mellan modellen och gångjärnet. När GLB-filen har laddats skalas modellens bredd till halva <code>DOOR_WIDTH</code>; höjden ändras inte. Den högra modellen vänds så handtagen hamnar vid mitten.</li>
+<li>Vid upplåsning roteras vänster gångjärn med negativ vinkel och höger med positiv vinkel. Den osynliga dörrkollisionen täcker hela öppningen medan dörren är stängd. <code>blocked()</code> använder samma <code>DOOR_WIDTH</code> och slutar blockera när <code>state.doors[number - 1]</code> blir <code>true</code>.</li>
+</ol>
+<pre><code class="language-js">const half = DOOR_WIDTH / 2;
+// Två gångjärn: ett vid var sida av öppningen.
+const hinges = [-half, half].map((x) =&gt; {
+  const hinge = new THREE.Group();
+  hinge.position.set(x, 0, z);
+  scene.add(hinge);
+  return hinge;
+});
+// När dörren öppnas:
+hinges[0].rotation.y = -angle;
+hinges[1].rotation.y = angle;
+</code></pre>
+<p>Skala inte hela banan för att täcka en glipa vid dörren. Mät först öppningen och dörrmodellen var för sig. Om modellen fortfarande inte fyller öppningen, kontrollera att breddanpassningen körs <strong>efter</strong> att <code>loadModel()</code> har avslutats.</p>
 <p><code>nearestAction()</code> väljer ett objekt inom 1,6 meter. Tryck <code>E</code> eller grip för att flytta hinken; gör en andra interaktion för att ta nyckeln. Efter en kort paus kan nyckeln också plockas automatiskt när spelaren går mycket nära. Hinken är inte en studsande fysik-kropp: den flyttas med en kontrollerad animation.</p>
 <h2>CC0-modeller</h2>
 <ul>
