@@ -14,7 +14,7 @@ const surface = new THREE.MeshStandardMaterial({ map: texture, roughness: 0.95 }
 <p>Med Vite kopieras allt i <code>public/</code> till webbplatsens rot. Spelets <code>assetUrl(...)</code> lägger till rätt basväg när appen publiceras under <code>/threejs/</code>. Använd därför samma hjälpfunktion i spelkoden när du lägger till egna assets. En länk som börjar med <code>/assets/</code> kan fungera lokalt men gå sönder på en undersida.</p>
 <h2>GLB-modeller laddas asynkront</h2>
 <p><code>GLTFLoader.loadAsync(path)</code> ger ett Promise: modellen kan bli klar först efter flera bildrutor. <code>loadModel()</code> väntar på filen, skapar en egen kopia av modellen och skalar den till en bestämd höjd. Tills dess finns en tom <code>anchor</code>-grupp på rätt plats. Vid filfel visas en enkel kapsel som reserv i stället för ett osynligt monster.</p>
-<p>Horror Game Monsters konverterade skelett får fel skala i Three.js. Webbversionen använder modellens synliga bind-pose-mesh med en liten kodstyrd rörelse; spindelmodellen använder GLB-animationer. Det är en begränsning i just dessa tillgångar, inte något du måste lösa för att följa kursen.</p>
+<p>Horror Game Monsters konverterade skelett får fel skala i Three.js. Webbversionen använder modellens synliga mesh och beräknar en gångrörelse för armar och ben varje bildruta. Spindelmodellen använder GLB-animationer. Det är en begränsning i just denna zombie-GLB, inte något du måste lösa för att följa kursen.</p>
 <h2>Källor och CC0</h2>
 <ul>
 <li>Golv: <a href="https://polyhaven.com/a/cracked_concrete">Cracked Concrete</a>, CC0 enligt <a href="https://polyhaven.com/license">Poly Haven</a>.</li>

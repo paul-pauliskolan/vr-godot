@@ -5,6 +5,8 @@ import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
 const loader = new GLTFLoader();
 const modelCache = new Map();
 const assetUrl = (path) => `${import.meta.env.BASE_URL}${path}`;
+export const DOOR_WIDTH = 2.08;
+export const DOOR_HEIGHT = 2.7;
 
 export async function loadModel(path, height, fallbackColor = 0x7d8585) {
   try {
@@ -13,13 +15,17 @@ export async function loadModel(path, height, fallbackColor = 0x7d8585) {
     let object;
     let animations = gltf.animations;
     if (path.endsWith('/horror_monster.glb')) {
-      // The FBX-converted armature produces an invalid scale/orientation with
-      // Three.js skinning. Its bind-pose geometry is upright, so use that mesh
-      // directly and animate locomotion procedurally in the game instead.
+      // The converted GLB has playable clips but a broken skin bind in Three.js:
+      // its skinned bounds are hundreds of times too small. Keep the upright
+      // bind-pose mesh and animate its limbs directly instead.
       const body = gltf.scene.getObjectByName('HorrorBody');
       if (!body?.isMesh) throw new Error('HorrorBody mesh missing from GLB');
+      const geometry = body.geometry.clone();
+      const mesh = new THREE.Mesh(geometry, body.material);
+      mesh.name = 'HorrorBody';
       object = new THREE.Group();
-      object.add(new THREE.Mesh(body.geometry, body.material));
+      object.add(mesh);
+      object.userData.gait = { mesh, rest: geometry.attributes.position.array.slice() };
       animations = [];
     } else object = cloneSkeleton(gltf.scene);
     const box = new THREE.Box3().setFromObject(object);
@@ -29,6 +35,7 @@ export async function loadModel(path, height, fallbackColor = 0x7d8585) {
     const scaled = new THREE.Box3().setFromObject(object);
     const center = scaled.getCenter(new THREE.Vector3());
     object.position.set(-center.x, -scaled.min.y, -center.z);
+    object.userData.restY = object.position.y;
     object.traverse((node) => {
       if (node.isMesh) {
         node.castShadow = true; node.receiveShadow = true;
@@ -42,6 +49,34 @@ export async function loadModel(path, height, fallbackColor = 0x7d8585) {
     object.position.y = height / 2;
     return { object, animations: [] };
   }
+}
+
+export function animateHorrorGait(model, phase, strength) {
+  const gait = model?.userData.gait;
+  if (!gait) return;
+  const position = gait.mesh.geometry.attributes.position;
+  const { rest } = gait;
+  const leftStep = Math.sin(phase);
+  for (let i = 0; i < position.count; i++) {
+    const index = i * 3;
+    const x = rest[index], y = rest[index + 1], z = rest[index + 2];
+    const side = x >= 0 ? 1 : -1;
+    const step = leftStep * side;
+    const leg = THREE.MathUtils.clamp((0.94 - y) / 0.8, 0, 1);
+    const arm = THREE.MathUtils.clamp((Math.abs(x) - 0.32) / 0.55, 0, 1)
+      * THREE.MathUtils.clamp((y - 0.8) / 0.35, 0, 1);
+    position.array[index] = x - side * arm * 0.18;
+    position.array[index + 1] = y - arm * 0.24 + Math.max(0, step) * leg * 0.09 * strength;
+    position.array[index + 2] = z + arm * 0.42 + (step * leg * 0.2 - step * arm * 0.13) * strength;
+  }
+  position.needsUpdate = true;
+}
+
+export function monsterFacingYaw(kind, direction) {
+  // The horror mesh looks along +Z, while the spider's forward axis is -Z.
+  return kind === 'horror'
+    ? Math.atan2(direction.x, direction.z)
+    : Math.atan2(-direction.x, -direction.z);
 }
 
 function material(url, color, repeatX = 1, repeatY = 1) {
@@ -94,6 +129,9 @@ export function buildLevel(scene) {
   addWall(0.2, 24.2, -12, 0, 3.4); addWall(0.2, 24.2, 12, 0, 3.4);
   addWall(11, 0.2, -6.5, 12, 3.4); addWall(11, 0.2, 6.5, 12, 3.4);
   addWall(11, 0.3, -6.5, 2.8); addWall(11, 0.3, 6.5, 2.8);
+  // Each two-metre opening has two leaves and a lintel up to the wall top.
+  box(scene, DOOR_WIDTH, 2.8 - DOOR_HEIGHT, 0.3, 0, (2.8 + DOOR_HEIGHT) / 2, 2.8, walls);
+  box(scene, DOOR_WIDTH, 3.4 - DOOR_HEIGHT, 0.2, 0, (3.4 + DOOR_HEIGHT) / 2, 12, walls);
   addWall(15, 0.3, -2.5, -4.3); addWall(8, 0.3, 6, 6.3);
   addWall(0.3, 3.5, -7.5, -0.5); addWall(0.3, 3.5, 7.5, 0.5);
   box(scene, 9.5, 0.14, 24, -7.25, 3.36, 0, rust);
@@ -133,8 +171,8 @@ export function blocked(x, z, radius, obstacles, doors) {
   for (const wall of obstacles) {
     if (Math.abs(x - wall.x) < wall.w / 2 + radius && Math.abs(z - wall.z) < wall.d / 2 + radius) return true;
   }
-  if (!doors[0] && Math.abs(x) < 0.95 + radius && Math.abs(z - 2.8) < 0.16 + radius) return true;
-  if (!doors[1] && Math.abs(x) < 0.95 + radius && Math.abs(z - 12) < 0.16 + radius) return true;
+  if (!doors[0] && Math.abs(x) < DOOR_WIDTH / 2 + radius && Math.abs(z - 2.8) < 0.16 + radius) return true;
+  if (!doors[1] && Math.abs(x) < DOOR_WIDTH / 2 + radius && Math.abs(z - 12) < 0.16 + radius) return true;
   return false;
 }
 

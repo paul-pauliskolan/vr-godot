@@ -11,7 +11,7 @@
 </code></pre>
 <p>Testa varje pil i kedjan innan du bygger nästa. Om dörren öppnar sig när nyckeln bara syns, har synlighet och spelstatus blandats ihop.</p>
 <p>Första hinken finns nära startplatsen. Den andra finns i banans bakre del, efter den första dörren. När spelaren trycker E på desktop eller grip i VR flyttas hinken åt sidan. Nyckeln visas då ovanför golvet med ett guldljus och en markör. Tryck E/grip en gång till för att ta nyckeln, eller gå riktigt nära efter den korta visningsfördröjningen. Att gå på hinken ska inte kasta upp spelaren i luften.</p>
-<p><code>canOpenDoor()</code> i <a href="source/rules.js">reglerna</a> kräver motsvarande nyckel och en pågående omgång. Dörrbladet sitter under en <code>hinge</code>-grupp som roterar runt vänster kant. Samtidigt slutar dörröppningen blockera förflyttning och monster-pathfinding. Den synliga dörranimationen och kollisionsregeln är två separata system som måste säga samma sak.</p>
+<p><code>canOpenDoor()</code> i <a href="source/rules.js">reglerna</a> kräver motsvarande nyckel och en pågående omgång. Öppningen är ungefär två meter bred, medan den nedladdade dörrmodellen är ungefär en meter bred. Spelet använder därför <strong>två dörrblad</strong> som möts i mitten. Vart och ett har en egen <code>hinge</code>-grupp och roterar åt motsatt håll. <code>DOOR_WIDTH</code> styr också den stängda dörrens kollision; en väggbit över dörrbladen fyller resten upp till taket. När dörren låses upp slutar öppningen blockera förflyttning och monster-pathfinding. Den synliga dörranimationen och kollisionsregeln är två separata system som måste säga samma sak.</p>
 <p><code>nearestAction()</code> väljer ett objekt inom 1,6 meter. Tryck <code>E</code> eller grip för att flytta hinken; gör en andra interaktion för att ta nyckeln. Efter en kort paus kan nyckeln också plockas automatiskt när spelaren går mycket nära. Hinken är inte en studsande fysik-kropp: den flyttas med en kontrollerad animation.</p>
 <h2>CC0-modeller</h2>
 <ul>
@@ -21,6 +21,6 @@
 <li>Dörrmiljö och metall: <a href="https://polyhaven.com/a/rusty_metal_sheet">Rusty Metal Sheet</a></li>
 </ul>
 <h2>Testa</h2>
-<p>Prova både utan och med nyckel vid varje dörr. Dörren ska bara öppnas med sin egen nyckel. Efter öppning ska passagen vara fri; öppna dörrbladet ska inte fungera som en osynlig vägg.</p>
+<p>Prova både utan och med nyckel vid varje dörr. Båda dörrbladen ska täcka öppningen från sidan och mötas i mitten. Dörren ska bara öppnas med sin egen nyckel. Efter öppning ska passagen vara fri; öppna dörrblad ska inte fungera som en osynlig vägg.</p>
 <h2>Gör själv</h2>
 <p>I din kopia: gör nyckelmarkörens guldljus lite starkare eller svagare. Kontrollera att nyckeln fortfarande syns från normal ögonhöjd. Ändra sedan bara hinkens X-position med en halv meter och se om spelaren fortfarande kan nå den utan att öppna första dörren. Återställ om ordningen går sönder.</p><footer><a href="16-interaktioner.html">← Föregående</a><a href="04-vapen.html">Nästa →</a></footer></main></div></body></html>

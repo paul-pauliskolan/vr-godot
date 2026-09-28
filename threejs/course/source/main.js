@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { WebGPURenderer } from 'three/webgpu';
 import { VRButton } from 'three/addons/webxr/VRButton.js';
-import { buildLevel, blocked, loadModel, nextPathStep } from './level.js';
+import { animateHorrorGait, buildLevel, blocked, DOOR_HEIGHT, DOOR_WIDTH, loadModel, monsterFacingYaw, nextPathStep } from './level.js';
 import { canOpenDoor, createState, formatTime, monsterKindForSpawn, restoredHealth, RULES, scoreFor } from './rules.js';
 import './style.css';
 
@@ -222,26 +222,46 @@ function moveBucket(bucket) {
 }
 
 function makeDoor(number, z) {
-  const hinge = new THREE.Group(); hinge.position.set(-.82, 0, z); scene.add(hinge);
-  const leaf = modelAt(modelPaths.door, 2.3, [.82, 0, 0], 0x7e5b45, hinge);
+  const half = DOOR_WIDTH / 2;
+  const hinges = [-half, half].map((x) => {
+    const hinge = new THREE.Group(); hinge.position.set(x, 0, z); scene.add(hinge);
+    return hinge;
+  });
+  const leaves = hinges.map((hinge, index) => {
+    const leaf = modelAt(modelPaths.door, DOOR_HEIGHT, [index === 0 ? half / 2 : -half / 2, 0, 0], 0x7e5b45, hinge);
+    if (index === 1) leaf.rotation.y = Math.PI;
+    return leaf;
+  });
   const rustTexture = new THREE.TextureLoader().load(assetUrl('assets/textures/rusty_metal_sheet_diff_1k.jpg'));
   rustTexture.colorSpace = THREE.SRGBColorSpace;
   const rustFinish = new THREE.MeshStandardMaterial({ map: rustTexture, color: 0xc3bbb0, metalness: .52, roughness: .8 });
-  const finishTimer = setInterval(() => {
-    if (!leaf.userData.model && leaf.parent) return;
-    clearInterval(finishTimer);
-    leaf.userData.model?.traverse((node) => { if (node.isMesh && /door/i.test(node.name)) node.material = rustFinish; });
-  }, 60);
-  const collider = part(hinge, new THREE.BoxGeometry(1.7, 2.45, .18), new THREE.MeshBasicMaterial({ visible: false }), .82, 1.23, 0);
-  const indicator = new THREE.Mesh(new THREE.SphereGeometry(.08), new THREE.MeshBasicMaterial({ color: 0xe17c5f }));
-  indicator.position.set(.69, 1.13, -.16); hinge.add(indicator);
-  doors.push({ number, z, hinge, leaf, collider, indicator, progress: 0 });
+  for (const leaf of leaves) {
+    const finishTimer = setInterval(() => {
+      if (!leaf.userData.model && leaf.parent) return;
+      clearInterval(finishTimer);
+      const model = leaf.userData.model;
+      if (!model) return;
+      const width = new THREE.Box3().setFromObject(model).getSize(new THREE.Vector3()).x;
+      const fit = (half + .01) / width;
+      model.scale.x *= fit;
+      model.position.x *= fit;
+      model.traverse((node) => { if (node.isMesh && /door/i.test(node.name)) node.material = rustFinish; });
+    }, 60);
+  }
+  const collider = part(scene, new THREE.BoxGeometry(DOOR_WIDTH, DOOR_HEIGHT, .18), new THREE.MeshBasicMaterial({ visible: false }), 0, DOOR_HEIGHT / 2, z);
+  const indicators = hinges.map((hinge, index) => {
+    const indicator = new THREE.Mesh(new THREE.SphereGeometry(.08), new THREE.MeshBasicMaterial({ color: 0xe17c5f }));
+    indicator.position.set(index === 0 ? half - .12 : -half + .12, 1.25, -.16);
+    hinge.add(indicator);
+    return indicator;
+  });
+  doors.push({ number, z, hinges, leaves, collider, indicators, progress: 0 });
 }
 
 function openDoor(door) {
   if (!canOpenDoor(state, door.number)) return;
   state.doors[door.number - 1] = true;
-  door.indicator.material.color.set(0x5affad);
+  door.indicators.forEach((indicator) => indicator.material.color.set(0x5affad));
   announce(`Door ${door.number} unlocked`);
   updateHud();
 }
@@ -395,7 +415,7 @@ async function spawnMonster() {
     : valid[Math.floor(Math.random() * valid.length)];
   const kind = monsterKindForSpawn(spawnCount++, monsters.some((m) => !m.dead && m.kind === 'spider'));
   const anchor = modelAt(modelPaths[kind], kind === 'spider' ? .7 : 1.85, [x, 0, z], kind === 'spider' ? 0x604b3e : 0x83756a);
-  const monster = { anchor, kind, health: RULES.monsterHealth, dead: false, waypoint: null, pathTimer: 0, attackTimer: 0, jumpTimer: 2, leap: 0, flash: 0, mixer: null, soundTimer: 2 + Math.random() * 3 };
+  const monster = { anchor, kind, health: RULES.monsterHealth, dead: false, waypoint: null, pathTimer: 0, attackTimer: 0, jumpTimer: 2, leap: 0, flash: 0, mixer: null, gaitPhase: 0, gaitStrength: 0, soundTimer: 2 + Math.random() * 3 };
   monsters.push(monster);
   const waitForModel = () => {
     if (monster.dead || !anchor.parent) return;
@@ -436,6 +456,7 @@ function updateMonsters(dt) {
       monster.leap = .7; monster.jumpTimer = 4;
       playTone(170, .22, .08, monster.anchor.position);
     }
+    let moved = false;
     if (monster.waypoint) {
       const direction = monster.waypoint.clone().sub(monster.anchor.position); direction.y = 0;
       if (direction.length() > .12) {
@@ -444,8 +465,11 @@ function updateMonsters(dt) {
         const step = speed * dt * (monster.leap > 0 ? 3.5 : 1);
         const nx = monster.anchor.position.x + direction.x * step;
         const nz = monster.anchor.position.z + direction.z * step;
-        if (!blocked(nx, nz, monster.kind === 'spider' ? .34 : .42, level.obstacles, state.doors)) monster.anchor.position.set(nx, 0, nz);
-        monster.anchor.rotation.y = Math.atan2(-direction.x, -direction.z);
+        if (!blocked(nx, nz, monster.kind === 'spider' ? .34 : .42, level.obstacles, state.doors)) {
+          monster.anchor.position.set(nx, 0, nz);
+          moved = true;
+        }
+        monster.anchor.rotation.y = monsterFacingYaw(monster.kind, direction);
       }
     }
     if (monster.leap > 0) {
@@ -453,7 +477,12 @@ function updateMonsters(dt) {
       monster.anchor.position.y = Math.sin((.7 - monster.leap) / .7 * Math.PI) * .9;
     } else monster.anchor.position.y = 0;
     if (monster.kind === 'horror' && monster.anchor.userData.model) {
-      monster.anchor.userData.model.rotation.z = Math.sin(state.time * 3 + monster.anchor.position.x) * .035;
+      monster.gaitStrength = THREE.MathUtils.clamp(monster.gaitStrength + (moved ? dt * 4 : -dt * 4), 0, 1);
+      if (moved) monster.gaitPhase += dt * 5.4;
+      animateHorrorGait(monster.anchor.userData.model, monster.gaitPhase, monster.gaitStrength);
+      monster.anchor.userData.model.rotation.z = Math.sin(monster.gaitPhase) * .025 * monster.gaitStrength;
+      monster.anchor.userData.model.position.y = monster.anchor.userData.model.userData.restY
+        + Math.abs(Math.sin(monster.gaitPhase)) * .025 * monster.gaitStrength;
     }
     if (monster.flash > 0) {
       monster.flash -= dt;
@@ -513,7 +542,11 @@ function startRun() {
   camera.rotation.x = 0; desktopPitch = 0; verticalSpeed = 0; groundHeight = 0;
   footstepTimer = 0;
   spawnClock = 0; powerClock = 0; spawnCount = 0;
-  doors.forEach((door) => { door.progress = 0; door.hinge.rotation.y = 0; door.indicator.material.color.set(0xe17c5f); });
+  doors.forEach((door) => {
+    door.progress = 0;
+    door.hinges.forEach((hinge) => { hinge.rotation.y = 0; });
+    door.indicators.forEach((indicator) => { indicator.material.color.set(0xe17c5f); });
+  });
   makeBucket(1, -2, -1); makeBucket(2, -8, 8.2);
   for (const [x, z] of [[-1.5, -2.4], [6.3, -7.3], [-8, 7.2]]) makeMagazine(x, z);
   for (const [x, z] of [[-5, -7], [5, 7], [-8, 10]]) makeMedkit(x, z);
@@ -602,7 +635,9 @@ function updateObjects(dt) {
   for (const door of doors) {
     if (state.doors[door.number - 1]) {
       door.progress = Math.min(1, door.progress + dt / 1.25);
-      door.hinge.rotation.y = -1.83 * (1 - (1 - door.progress) ** 3);
+      const angle = 1.83 * (1 - (1 - door.progress) ** 3);
+      door.hinges[0].rotation.y = -angle;
+      door.hinges[1].rotation.y = angle;
     } else if (state.keys[door.number - 1] && Math.abs(rig.position.z - door.z) < 1.05 && Math.abs(rig.position.x) < 1.25) openDoor(door);
   }
   for (const medkit of [...medkits]) {

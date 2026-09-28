@@ -13,6 +13,9 @@
 <p>Vägen räknas om ungefär var 0,65 sekund per monster. Vid varje bildruta rör sig monstret ett litet steg mot aktuell waypoint. Den slutliga rörelsen testas också med <code>blocked()</code>, så att en avrundning i rutnätet inte låter fienden gå igenom en vägg.</p>
 <h2>Attack och tydlig respons</h2>
 <p>Horror-monstret går långsammare än spindeln. Spindeln kan starta ett kodstyrt hopp när den är nära spelaren; dess höjd följer en sinuskurva. När ett monster når kontaktavståndet dras 12 hälsa, med cooldown så att spelaren inte förlorar all hälsa på en bildruta. Vid skott blinkar fienden röd. Efter tre träffar räknas en kill och fienden tas bort.</p>
+<h2>Varför zombien har en egen gånganimation</h2>
+<p>Zombiefilen innehåller egentligen klippen Idle, Walk och Run, men det konverterade skelettets bindning får fel skala i Three.js. Att spela klippet direkt gör modellen felaktig eller osynlig. <code>loadModel()</code> tar därför den synliga kroppen som en egen mesh. <code>animateHorrorGait()</code> utgår från vertexernas ursprungliga positioner och för vänster och höger ben åt motsatta håll. Armarna sänks från modellens T-pose och pendlar i motsatt fas. När monstret står still går rörelsen mjukt tillbaka mot vila.</p>
+<p>En modell har också en lokal framåtriktning. Zombiens framsida pekar längs <strong>+Z</strong>, medan spindelns pekar längs <strong>−Z</strong>. <code>monsterFacingYaw()</code> väljer därför olika rotationsformler. Om ett monster ser ut att gå baklänges, kontrollera modellens framåtriktning innan du ändrar vägvalet.</p>
 <h2>Prova en sak i taget</h2>
 <ol>
 <li>Starta spelet flera gånger och skriv upp avståndet till första monstret. Det ska inte stå intill spelaren.</li>
